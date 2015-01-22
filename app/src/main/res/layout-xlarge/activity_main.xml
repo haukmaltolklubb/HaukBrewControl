@@ -1,0 +1,118 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="fill_parent"
+    android:layout_height="fill_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin" tools:context=".MainActivity"
+    android:background="@drawable/land_wall_hd2">
+
+    <TextView android:text="@string/heading" android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="80sp"
+        android:textColor="@android:color/black"
+        android:id="@+id/MainMenu"
+        android:layout_centerHorizontal="true" />
+
+    <RadioGroup
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/radioGroup"
+        android:layout_below="@+id/MainMenu"
+        android:layout_toLeftOf="@+id/MainMenu"
+        android:layout_toStartOf="@+id/MainMenu">
+
+        <RadioButton
+            android:layout_width="310dp"
+            android:layout_height="wrap_content"
+            android:text="@string/button_start_hlt_text"
+            android:id="@+id/start_hlt"
+            android:textSize="48dp"
+            android:singleLine="true" />
+
+        <RadioButton
+            android:layout_width="355dp"
+            android:layout_height="wrap_content"
+            android:text="@string/button_start_mlt_text"
+            android:id="@+id/start_mlt"
+            android:textSize="48dp" />
+
+        <RadioButton
+            android:layout_width="322dp"
+            android:layout_height="wrap_content"
+            android:text="@string/button_start_pump_text"
+            android:id="@+id/start_pump"
+            android:textSize="48dp" />
+
+        <RadioButton
+            android:layout_width="308dp"
+            android:layout_height="wrap_content"
+            android:text="@string/button_start_ferment_text"
+            android:id="@+id/start_ferment"
+            android:textSize="48dp" />
+    </RadioGroup>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/start_date_descr"
+        android:id="@+id/start_date_text"
+        android:textSize="48sp"
+        android:textColor="@android:color/background_dark"
+        android:layout_marginTop="10dp"
+        android:layout_alignTop="@+id/radioGroup"
+        android:layout_alignRight="@+id/MainStartButton"
+        android:layout_alignEnd="@+id/MainStartButton" />
+
+    <EditText
+        android:layout_width="60dp"
+        android:layout_height="wrap_content"
+        android:inputType="date"
+        android:ems="10"
+        android:id="@+id/start_dato"
+        android:layout_alignTop="@+id/start_date_text"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="false"
+        android:layout_toRightOf="@+id/start_date_text"
+        android:layout_toEndOf="@+id/start_date_text"
+        android:textSize="48sp"
+        android:textIsSelectable="false"
+        android:autoText="false" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/start_time_descr"
+        android:id="@+id/start_time_text"
+        android:textSize="48sp"
+        android:textColor="@android:color/background_dark"
+        android:linksClickable="true"
+        android:layout_below="@+id/start_dato"
+        android:layout_toLeftOf="@+id/start_dato"
+        android:layout_toStartOf="@+id/start_dato"
+        android:paddingTop="20dp"
+        android:password="false" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="date"
+        android:ems="10"
+        android:id="@+id/start_time"
+        android:layout_alignBottom="@+id/start_time_text"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignLeft="@+id/start_dato"
+        android:layout_alignStart="@+id/start_dato"
+        android:textSize="48sp" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/button_main_start_text"
+        android:id="@+id/MainStartButton"
+        android:textSize="60sp"
+        android:layout_below="@+id/radioGroup"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="56dp" />
+
+</RelativeLayout>
