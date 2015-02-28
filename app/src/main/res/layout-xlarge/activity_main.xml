@@ -16,7 +16,7 @@
     <RadioGroup
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/radioGroup"
+        android:id="@+id/mainMenuItems"
         android:layout_below="@+id/MainMenu"
         android:layout_toLeftOf="@+id/MainMenu"
         android:layout_toStartOf="@+id/MainMenu">
@@ -59,7 +59,7 @@
         android:textSize="48sp"
         android:textColor="@android:color/background_dark"
         android:layout_marginTop="10dp"
-        android:layout_alignTop="@+id/radioGroup"
+        android:layout_alignTop="@+id/mainMenuItems"
         android:layout_alignRight="@+id/MainStartButton"
         android:layout_alignEnd="@+id/MainStartButton" />
 
@@ -111,7 +111,7 @@
         android:text="@string/button_main_start_text"
         android:id="@+id/MainStartButton"
         android:textSize="60sp"
-        android:layout_below="@+id/radioGroup"
+        android:layout_below="@+id/mainMenuItems"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="56dp" />
 

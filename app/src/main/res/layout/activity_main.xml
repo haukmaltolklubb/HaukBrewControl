@@ -20,10 +20,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
-        android:id="@+id/radioGroup"
+        android:id="@+id/mainMenuItems"
         android:layout_below="@+id/MainMenu"
         android:layout_alignLeft="@+id/MainMenu"
-        android:layout_alignStart="@+id/MainMenu">
+        android:layout_alignStart="@+id/MainMenu"
+        android:measureWithLargestChild="true">
 
         <RadioButton
             android:layout_width="wrap_content"
@@ -63,9 +64,9 @@
         android:textSize="24sp"
         android:textColor="@android:color/background_dark"
         android:layout_marginTop="20dp"
-        android:layout_below="@+id/radioGroup"
-        android:layout_alignLeft="@+id/radioGroup"
-        android:layout_alignStart="@+id/radioGroup" />
+        android:layout_below="@+id/mainMenuItems"
+        android:layout_alignLeft="@+id/mainMenuItems"
+        android:layout_alignStart="@+id/mainMenuItems" />
 
     <EditText
         android:layout_width="wrap_content"
@@ -81,7 +82,7 @@
         android:textIsSelectable="false"
         android:autoText="false"
         android:layout_alignBottom="@+id/start_date_text"
-        android:layout_below="@+id/radioGroup"
+        android:layout_below="@+id/mainMenuItems"
         android:hapticFeedbackEnabled="false" />
 
     <TextView

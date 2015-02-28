@@ -3,9 +3,12 @@ package no.gravem.hauk.haukbrewcontrol;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -40,10 +43,26 @@ public class MainActivity extends ActionBarActivity {
     }
 
     public void onMainNextMenuClick(View view) {
-        Intent getNextScreenIntent = new Intent(this,
-               MashMenuScreen.class );
-        final int result = 1;
-
-        startActivity(getNextScreenIntent);
+        Log.d("BrewControl", "Hello!");
+        RadioGroup mainGroup = (RadioGroup) findViewById(R.id.mainMenuItems);
+        int id = mainGroup.getCheckedRadioButtonId();
+        String value = ((RadioButton)findViewById(mainGroup.getCheckedRadioButtonId() )).getText().toString();
+        if(id==-1){
+            //You have to choose something!
+            return;
+        }
+        Log.d("BrewControl", "Yep, value is: " + value);
+        switch (id){
+            case R.id.start_hlt:
+                startActivity(new Intent(this, HeatMenuScreen.class));
+                break;
+            case R.id.start_mlt:
+                startActivity(new Intent(this, MashMenuScreen.class));
+                break;
+            case R.id.start_pump:
+                break;
+            case R.id.start_ferment:
+                break;
+        }
     }
 }

@@ -16,7 +16,7 @@
     <RadioGroup
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/radioGroup"
+        android:id="@+id/mainMenuItems"
         android:layout_below="@+id/MainMenu"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true">
@@ -59,7 +59,7 @@
         android:textSize="24sp"
         android:textColor="@android:color/background_dark"
         android:layout_marginTop="10dp"
-        android:layout_alignTop="@+id/radioGroup"
+        android:layout_alignTop="@+id/mainMenuItems"
         android:layout_alignRight="@+id/MainStartButton"
         android:layout_alignEnd="@+id/MainStartButton" />
 
