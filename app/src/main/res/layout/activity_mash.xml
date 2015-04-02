@@ -12,7 +12,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/mash_heading"
-        android:id="@+id/MashHeadingText"
+        android:id="@+id/heatHeading"
         android:textSize="40sp"
         android:textColor="@android:color/black"
         />
@@ -54,7 +54,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/mash_step1_descr"
-            android:id="@+id/Mash1Descr"
+            android:id="@+id/heatTempLabel"
             android:textSize="24sp"
             android:textColor="@android:color/black"
             android:layout_alignParentTop="true"
@@ -67,7 +67,7 @@
             android:layout_height="40dp"
             android:inputType="number"
             android:ems="10"
-            android:id="@+id/Mash1Temp"
+            android:id="@+id/heatTemp"
             android:paddingLeft="0dp"
             android:textColor="@android:color/black"
             android:textSize="24sp"
@@ -96,8 +96,8 @@
             android:textSize="24sp"
             android:textColor="@android:color/black"
             android:layout_alignBottom="@+id/Mash2Temp"
-            android:layout_alignLeft="@+id/Mash1Descr"
-            android:layout_alignStart="@+id/Mash1Descr" />
+            android:layout_alignLeft="@+id/heatTempLabel"
+            android:layout_alignStart="@+id/heatTempLabel" />
 
         <EditText
             android:layout_width="80dp"
@@ -105,9 +105,9 @@
             android:inputType="number"
             android:ems="10"
             android:id="@+id/Mash2Temp"
-            android:layout_below="@+id/Mash1Temp"
-            android:layout_alignLeft="@+id/Mash1Temp"
-            android:layout_alignStart="@+id/Mash1Temp"
+            android:layout_below="@+id/heatTemp"
+            android:layout_alignLeft="@+id/heatTemp"
+            android:layout_alignStart="@+id/heatTemp"
             android:textColor="@android:color/black"
             android:textSize="24sp"
             android:gravity="center" />
@@ -183,7 +183,9 @@
             android:layout_alignParentStart="true"
             android:layout_marginLeft="47dp"
             android:layout_marginStart="47dp"
-            android:textSize="24sp" />
+            android:textSize="24sp"
+            android:background="@drawable/sandrift_button"
+            style="@style/btnStyleSandrift"/>
 
         <Button
             android:layout_width="wrap_content"
@@ -195,7 +197,9 @@
             android:layout_alignParentEnd="true"
             android:layout_marginRight="69dp"
             android:layout_marginEnd="69dp"
-            android:textSize="24sp" />
+            android:textSize="24sp"
+            android:background="@drawable/sandrift_button"
+            style="@style/btnStyleSandrift"/>
 
     </RelativeLayout>
 
@@ -238,7 +242,9 @@
             android:layout_alignParentStart="true"
             android:longClickable="false"
             android:layout_marginTop="40dp"
-            android:textSize="24sp" />
+            android:textSize="24sp"
+            android:background="@drawable/sandrift_button"
+            style="@style/btnStyleSandrift"/>
 
         <EditText
             android:layout_width="70dp"

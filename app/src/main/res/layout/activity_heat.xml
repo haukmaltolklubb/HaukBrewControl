@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:background="@drawable/beer_wallpaper">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/heat_heading"
+            android:id="@+id/heatHeading"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:textSize="40sp"
+            android:textColor="@android:color/black"
+            android:focusable="true" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/heat_set_temp_descr"
+            android:id="@+id/heatTempLabel"
+            android:layout_below="@+id/heatHeading"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginLeft="39dp"
+            android:layout_marginStart="39dp"
+            android:layout_marginTop="20dp"
+            android:longClickable="true"
+            android:textSize="24sp"
+            android:textColor="@android:color/black" />
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="numberDecimal"
+            android:ems="3"
+            android:id="@+id/heatTemp"
+            android:layout_alignTop="@+id/heatTempLabel"
+            android:layout_toRightOf="@+id/heatTempLabel"
+            android:textSize="24sp" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/heat_start_text"
+            android:id="@+id/heatStartBtn"
+            android:textSize="24sp"
+            android:paddingTop="10dp"
+            android:layout_alignTop="@+id/heatStopBtn"
+            android:layout_toLeftOf="@+id/heatTemp"
+            android:layout_toStartOf="@+id/heatTemp"
+            android:background="@drawable/sandrift_button"
+            style="@style/btnStyleSandrift"
+            android:onClick="startHeatingProcess" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/heat_stop_text"
+            android:id="@+id/heatStopBtn"
+            android:textSize="24sp"
+            android:layout_marginTop="43dp"
+            android:background="@drawable/sandrift_button"
+            style="@style/btnStyleSandrift"
+            android:layout_below="@+id/heatTemp"
+            android:layout_toRightOf="@+id/heatHeading"
+            android:layout_toEndOf="@+id/heatHeading"
+            android:onClick="stopHeatingProcess" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/heat_time_descr"
+            android:id="@+id/currentHeatTime"
+            android:textColor="@android:color/black"
+            android:textSize="24sp"
+            android:phoneNumber="true"
+            android:layout_marginTop="33dp"
+            android:layout_below="@+id/progressData"
+            android:layout_alignLeft="@+id/currentHeatTemp"
+            android:layout_alignStart="@+id/currentHeatTemp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="time"
+            android:ems="10"
+            android:id="@+id/currentHeatTemp"
+            android:textColor="@android:color/black"
+            android:textSize="24sp"
+            android:text="@string/currentTempLabel"
+            android:layout_below="@+id/currentHeatTime"
+            android:layout_alignLeft="@+id/heatStartBtn"
+            android:layout_alignStart="@+id/heatStartBtn" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Prosessdata"
+            android:id="@+id/progressData"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/heatStopBtn"
+            android:layout_toStartOf="@+id/heatStopBtn" />
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/updateButton"
+            android:src="@android:drawable/stat_notify_sync"
+            android:background="@drawable/sandrift_button"
+            style="@style/btnStyleSandrift"
+            android:onClick="getCurrentProsessData"
+            android:layout_below="@+id/currentHeatTemp"
+            android:layout_alignRight="@+id/heatStopBtn"
+            android:layout_alignEnd="@+id/heatStopBtn" />
+
+    </RelativeLayout>
+</LinearLayout>

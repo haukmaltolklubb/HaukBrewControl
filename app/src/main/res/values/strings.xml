@@ -2,24 +2,21 @@
 <resources>
 
     <string name="app_name">Hauk Brew Control</string>
-    <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
-    <string name="heading">Hovedmeny</string>
-    <string name="button_start_hlt_text">Koking</string>
-    <string name="button_start_mlt_text">Mesking</string>
-    <string name="button_start_pump_text">Pumping</string>
-    <string name="button_start_ferment_text">Gjæring</string>
+    <string name="heading">BrewControl</string>
+    <string name="startBrewTimeHeading">Bryggestart</string>
+    <string name="heatBtn_text">Koking</string>
+    <string name="meshBtn_text">Mesking</string>
+    <string name="pumpBtn_text">Pumping</string>
+    <string name="fermentBtn_text">Gjæring</string>
     <string name="start_date_descr">Start Dato:</string>
     <string name="start_time_descr">Start Tid:</string>
-    <string name="button_main_start_text">Neste</string>
-
     <string name="heat_heading">Koking</string>
     <string name="heat_set_temp_descr">Set temp:</string>
     <string name="heat_actual_temp_descr">Temp koker</string>
     <string name="heat_time_descr">Koketid:</string>
     <string name="heat_start_text">START</string>
     <string name="heat_stop_text">STOPP</string>
-
     <string name="mash_heading">Mesking</string>
     <string name="mash_temp_heading">Temp(C)</string>
     <string name="mash_time_heading">Tid(min)</string>
@@ -32,5 +29,25 @@
     <string name="mash_bottomtemp_head_text">Bunn</string>
     <string name="mash_chk_button_text">Temp:</string>
     <string name="mash_time_descr">Mesketid:</string>
+    <string name="title_activity_brew_status">BrewStatus</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="title_activity_start_brew">StartBrew</string>
+    <string name="title_activity_ferment_menu">FermentMenu</string>
+    <string name="title_activity_pump">Pump</string>
+    <string name="title_activity_set_start_brew_time">SetStartBrewTime</string>
+    <string name="timePickerButtonLabel">Tid satt</string>
+    <string name="temp1Label">Sensor 1</string>
+    <string name="temp2Label">Sensor 2</string>
+    <string name="temp3Label">Sensor 3</string>
+    <string name="temp4Label">Sensor 4</string>
+    <string name="brew_status">Bryggestatus</string>
+    <string name="refreshBtn">Oppdater</string>
+    <string name="dateSetLabel">Dato satt:</string>
+    <string name="setStartTimeBtn_text">Set start tid</string>
+    <string name="setStartDatoBtn_text">Set start dato</string>
+    <string name="timeSetLabel">Tid satt:</string>
+    <string name="currentTempLabel">Temperatur:</string>
+    <string name="brewStatusCurrentProcess">Prosess</string>
+    <string name="tempsLabel">Temperaturer:</string>
 
 </resources>

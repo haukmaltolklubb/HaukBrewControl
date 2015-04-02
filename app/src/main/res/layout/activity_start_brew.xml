@@ -1,0 +1,123 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    tools:context="no.gravem.hauk.haukbrewcontrol.StartBrew"
+    android:background="@drawable/beer_wallpaper">
+
+    <TextView android:text="@string/heading" android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="40sp"
+        android:textColor="@android:color/black"
+        android:id="@+id/MainMenu"
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/heatBtn_text"
+        android:id="@+id/heatBtn"
+        android:onClick="openHeatWindow"
+        android:layout_alignTop="@+id/pumpBtn"
+        android:layout_alignRight="@+id/MainMenu"
+        android:layout_alignEnd="@+id/MainMenu"
+        android:background="@drawable/sandrift_button"
+        style="@style/btnStyleSandrift" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/meshBtn_text"
+        android:id="@+id/mashBtn"
+        android:clickable="true"
+        android:onClick="openMashWindow"
+        android:layout_alignLeft="@+id/heatBtn"
+        android:layout_alignStart="@+id/heatBtn"
+        android:layout_alignTop="@+id/fermentingBtn"
+        android:background="@drawable/sandrift_button"
+        style="@style/btnStyleSandrift" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/fermentBtn_text"
+        android:id="@+id/fermentingBtn"
+        android:onClick="openFermentActivity"
+        android:background="@drawable/sandrift_button"
+        style="@style/btnStyleSandrift"
+        android:layout_above="@+id/heatBtn"
+        android:layout_alignLeft="@+id/pumpBtn"
+        android:layout_alignStart="@+id/pumpBtn"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/pumpBtn_text"
+        android:id="@+id/pumpBtn"
+        android:onClick="openPumpWindow"
+        android:layout_marginBottom="130dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignLeft="@+id/MainMenu"
+        android:layout_alignStart="@+id/MainMenu"
+        android:background="@drawable/sandrift_button"
+        style="@style/btnStyleSandrift"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/setStartTimeBtn_text"
+        android:id="@+id/setStartTimeBtn"
+        android:layout_above="@+id/mashBtn"
+        android:layout_alignRight="@+id/mashBtn"
+        android:layout_alignEnd="@+id/mashBtn"
+        android:layout_marginBottom="60dp"
+        style="@style/btnStyleSandrift"
+        android:background="@drawable/sandrift_button"
+        android:layout_alignLeft="@+id/fermentingBtn"
+        android:layout_alignStart="@+id/fermentingBtn"
+        android:onClick="showTimePickerDialog" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/setStartDatoBtn_text"
+        android:id="@+id/setStartDatoBtn"
+        style="@style/btnStyleSandrift"
+        android:background="@drawable/sandrift_button"
+        android:onClick="showDatePickerDialog"
+        android:layout_above="@+id/setStartTimeBtn"
+        android:layout_alignLeft="@+id/setStartTimeBtn"
+        android:layout_alignStart="@+id/setStartTimeBtn"
+        android:layout_marginBottom="20dp"
+        android:layout_alignRight="@+id/mashBtn"
+        android:layout_alignEnd="@+id/mashBtn" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/dateSetLabel"
+        android:id="@+id/dateDisplay"
+        android:layout_alignParentBottom="true"
+        android:layout_alignLeft="@+id/pumpBtn"
+        android:layout_alignStart="@+id/pumpBtn"
+        android:layout_alignRight="@+id/heatBtn"
+        android:layout_alignEnd="@+id/heatBtn"
+        android:layout_marginBottom="60dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/timeSetLabel"
+        android:id="@+id/timeDisplay"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="30dp"
+        android:layout_alignRight="@+id/heatBtn"
+        android:layout_alignEnd="@+id/heatBtn"
+        android:layout_alignLeft="@+id/dateDisplay"
+        android:layout_alignStart="@+id/dateDisplay" />
+
+</RelativeLayout>

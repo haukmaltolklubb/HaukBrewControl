@@ -11,116 +11,33 @@
     <TextView android:text="@string/heading" android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="40sp"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
         android:textColor="@android:color/black"
-        android:id="@+id/MainMenu" />
-
-    <RadioGroup
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:id="@+id/mainMenuItems"
-        android:layout_below="@+id/MainMenu"
-        android:layout_alignLeft="@+id/MainMenu"
-        android:layout_alignStart="@+id/MainMenu"
-        android:measureWithLargestChild="true">
-
-        <RadioButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/button_start_hlt_text"
-            android:id="@+id/start_hlt"
-            android:textSize="30sp"
-            android:singleLine="true" />
-
-        <RadioButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/button_start_mlt_text"
-            android:id="@+id/start_mlt"
-            android:textSize="30sp" />
-
-        <RadioButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/button_start_pump_text"
-            android:id="@+id/start_pump"
-            android:textSize="30sp" />
-
-        <RadioButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/button_start_ferment_text"
-            android:id="@+id/start_ferment"
-            android:textSize="30sp" />
-    </RadioGroup>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/start_date_descr"
-        android:id="@+id/start_date_text"
-        android:textSize="24sp"
-        android:textColor="@android:color/background_dark"
-        android:layout_marginTop="20dp"
-        android:layout_below="@+id/mainMenuItems"
-        android:layout_alignLeft="@+id/mainMenuItems"
-        android:layout_alignStart="@+id/mainMenuItems" />
-
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="date"
-        android:ems="10"
-        android:id="@+id/start_dato"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="false"
-        android:layout_toRightOf="@+id/start_date_text"
-        android:layout_toEndOf="@+id/start_date_text"
-        android:textSize="24sp"
-        android:textIsSelectable="false"
-        android:autoText="false"
-        android:layout_alignBottom="@+id/start_date_text"
-        android:layout_below="@+id/mainMenuItems"
-        android:hapticFeedbackEnabled="false" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/start_time_descr"
-        android:id="@+id/start_time_text"
-        android:textSize="24sp"
-        android:textColor="@android:color/background_dark"
-        android:linksClickable="true"
-        android:layout_below="@+id/start_dato"
-        android:layout_toLeftOf="@+id/start_dato"
-        android:layout_toStartOf="@+id/start_dato"
-        android:paddingTop="10dp"
-        android:password="false" />
-
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="date"
-        android:ems="10"
-        android:id="@+id/start_time"
-        android:layout_alignBottom="@+id/start_time_text"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignLeft="@+id/start_dato"
-        android:layout_alignStart="@+id/start_dato"
-        android:textSize="24sp" />
+        android:id="@+id/MainMenu"
+        android:layout_centerHorizontal="true" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/button_main_start_text"
-        android:id="@+id/MainStartButton"
-        android:layout_below="@+id/start_time_text"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
-        android:textSize="30sp"
-        android:onClick="onMainNextMenuClick"/>
+        android:text="Start nytt brygg"
+        android:id="@+id/startNewBrewBtn"
+        android:onClick="openStartBrewActivity"
+        android:background="@drawable/sandrift_button"
+        style="@style/btnStyleSandriftLarge"
+        android:layout_marginTop="44dp"
+        android:layout_below="@+id/getStatusBtn"
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Hent status"
+        android:id="@+id/getStatusBtn"
+        android:onClick="openStatusActivity"
+        android:background="@drawable/sandrift_button"
+        style="@style/btnStyleSandriftLarge"
+        android:layout_below="@+id/MainMenu"
+        android:layout_alignLeft="@+id/startNewBrewBtn"
+        android:layout_alignStart="@+id/startNewBrewBtn"
+        android:layout_marginTop="153dp" />
 
 </RelativeLayout>

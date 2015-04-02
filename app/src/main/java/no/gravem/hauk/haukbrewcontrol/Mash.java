@@ -6,11 +6,11 @@ import android.os.Bundle;
 /**
  * Created by GTG on 20.01.2015.
  */
-public class MashMenuScreen extends Activity{
+public class Mash extends Activity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.mash_menu);
+        setContentView(R.layout.activity_mash);
     }
 
 }

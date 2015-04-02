@@ -11,7 +11,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/heat_heading"
-            android:id="@+id/MashHeadingText"
+            android:id="@+id/heatHeading"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
             android:textSize="40sp"
@@ -22,52 +22,51 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/heat_set_temp_descr"
-            android:id="@+id/Mash1Descr"
-            android:layout_below="@+id/MashHeadingText"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_marginLeft="39dp"
-            android:layout_marginStart="39dp"
-            android:layout_marginTop="20dp"
+            android:id="@+id/heatTempLabel"
+            android:layout_marginTop="27dp"
             android:longClickable="true"
             android:textSize="24sp"
-            android:textColor="@android:color/black" />
+            android:textColor="@android:color/black"
+            android:layout_below="@+id/heatHeading"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
 
         <EditText
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:inputType="numberDecimal"
             android:ems="10"
-            android:id="@+id/Mash1Temp"
-            android:layout_alignTop="@+id/Mash1Descr"
-            android:layout_toRightOf="@+id/Mash1Descr"
-            android:textSize="24sp" />
+            android:id="@+id/heatTemp"
+            android:layout_alignTop="@+id/heatTempLabel"
+            android:layout_toRightOf="@+id/heatTempLabel"
+            android:textSize="24sp"
+            android:layout_toLeftOf="@+id/heatHeading"
+            android:layout_toStartOf="@+id/heatHeading" />
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/heat_start_text"
-            android:id="@+id/HeatStart"
+            android:id="@+id/heatStartBtn"
             android:textColor="@android:color/black"
             android:textSize="24sp"
             android:paddingTop="10dp"
-            android:layout_alignTop="@+id/HeatStop"
-            android:layout_toLeftOf="@+id/Mash1Temp"
-            android:layout_toStartOf="@+id/Mash1Temp" />
+            android:layout_alignBottom="@+id/heatTemp"
+            android:layout_alignRight="@+id/heatHeading"
+            android:layout_alignEnd="@+id/heatHeading" />
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/heat_stop_text"
-            android:id="@+id/HeatStop"
+            android:id="@+id/heatStopBtn"
             android:textColor="@android:color/black"
             android:textSize="24sp"
-            android:layout_marginTop="28dp"
-            android:layout_below="@+id/Mash1Temp"
-            android:layout_alignRight="@+id/Mash1Temp"
-            android:layout_alignEnd="@+id/Mash1Temp"
-            android:layout_marginRight="44dp"
-            android:layout_marginEnd="44dp" />
+            android:layout_alignTop="@+id/heatTemp"
+            android:layout_toRightOf="@+id/heatStartBtn"
+            android:layout_toEndOf="@+id/heatStartBtn"
+            android:layout_marginLeft="43dp"
+            android:layout_marginStart="43dp" />
 
         <Button
             android:layout_width="wrap_content"
@@ -75,10 +74,10 @@
             android:text="@string/heat_actual_temp_descr"
             android:id="@+id/HeatCheckTemp"
             android:textSize="24sp"
-            android:layout_marginTop="39dp"
-            android:layout_below="@+id/HeatStart"
-            android:layout_alignLeft="@+id/Mash1Descr"
-            android:layout_alignStart="@+id/Mash1Descr" />
+            android:layout_marginTop="21dp"
+            android:layout_below="@+id/heatStopBtn"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
 
         <EditText
             android:layout_width="wrap_content"
@@ -98,13 +97,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/heat_time_descr"
-            android:id="@+id/HeatTime"
+            android:id="@+id/currentHeatTime"
             android:textColor="@android:color/black"
             android:textSize="24sp"
             android:phoneNumber="true"
             android:layout_below="@+id/HeatCheckTemp"
-            android:layout_alignRight="@+id/Mash1Descr"
-            android:layout_alignEnd="@+id/Mash1Descr"
+            android:layout_alignRight="@+id/heatTempLabel"
+            android:layout_alignEnd="@+id/heatTempLabel"
             android:layout_marginTop="30dp" />
 
         <EditText
@@ -113,7 +112,7 @@
             android:inputType="time"
             android:ems="10"
             android:id="@+id/HeatRunTime"
-            android:layout_alignBottom="@+id/HeatTime"
+            android:layout_alignBottom="@+id/currentHeatTime"
             android:layout_toEndOf="@+id/HeatCheckTemp"
             android:layout_toRightOf="@+id/HeatCheckTemp"
             android:textColor="@android:color/black"
