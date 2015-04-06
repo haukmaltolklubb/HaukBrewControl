@@ -11,7 +11,6 @@ import android.widget.TextView;
 
 public class BrewStatus extends ActionBarActivity {
 
-    private String sensorUrl = "http://88.84.50.37/api/status.xml";
     BrewStatusTask brewStatusTask = null;
 
     @Override
@@ -21,7 +20,6 @@ public class BrewStatus extends ActionBarActivity {
 
         getStatusFromPLS();
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -56,7 +54,7 @@ public class BrewStatus extends ActionBarActivity {
 
     private class BrewStatusTask extends AsyncTask<String, Integer, String> {
 
-        IBrewControlOperations operations = null;
+        BrewControlOperations operations = null;
         private String tempIkkeFunnet = "Temperatur ikke funnet";
 
         @Override
@@ -64,9 +62,6 @@ public class BrewStatus extends ActionBarActivity {
 
             HaukBrewControlApplication myApp = (HaukBrewControlApplication) getApplication();
             operations = new BrewControlOperations(myApp.getXmlDocument());
-
-            //operations = new BrewControlOperationsMockup();
-            //myApp.setXmlDocument(operations.initXmlDocument());
             return "";
         }
 
@@ -89,10 +84,9 @@ public class BrewStatus extends ActionBarActivity {
 
         private void getCurrentProcess(){
             String urom1 = operations.getNodeValue("urom1");
-            BrewProcess brewProcess = getBrewProcess(urom1);
+            BrewProcess brewProcess = operations.getBrewProcess(urom1);
 
             TextView currentProcess = (TextView)findViewById(R.id.currentProcess);
-
             switch (brewProcess){
                 case None:
                     currentProcess.setText(BrewProcess.None.toString());
@@ -112,7 +106,6 @@ public class BrewStatus extends ActionBarActivity {
                 default:
                     currentProcess.setText(BrewProcess.None.toString());
             }
-
         }
 
         private void getTemperatures(){
@@ -132,21 +125,5 @@ public class BrewStatus extends ActionBarActivity {
             TextView editText = (TextView) findViewById(textViewId);
             editText.setText(nodeValue);
         }
-
-        public  BrewProcess getBrewProcess(String brewProcess){
-            int brewProcessInt = Integer.parseInt(brewProcess);
-            if(brewProcessInt == 0)
-                return BrewProcess.None;
-            if(brewProcessInt == 1)
-                return BrewProcess.Heat;
-            if(brewProcessInt == 2)
-                return BrewProcess.Mash;
-            if(brewProcessInt == 3)
-                return BrewProcess.Pump;
-            if(brewProcessInt == 4)
-                return  BrewProcess.Ferment;
-            return BrewProcess.None;
-        }
-
     }
 }

@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<response>
+    <firmware>v03.02.17f</firmware>
+    <op1>0</op1>
+    <op2>0</op2>
+    <op3>0</op3>
+    <op4>0</op4>
+    <op5>0</op5>
+    <op6>0</op6>
+    <op7>0</op7>
+    <op8>0</op8>
+    <ophex>0x00</ophex>
+    <var1>0</var1>
+    <var2>0</var2>
+    <var3>0</var3>
+    <var4>0</var4>
+    <var5>0</var5>
+    <var6>0</var6>
+    <var7>0</var7>
+    <var8>0</var8>
+    <ip1>0</ip1>
+    <ip2>0</ip2>
+    <ip3>0</ip3>
+    <ip4>0</ip4>
+    <ip5>0</ip5>
+    <ip6>0</ip6>
+    <ip7>0</ip7>
+    <ip8>0</ip8>
+    <ts1>10.8 C</ts1>
+    <ts2>10.5 C</ts2>
+    <ts3>10.5 C</ts3>
+    <ts4>11.0 C</ts4>
+    <ts5>unbound</ts5>
+    <ts6>unbound</ts6>
+    <ts7>unbound</ts7>
+    <ts8>unbound</ts8>
+    <tstat1>ok</tstat1>
+    <tstat2>ok</tstat2>
+    <tstat3>ok</tstat3>
+    <tstat4>ok</tstat4>
+    <tstat5>unbound</tstat5>
+    <tstat6>unbound</tstat6>
+    <tstat7>unbound</tstat7>
+    <tstat8>unbound</tstat8>
+    <romcode1>287BFE080500</romcode1>
+    <romcode2>281384EF0400</romcode2>
+    <romcode3>28437AEE0400</romcode3>
+    <romcode4>283199EE0400</romcode4>
+    <romcode5>000000000000</romcode5>
+    <romcode6>000000000000</romcode6>
+    <romcode7>000000000000</romcode7>
+    <romcode8>000000000000</romcode8>
+    <boundromcode1>287BFE080500</boundromcode1>
+    <boundromcode2>28437AEE0400</boundromcode2>
+    <boundromcode3>281384EF0400</boundromcode3>
+    <boundromcode4>283199EE0400</boundromcode4>
+    <boundromcode5>000000000000</boundromcode5>
+    <boundromcode6>000000000000</boundromcode6>
+    <boundromcode7>000000000000</boundromcode7>
+    <boundromcode8>000000000000</boundromcode8>
+    <hs1>0 %</hs1>
+    <aip1>0</aip1>
+    <aip2>0</aip2>
+    <aip3>0</aip3>
+    <aip4>0</aip4>
+    <aip5>0</aip5>
+    <aip6>0</aip6>
+    <aip7>0</aip7>
+    <aip8>0</aip8>
+    <urom1>3</urom1>
+    <urom2>468739800</urom2>
+    <urom3>0</urom3>
+    <urom4>0</urom4>
+    <tdso>15</tdso>
+    <counter>0</counter>
+    <fcounter>0</fcounter>
+    <date>03/30/2015</date>
+    <time>11:56:56</time>
+    <datetime>03/30/2015 11:56:56</datetime>
+    <ipaddr>192.168.178.60</ipaddr>
+    <macaddr>00:22:12:02:05:DD</macaddr>
+    <name>WEBCONTROL_GTG </name>
+    <builddate>Oct 15 2013, 11:12:31</builddate>
+</response>

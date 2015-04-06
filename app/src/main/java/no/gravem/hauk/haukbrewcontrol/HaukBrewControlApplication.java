@@ -1,6 +1,8 @@
 package no.gravem.hauk.haukbrewcontrol;
 
 import android.app.Application;
+import android.util.Log;
+
 import org.w3c.dom.Document;
 
 /**
@@ -9,6 +11,7 @@ import org.w3c.dom.Document;
 public class HaukBrewControlApplication extends Application {
 
     private Document xmlDocument = null;
+    IBrewControlConnection controlConnection = null;
     private static HaukBrewControlApplication ourInstance = new HaukBrewControlApplication();
 
     public static HaukBrewControlApplication getInstance() {
@@ -20,10 +23,23 @@ public class HaukBrewControlApplication extends Application {
 
     public Document getXmlDocument(){
         if(xmlDocument == null){
-            BrewControlConnection controlConnection = new BrewControlConnection();
-            xmlDocument = controlConnection.initXmlDocument();
+            Log.d(this.getClass().getName(), "Using URL connection");
+            controlConnection = new BrewControlConnection();
+            //Log.d(this.getClass().getName(), "Using mocked connection");
+            //controlConnection = new BrewControlConnectionMockup();
+            xmlDocument = controlConnection.getStatusXmlDocument(getApplicationContext());
         }
         return xmlDocument;
+    }
+
+    public IBrewControlConnection getBrewControlConnection(){
+        Log.d(this.getClass().getName(), "getBrewControlConnection");
+        if(controlConnection != null)
+            return controlConnection;
+        else{
+            controlConnection = new BrewControlConnection();
+            return controlConnection;
+        }
     }
 
     public void setXmlDocument(Document xmlDocument){

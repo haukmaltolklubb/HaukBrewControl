@@ -15,16 +15,14 @@
     <string name="heat_set_temp_descr">Set temp:</string>
     <string name="heat_actual_temp_descr">Temp koker</string>
     <string name="heat_time_descr">Koketid:</string>
-    <string name="heat_start_text">START</string>
-    <string name="heat_stop_text">STOPP</string>
+    <string name="startButton_text">START</string>
+    <string name="stopButton_text">STOPP</string>
     <string name="mash_heading">Mesking</string>
-    <string name="mash_temp_heading">Temp(C)</string>
+    <string name="mash_temp_heading">Temp(°C)</string>
     <string name="mash_time_heading">Tid(min)</string>
     <string name="mash_step1_descr">Trinn 1:</string>
     <string name="mash_step2_descr">Trinn 2:</string>
     <string name="mash_step3_descr">Trinn 3:</string>
-    <string name="mash_startbutton_text">Start</string>
-    <string name="mash_stopbutton_text">Stopp</string>
     <string name="mash_toptemp_head_text">Topp</string>
     <string name="mash_bottomtemp_head_text">Bunn</string>
     <string name="mash_chk_button_text">Temp:</string>
@@ -42,12 +40,15 @@
     <string name="temp4Label">Sensor 4</string>
     <string name="brew_status">Bryggestatus</string>
     <string name="refreshBtn">Oppdater</string>
-    <string name="dateSetLabel">Dato satt:</string>
-    <string name="setStartTimeBtn_text">Set start tid</string>
-    <string name="setStartDatoBtn_text">Set start dato</string>
+    <string name="dateSetLabel">Oppstart satt til:</string>
+    <string name="setStartDatoBtn_text">Set start tid</string>
     <string name="timeSetLabel">Tid satt:</string>
     <string name="currentTempLabel">Temperatur:</string>
     <string name="brewStatusCurrentProcess">Prosess</string>
     <string name="tempsLabel">Temperaturer:</string>
+    <string name="degreesCelciusLabel">°C</string>
+    <string name="mashTempBottomLabel">Temp bunn</string>
+    <string name="mashTempTopLabel">Temp topp</string>
+    <string name="pumpHeading">Pumping</string>
 
 </resources>

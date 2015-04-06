@@ -1,36 +1,33 @@
 package no.gravem.hauk.haukbrewcontrol;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
+
+import org.w3c.dom.Document;
+
+import java.io.InputStream;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 
 
 public class MainActivity extends ActionBarActivity {
 
-    public boolean brewInProgress = true;
-    IBrewControlOperations operations = null;
+    BrewControlOperations operations = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        HaukBrewControlApplication myApp = (HaukBrewControlApplication) getApplication();
-
-
-        /**if(brewInProgress){
-            startActivity(new Intent(this, BrewStatus.class));
-        }
-        else{
-            startActivity(new Intent(this, StartBrew.class));
-        }**/
+        MainActivityTask activityTask = new MainActivityTask();
+        activityTask.execute("");
     }
 
     @Override
@@ -59,7 +56,40 @@ public class MainActivity extends ActionBarActivity {
         startActivity(new Intent(this, BrewStatus.class));
     }
 
-    public void openStartBrewActivity(View view){
-        startActivity(new Intent(this, StartBrew.class));
+    public void openStartBrewActivity(View view){startActivity(new Intent(this, StartBrew.class)); }
+
+    private class MainActivityTask extends AsyncTask<String, Integer, String> {
+
+        @Override
+        protected String doInBackground(String... params) {
+            HaukBrewControlApplication myApp = (HaukBrewControlApplication) getApplication();
+            operations = new BrewControlOperations(myApp.getXmlDocument());
+
+            String urom1 = operations.getNodeValue("urom1");
+            BrewProcess brewProcess = operations.getBrewProcess(urom1);
+
+            Log.d(this.getClass().getName(), "BrewProcess: " + brewProcess);
+
+            switch (brewProcess){
+                case None:
+                    //startActivity(new Intent(this, BrewStatus.class));
+                    break;
+                case Heat:
+                    startActivity(new Intent(getApplicationContext(), Heat.class));
+                    break;
+                case Mash:
+                    startActivity(new Intent(getApplicationContext(), Mash.class));
+                    break;
+                case Pump:
+                    startActivity(new Intent(getApplicationContext(), Pump.class));
+                    break;
+                case Ferment:
+                    startActivity(new Intent(getApplicationContext(), Ferment.class));
+                    break;
+                default:
+                    startActivity(new Intent(getApplicationContext(), BrewStatus.class));
+            }
+            return null;
+        }
     }
 }

@@ -8,4 +8,121 @@
     android:background="@drawable/beer_wallpaper">
 
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/pumpHeading"
+        android:id="@+id/pumpHeading"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:textSize="40sp"
+        android:textColor="@android:color/black"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Start"
+        android:id="@+id/pumpStartBtn"
+        android:background="@drawable/sandrift_button"
+        style="@style/btnStyleSandrift"
+        android:layout_below="@+id/pumpHeading"
+        android:layout_alignRight="@+id/tempTopRosteLabel"
+        android:layout_alignEnd="@+id/tempTopRosteLabel"
+        android:layout_marginTop="51dp"
+        android:onClick="startPumpProcess" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Stop"
+        android:id="@+id/pumpStopBtn"
+        android:background="@drawable/sandrift_button"
+        style="@style/btnStyleSandrift"
+        android:layout_alignTop="@+id/pumpStartBtn"
+        android:layout_toRightOf="@+id/processData"
+        android:layout_toEndOf="@+id/processData"
+        android:onClick="stopPumpProcess" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Prosessdata:"
+        android:id="@+id/processData"
+        android:layout_above="@+id/tempTopRoste"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Temp røste topp"
+        android:id="@+id/tempTopRosteLabel"
+        android:layout_above="@+id/tempBottomRosteLabel" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="&lt;temp_topp>"
+        android:id="@+id/tempTopRoste"
+        android:layout_alignTop="@+id/tempTopRosteLabel"
+        android:layout_toRightOf="@+id/tempTopRosteLabel"
+        android:layout_toEndOf="@+id/tempTopRosteLabel"
+        android:layout_marginLeft="30dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Temp røste bunn"
+        android:id="@+id/tempBottomRosteLabel"
+        android:layout_alignTop="@+id/tempBottomRoste"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="&lt;temp_bunn>"
+        android:id="@+id/tempBottomRoste"
+        android:layout_centerVertical="true"
+        android:layout_alignLeft="@+id/tempTopRoste"
+        android:layout_alignStart="@+id/tempTopRoste" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Temp koker"
+        android:id="@+id/tempHeaterLabel"
+        android:layout_below="@+id/tempBottomRosteLabel"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="&lt;temp_koker>"
+        android:id="@+id/tempHeater"
+        android:layout_below="@+id/tempBottomRoste"
+        android:layout_alignLeft="@+id/tempBottomRoste"
+        android:layout_alignStart="@+id/tempBottomRoste" />
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/imageButton"
+        android:layout_gravity="right"
+        style="@style/btnStyleSandrift"
+        android:background="@drawable/sandrift_button"
+        android:src="@android:drawable/stat_notify_sync"
+        android:onClick="getCurrentProsessData"
+        android:layout_below="@+id/tempHeater"
+        android:layout_alignRight="@+id/tempTopRoste"
+        android:layout_alignEnd="@+id/tempTopRoste"
+        android:layout_marginTop="45dp" />
 </RelativeLayout>

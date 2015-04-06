@@ -17,7 +17,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 /**
  * Created by agravem on 30.03.2015.
  */
-public class BrewControlOperations implements IBrewControlOperations {
+public class BrewControlOperations {
 
     private String tempIkkeFunnet = "Temperatur ikke funnet";
     Document xmlDocument = null;
@@ -45,5 +45,18 @@ public class BrewControlOperations implements IBrewControlOperations {
 
     }
 
-
+    public BrewProcess getBrewProcess(String brewProcess){
+        int brewProcessInt = Integer.parseInt(brewProcess);
+        if(brewProcessInt == 0)
+            return BrewProcess.None;
+        if(brewProcessInt == 1)
+            return BrewProcess.Heat;
+        if(brewProcessInt == 2)
+            return BrewProcess.Mash;
+        if(brewProcessInt == 3)
+            return BrewProcess.Pump;
+        if(brewProcessInt == 4)
+            return  BrewProcess.Ferment;
+        return BrewProcess.None;
+    }
 }

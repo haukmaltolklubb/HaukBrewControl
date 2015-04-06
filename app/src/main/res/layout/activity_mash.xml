@@ -66,6 +66,7 @@
             android:layout_width="80dp"
             android:layout_height="40dp"
             android:inputType="number"
+            android:imeOptions="actionDone"
             android:ems="10"
             android:id="@+id/heatTemp"
             android:paddingLeft="0dp"
@@ -79,6 +80,7 @@
             android:layout_width="80dp"
             android:layout_height="40dp"
             android:inputType="number"
+            android:imeOptions="actionDone"
             android:ems="10"
             android:id="@+id/Mash1Time"
             android:layout_alignParentTop="true"
@@ -103,6 +105,7 @@
             android:layout_width="80dp"
             android:layout_height="40dp"
             android:inputType="number"
+            android:imeOptions="actionDone"
             android:ems="10"
             android:id="@+id/Mash2Temp"
             android:layout_below="@+id/heatTemp"
@@ -116,6 +119,7 @@
             android:layout_width="80dp"
             android:layout_height="40dp"
             android:inputType="number"
+            android:imeOptions="actionDone"
             android:ems="10"
             android:id="@+id/Mash2Time"
             android:layout_below="@+id/Mash1Time"
@@ -141,6 +145,7 @@
             android:layout_width="wrap_content"
             android:layout_height="40dp"
             android:inputType="number"
+            android:imeOptions="actionDone"
             android:ems="10"
             android:id="@+id/Mash3Temp"
             android:textColor="@android:color/black"
@@ -156,6 +161,7 @@
             android:layout_width="wrap_content"
             android:layout_height="40dp"
             android:inputType="number"
+            android:imeOptions="actionDone"
             android:ems="10"
             android:id="@+id/Mash3Time"
             android:textColor="@android:color/black"
@@ -176,8 +182,8 @@
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/mash_startbutton_text"
-            android:id="@+id/MashStartButton"
+            android:text="@string/startButton_text"
+            android:id="@+id/mashStartBtn"
             android:layout_alignParentTop="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
@@ -185,13 +191,14 @@
             android:layout_marginStart="47dp"
             android:textSize="24sp"
             android:background="@drawable/sandrift_button"
-            style="@style/btnStyleSandrift"/>
+            style="@style/btnStyleSandrift"
+            android:onClick="startMash" />
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/mash_stopbutton_text"
-            android:id="@+id/MashStopButton"
+            android:text="@string/stopButton_text"
+            android:id="@+id/mashStopBtn"
             android:layout_alignParentTop="true"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
@@ -199,7 +206,8 @@
             android:layout_marginEnd="69dp"
             android:textSize="24sp"
             android:background="@drawable/sandrift_button"
-            style="@style/btnStyleSandrift"/>
+            style="@style/btnStyleSandrift"
+            android:onClick="stopMash" />
 
     </RelativeLayout>
 
@@ -207,89 +215,106 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_weight="0.10">
+        android:layout_weight="0.12"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="10dp">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/mash_toptemp_head_text"
-            android:id="@+id/MashTempTopHeading"
-            android:textColor="@android:color/black"
-            android:textSize="24sp"
-            android:layout_alignTop="@+id/MashBottomTempHeading"
-            android:layout_centerHorizontal="true"
-            android:paddingTop="10dp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/mash_bottomtemp_head_text"
-            android:id="@+id/MashTempBottomHeading"
-            android:textColor="@android:color/black"
-            android:textSize="24sp"
-            android:paddingTop="10dp"
-            android:layout_alignParentTop="true"
-            android:layout_alignLeft="@+id/MashChkTempBottom"
-            android:layout_alignStart="@+id/MashChkTempBottom" />
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/mash_chk_button_text"
-            android:id="@+id/MashChkTemp"
+            android:text="@string/mashTempTopLabel"
+            android:id="@+id/mashTempTopLabel"
             android:layout_alignParentTop="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:longClickable="false"
             android:layout_marginTop="40dp"
             android:textSize="24sp"
-            android:background="@drawable/sandrift_button"
-            style="@style/btnStyleSandrift"/>
+            android:paddingTop="5dp" />
 
-        <EditText
-            android:layout_width="70dp"
+        <TextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:inputType="number"
             android:ems="10"
-            android:id="@+id/MashChkTempTop"
-            android:layout_alignBottom="@+id/MashChkTemp"
-            android:layout_centerHorizontal="true" />
-
-        <EditText
-            android:layout_width="70dp"
-            android:layout_height="wrap_content"
-            android:inputType="number"
-            android:ems="10"
-            android:id="@+id/MashChkTempBottom"
-            android:layout_alignTop="@+id/MashChkTempTop"
+            android:id="@+id/mashTempTop"
+            android:textSize="18sp"
+            android:text="&lt;temp_topp>"
+            android:paddingTop="5dp"
+            android:layout_above="@+id/mashTempBottomLabel"
             android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"
-            android:layout_marginRight="29dp"
-            android:layout_marginEnd="29dp" />
+            android:layout_alignParentEnd="true" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/mashTempBottomLabel"
+            android:id="@+id/mashTempBottomLabel"
+            android:layout_below="@+id/mashTempTopLabel"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:textSize="24dp"
+            android:paddingTop="5dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="&lt;temp_bunn>"
+            android:id="@+id/mashTempBottom"
+            android:textSize="18sp"
+            android:layout_alignBottom="@+id/mashTempBottomLabel"
+            android:layout_alignLeft="@+id/mashTempTop"
+            android:layout_alignStart="@+id/mashTempTop"
+            android:paddingTop="5dp" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/mash_time_descr"
-            android:id="@+id/MashChkTimeDescr"
-            android:textColor="@android:color/black"
+            android:id="@+id/mashTimeLabel"
             android:textSize="24sp"
-            android:paddingTop="10dp"
-            android:layout_below="@+id/MashChkTemp"
+            android:layout_below="@+id/mashTempBottomLabel"
             android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
+            android:layout_alignParentStart="true"
+            android:paddingTop="5dp" />
 
-        <EditText
-            android:layout_width="90dp"
+        <TextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:inputType="time"
             android:ems="10"
-            android:id="@+id/MashChkTime"
-            android:layout_alignBottom="@+id/MashChkTimeDescr"
-            android:layout_alignLeft="@+id/MashChkTempTop"
-            android:layout_alignStart="@+id/MashChkTempTop"
-            android:textColor="@android:color/black" />
+            android:id="@+id/mashTime"
+            android:textSize="18sp"
+            android:layout_alignBottom="@+id/mashTimeLabel"
+            android:layout_alignLeft="@+id/mashTempTop"
+            android:layout_alignStart="@+id/mashTempTop"
+            android:text="&lt;tid>" />
 
-    </RelativeLayout>Layout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Prosessdata"
+            android:id="@+id/textView"
+            android:layout_centerHorizontal="true" />
 
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageButton"
+            android:layout_gravity="right"
+            style="@style/btnStyleSandrift"
+            android:background="@drawable/sandrift_button"
+            android:src="@android:drawable/stat_notify_sync"
+            android:onClick="getCurrentProsessData"
+            android:layout_below="@+id/mashTime"
+            android:layout_alignRight="@+id/mashTime"
+            android:layout_alignEnd="@+id/mashTime" />
+
+    </RelativeLayout><![CDATA[
+
+    Layout>
+
+]]>
 </LinearLayout>
