@@ -2,7 +2,6 @@ package no.gravem.hauk.haukbrewcontrol;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -10,14 +9,18 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.IOException;
+import java.net.HttpURLConnection;
+
 /**
  * Created by GTG on 20.01.2015.
  */
 public class Mash extends Activity{
 
-    MashTask mashTask;
-    Button startButton;
-    Button stopButton;
+    Button startButton, stopButton;
+    private TextView mashTempBottom, mashTempTop, mashTime;
+
+    private ControllerService controllerService = new ControllerService();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,19 +30,61 @@ public class Mash extends Activity{
         startButton = (Button)findViewById(R.id.mashStartBtn);
         stopButton = (Button)findViewById(R.id.mashStopBtn);
 
-        mashTask = new MashTask();
-        mashTask.execute("");
+        mashTempTop = (TextView) findViewById(R.id.mashTempTop);
+        mashTempBottom = (TextView) findViewById(R.id.mashTempBottom);
+        mashTime = (TextView) findViewById(R.id.mashTime);
+
+        updateValuesFromPLS();
     }
+
+    private void updateValuesFromPLS() {
+        controllerService.getStatusXml(new ControllerResult() {
+            @Override
+            public void done(HttpURLConnection result) {
+                try {
+                    StatusXml statusXml = new StatusXml(result.getInputStream());
+                    setValuesInView(statusXml.getTemp2Value(), statusXml.getTemp3Value(), statusXml.getVar2Value(), BrewProcess.createFrom(statusXml.getUrom1Value()));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    private void setValuesInView(final String t2, final String t3, final String time, final BrewProcess brewProcess){
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                mashTempTop.setText(t2);
+                mashTempBottom.setText(t3);
+                mashTime.setText(time);
+
+                if (brewProcess == BrewProcess.MASH) {
+                    startButton.setEnabled(false);
+                    startButton.setActivated(false);
+                    stopButton.setEnabled(true);
+                    stopButton.setActivated(true);
+                } else {
+                    startButton.setEnabled(true);
+                    startButton.setActivated(true);
+                    stopButton.setEnabled(false);
+                    stopButton.setActivated(false);
+                }
+            }
+        });
+    }
+
 
     public void getCurrentProsessData(View view){
         Log.d(this.getClass().getName(), "updateMashData");
 
-        mashTask.updateValues();
+        updateValuesFromPLS();
     }
 
     public void startMash(View view){
         Log.d(this.getClass().getName(), "startMash");
-        mashTask.startMashProcess();
+
+        startMashProcessInPLS();
 
         stopButton.setEnabled(true);
         stopButton.setActivated(true);
@@ -52,7 +97,7 @@ public class Mash extends Activity{
 
     public void stopMash(View view){
         Log.d(this.getClass().getName(), "stopMash");
-        mashTask.stopMashProcess();
+        stopMashProcessInPLS();
 
         startButton.setEnabled(true);
         startButton.setActivated(true);
@@ -65,82 +110,63 @@ public class Mash extends Activity{
         startActivity(new Intent(this, MainActivity.class));
     }
 
-    private class MashTask extends AsyncTask<String, Integer, String> {
-        BrewControlOperations operations = null;
+    private String getPLSFormattedTemperatureString(String temperature){
+        return temperature.replaceAll(".", "").replaceAll("C", "").trim();
+    }
 
-        @Override
-        protected String doInBackground(String... params) {
-            HaukBrewControlApplication myApp = (HaukBrewControlApplication) getApplication();
-            operations = new BrewControlOperations(myApp.getXmlDocument());
-            return null;
-        }
+    public void startMashProcessInPLS() {
 
-        @Override
-        protected void onPostExecute(String result) {
-            super.onPostExecute(result);
-            updateValues();
-        }
+        String tempTopValue = mashTempTop.getText().toString();
+        String tempBottomValue = mashTempBottom.getText().toString();
+        String time = mashTime.getText().toString();
 
-        public void startMashProcess() {
-            //TODO: Legg til oppdateringskode!
-            //Sjekk temp settpunkt og tider forskjellig fra 0
-            //Set VAR1 = Temp1 (http://88.84.50.37/api/setvar.cgi?varid=1&value=xxx) (999 = 99,9°C)
-            //Set VAR2 = Temp2 (http://88.84.50.37/api/setvar.cgi?varid=1&value=xxx) (999 = 99,9°C)
-            //Set VAR3 = Temp3 (http://88.84.50.37/api/setvar.cgi?varid=1&value=xxx) (999 = 99,9°C)
-            //Set VAR4 = Tid1 (http://88.84.50.37/api/setvar1.cgi?varid=1&value=xxx) (3600 = 1 t)
-            //Set VAR5 = Tid2 (http://88.84.50.37/api/setvar1.cgi?varid=1&value=xxx) (3600 = 1 t)
-            //Set VAR6 = Tid3 (http://88.84.50.37/api/setvar1.cgi?varid=1&value=xxx) (3600 = 1 t)
-            //Set UROM1=2 (http://88.84.50.37/api/seturom.cgi?uromid=1&value=2)
 
-            updateValues();
-        }
 
-        public void stopMashProcess(){
-            //TODO: Legg til oppdateringskode!
-            //Set UROM1=0 (http://88.84.50.37/api/seturom.cgi?uromid=1&value=0)
-            //Gå til hovedmeny
+        controllerService.setVariable("varid=1&value="+getPLSFormattedTemperatureString(tempTopValue), new ControllerResult() {
+            @Override
+            public void done(HttpURLConnection result) {
 
-        }
-
-        private void updateValues(){
-            //TODO: Update values here!
-            Log.d(this.getClass().getName(), "updating Mash values....");
-
-            String tempTop = operations.getNodeValue("ts2");
-            String tempBottom = operations.getNodeValue("ts3");
-            String time = operations.getNodeValue("var2");
-
-            TextView mashTempTop = (TextView) findViewById(R.id.mashTempTop);
-            mashTempTop.setText(tempTop);
-
-            TextView mashTempBottom = (TextView) findViewById(R.id.mashTempBottom);
-            mashTempBottom.setText(tempBottom);
-
-            TextView mashTime = (TextView) findViewById(R.id.mashTime);
-            mashTime.setText("NA");
-
-            updateButtonStatus();
-        }
-
-        private void updateButtonStatus() {
-            String brewProcessValue = operations.getNodeValue("urom1");
-            BrewProcess brewProcess = operations.getBrewProcess(brewProcessValue);
-
-            if(brewProcess == BrewProcess.Mash){
-                Log.d(this.getClass().getName(), "Mash in progress. Disabling START");
-                stopButton.setEnabled(true);
-                stopButton.setActivated(true);
-                startButton.setEnabled(false);
-                startButton.setActivated(false);
             }
-            else{
-                Log.d(this.getClass().getName(), "Mash not in progress. Enabling START");
-                startButton.setEnabled(true);
-                startButton.setActivated(true);
-                stopButton.setEnabled(false);
-                stopButton.setActivated(false);
+        });
+
+        //Set UROM1=1 (http://88.84.50.37/api/seturom.cgi?uromid=1&value=2)
+        controllerService.setUROMVariable("uromid=1&value=2", new ControllerResult() {
+            public void done(HttpURLConnection result) {
             }
-        }
+        });
+
+
+        //TODO: Legg til oppdateringskode!
+        //Sjekk temp settpunkt og tider forskjellig fra 0
+        //Set VAR1 = Temp1 (http://88.84.50.37/api/setvar.cgi?varid=1&value=xxx) (999 = 99,9°C)
+        //Set VAR2 = Temp2 (http://88.84.50.37/api/setvar.cgi?varid=1&value=xxx) (999 = 99,9°C)
+        //Set VAR3 = Temp3 (http://88.84.50.37/api/setvar.cgi?varid=1&value=xxx) (999 = 99,9°C)
+        //Set VAR4 = Tid1 (http://88.84.50.37/api/setvar1.cgi?varid=1&value=xxx) (3600 = 1 t)
+        //Set VAR5 = Tid2 (http://88.84.50.37/api/setvar1.cgi?varid=1&value=xxx) (3600 = 1 t)
+        //Set VAR6 = Tid3 (http://88.84.50.37/api/setvar1.cgi?varid=1&value=xxx) (3600 = 1 t)
+        //Set UROM1=2 (http://88.84.50.37/api/seturom.cgi?uromid=1&value=2)
+
+        Toast toast = Toast.makeText(getApplicationContext(), "Mesking startet", Toast.LENGTH_SHORT);
+        toast.show();
 
     }
+
+    public void stopMashProcessInPLS(){
+
+        startButton.setEnabled(true);
+        startButton.setActivated(true);
+        stopButton.setEnabled(false);
+        stopButton.setActivated(false);
+
+        controllerService.setUROMVariable("uromid=1&value=0", new ControllerResult() {
+            public void done(HttpURLConnection result) {
+            }
+        });
+
+        Toast toast = Toast.makeText(getApplicationContext(), "Mesking stoppet", Toast.LENGTH_SHORT);
+        toast.show();
+
+        startActivity(new Intent(this, MainActivity.class));
+    }
+
 }

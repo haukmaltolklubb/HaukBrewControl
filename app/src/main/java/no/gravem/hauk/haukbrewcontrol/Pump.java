@@ -12,24 +12,30 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.IOException;
+import java.net.HttpURLConnection;
+
 
 public class Pump extends ActionBarActivity {
 
-    BrewControlOperations operations = null;
-    PumpTask pumpTask;
-    Button startButton;
-    Button stopButton;
+    ControllerService controllerService = new ControllerService();
+
+    Button startButton, stopButton;
+    private TextView temperatureTop, temperatureBottom, temperatureHeater;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pump);
 
-        startButton = (Button)findViewById(R.id.pumpStartBtn);
-        stopButton = (Button)findViewById(R.id.pumpStopBtn);
+        startButton = (Button) findViewById(R.id.pumpStartBtn);
+        stopButton = (Button) findViewById(R.id.pumpStopBtn);
 
-        pumpTask = new PumpTask();
-        pumpTask.execute("");
+        temperatureTop = (TextView) findViewById(R.id.tempTopRoste);
+        temperatureBottom = (TextView) findViewById(R.id.tempBottomRoste);
+        temperatureHeater = (TextView) findViewById(R.id.tempHeater);
+
+        updateValuesFromPLS();
     }
 
 
@@ -55,26 +61,64 @@ public class Pump extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void getCurrentProsessData(View view){
-        pumpTask.updateValues();
+    public void getCurrentProsessData(View view) {
+        updateValuesFromPLS();
     }
 
-    public void startPumpProcess(View view){
-        //Start pump task
-        pumpTask.startPumping();
+    private void updateValuesFromPLS() {
+        controllerService.getStatusXml(new ControllerResult() {
+            @Override
+            public void done(HttpURLConnection result) {
+                try {
+                    StatusXml statusXml = new StatusXml(result.getInputStream());
+                    setValuesInView(statusXml.getTemp1Value(), statusXml.getTemp2Value(), statusXml.getTemp3Value(), BrewProcess.createFrom(statusXml.getUrom1Value()));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
 
+    private void setValuesInView(final String tempTopValue, final String tempBottomValue, final String tempHeaterValue, final BrewProcess brewProcess) {
+
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                temperatureTop.setText(tempTopValue);
+                temperatureBottom.setText(tempBottomValue);
+                temperatureHeater.setText(tempHeaterValue);
+
+                if (brewProcess == BrewProcess.PUMP) {
+                    startButton.setEnabled(false);
+                    startButton.setActivated(false);
+                    stopButton.setEnabled(true);
+                    stopButton.setActivated(true);
+                } else {
+                    startButton.setEnabled(true);
+                    startButton.setActivated(true);
+                    stopButton.setEnabled(false);
+                    stopButton.setActivated(false);
+                }
+            }
+        });
+    }
+
+    public void startPumpProcess(View view) {
+        //Start pump task
         stopButton.setEnabled(true);
         stopButton.setActivated(true);
         startButton.setEnabled(false);
         startButton.setActivated(false);
 
+        startPumpProcessInPLS();
+
         Toast toast = Toast.makeText(getApplicationContext(), "Pumping startet", Toast.LENGTH_SHORT);
         toast.show();
     }
 
-    public void stopPumpProcess(View view){
-        //Stop heating task
-        pumpTask.stopPumping();
+    public void stopPumpProcess(View view) {
+        stopPumpProcessInPLS();
+
         startButton.setEnabled(true);
         startButton.setActivated(true);
         stopButton.setEnabled(false);
@@ -86,65 +130,19 @@ public class Pump extends ActionBarActivity {
         startActivity(new Intent(this, MainActivity.class));
     }
 
-    private class PumpTask extends AsyncTask<String, Integer, String> {
-
-        @Override
-        protected String doInBackground(String... params) {
-            HaukBrewControlApplication myApp = (HaukBrewControlApplication) getApplication();
-            operations = new BrewControlOperations(myApp.getXmlDocument());
-
-            updateValues();
-            return null;
-        }
-
-        private void updateValues(){
-            String tempTopValue = operations.getNodeValue("ts1");
-            String tempBottomValue = operations.getNodeValue("ts2");
-            String tempHeaterValue = operations.getNodeValue("ts3");
-
-            TextView tempTop = (TextView) findViewById(R.id.tempTopRoste);
-            tempTop.setText(tempTopValue);
-
-            TextView tempBottom = (TextView)findViewById(R.id.tempBottomRoste);
-            tempBottom.setText(tempBottomValue);
-
-            TextView tempHeater = (TextView)findViewById(R.id.tempHeater);
-            tempHeater.setText(tempHeaterValue);
-
-            updateButtonStatus();
-        }
-
-        private void updateButtonStatus() {
-            String brewProcessValue = operations.getNodeValue("urom1");
-            BrewProcess brewProcess = operations.getBrewProcess(brewProcessValue);
-            if(brewProcess == BrewProcess.Pump){
-                Log.d(this.getClass().getName(), "Pump in progress. Disabling START");
-                stopButton.setEnabled(true);
-                stopButton.setActivated(true);
-                startButton.setEnabled(false);
-                startButton.setActivated(false);
+    private void startPumpProcessInPLS() {
+        //Set UROM1=3 (http://88.84.50.37/api/seturom.cgi?uromid=1&value=3)
+        controllerService.setUROMVariable("uromid=1&value=3", new ControllerResult() {
+            public void done(HttpURLConnection result) {
             }
-            else{
-                Log.d(this.getClass().getName(), "Pump not in progress. Enabling START");
-                startButton.setEnabled(true);
-                startButton.setActivated(true);
-                stopButton.setEnabled(false);
-                stopButton.setActivated(false);
+        });
+    }
+
+    private void stopPumpProcessInPLS() {
+        //Set UROM1=0 (http://88.84.50.37/api/seturom.cgi?uromid=1&value=0)
+        controllerService.setUROMVariable("uromid=1&value=0", new ControllerResult() {
+            public void done(HttpURLConnection result) {
             }
-        }
-
-        private void startPumping(){
-            Log.d(this.getClass().getName(), "startPumping!");
-            //TODO: Start pump process!
-            //Set UROM1=3 (http://88.84.50.37/api/seturom.cgi?uromid=1&value=3)
-
-            updateValues();
-        }
-
-        private void stopPumping(){
-            Log.d(this.getClass().getName(), "stopPumping!");
-            //TODO: Stop pump process
-            //Set UROM1=0 (http://88.84.50.37/api/seturom.cgi?uromid=1&value=0)
-        }
+        });
     }
 }

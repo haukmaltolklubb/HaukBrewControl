@@ -1,7 +1,6 @@
 package no.gravem.hauk.haukbrewcontrol;
 
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -9,14 +8,20 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import java.io.IOException;
+import java.net.HttpURLConnection;
 
 
 public class Ferment extends ActionBarActivity {
 
-    FermentTask fermentTask;
-    Button startButton;
-    Button stopButton;
+    ControllerService controllerService = new ControllerService();
+    Button startButton, stopButton;
+    private EditText fermentTemperatureEditText;
+    private TextView currentFermentTemperatureTextView, currentFermentTimeTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,8 +31,11 @@ public class Ferment extends ActionBarActivity {
         startButton = (Button)findViewById(R.id.fermentStartBtn);
         stopButton = (Button)findViewById(R.id.fermentStopBtn);
 
-        fermentTask = new FermentTask();
-        fermentTask.execute("");
+        fermentTemperatureEditText = (EditText) findViewById(R.id.fermentTemp);
+        currentFermentTemperatureTextView = (TextView) findViewById(R.id.currentFermentTemp);
+        currentFermentTimeTextView = (TextView) findViewById(R.id.currentFermentTime);
+
+        updateValuesFromPLS();
     }
 
 
@@ -54,29 +62,32 @@ public class Ferment extends ActionBarActivity {
     }
 
     public void setFermentTemperature(View view){
-        //TODO: Set ferment temp!
-        fermentTask.updateValues();
+        //TODO: Trenger vi denne metoden?
+
+        updateValuesFromPLS();
     }
 
     public void startFermentProcess(View view){
-        fermentTask.startFermenting();
 
         stopButton.setEnabled(true);
         stopButton.setActivated(true);
         startButton.setEnabled(false);
         startButton.setActivated(false);
 
+        startFermentProcessInPLS();
+
         Toast toast = Toast.makeText(getApplicationContext(), "Gjæring startet", Toast.LENGTH_SHORT);
         toast.show();
     }
 
-
     public void stopFermentProcess(View view){
-        fermentTask.stopFermenting();
+
         startButton.setEnabled(true);
         startButton.setActivated(true);
         stopButton.setEnabled(false);
         stopButton.setActivated(false);
+
+        stopFermentProcessInPLS();
 
         Toast toast = Toast.makeText(getApplicationContext(), "Gjæring stoppet", Toast.LENGTH_SHORT);
         toast.show();
@@ -85,63 +96,93 @@ public class Ferment extends ActionBarActivity {
     }
 
     public void getCurrentProsessData(View view){
-        Log.d(this.getClass().getName(), "updateFermentData");
-        fermentTask.updateValues();
+
+        updateValuesFromPLS();
     }
 
-    private class FermentTask extends AsyncTask<String, Integer, String> {
 
-        BrewControlOperations operations = null;
+    private String getPLSFormattedTemperatureString(String temperature){
+        return temperature.replaceAll(".", "").replaceAll("C", "").trim();
+    }
 
-        @Override
-        protected String doInBackground(String... params) {
-            HaukBrewControlApplication myApp = (HaukBrewControlApplication) getApplication();
-            operations = new BrewControlOperations(myApp.getXmlDocument());
-            return null;
-        }
+    private void startFermentProcessInPLS(){
+        Log.d(this.getClass().getName(), "Start fermenting!");
+        //TODO: Legg til kode for oppstart Gjæring
+        //Sjekk temp settpunkt forskjellig fra 0
 
-        private void startFermenting(){
-            Log.d(this.getClass().getName(), "Start fermenting!");
-            //TODO: Legg til kode for oppstart Gjæring
-            //Sjekk temp settpunkt forskjellig fra 0
-            //Set VAR1 = Temp1 (http://88.84.50.37/api/setvar.cgi?varid=1&value=xxx) (999 = 99,9°C)
-            //Set UROM1=4 (http://88.84.50.37/api/seturom.cgi?uromid=1&value=4
-            updateValues();
-        }
+        String fermentTemperatureValue = getPLSFormattedTemperatureString(fermentTemperatureEditText.getText().toString());
 
-        private void stopFermenting(){
-            Log.d(this.getClass().getName(), "Stop fermenting!");
-            //TODO: Legg til kode for stop av Gjæringsprosess
-            //Set UROM1=0 (http://88.84.50.37/api/seturom.cgi?uromid=1&value=0)
-        }
-
-        private void updateValues(){
-            //TODO: Update values here!
-            Log.d(this.getClass().getName(), "updating Ferment values....");
-
-            String tempFerment = operations.getNodeValue("ts4");
-            String timeSpent = operations.getNodeValue("var2");
-
-            updateButtonStatus();
-        }
-
-        private void updateButtonStatus() {
-            String brewProcessValue = operations.getNodeValue("urom1");
-            BrewProcess brewProcess = operations.getBrewProcess(brewProcessValue);
-            if(brewProcess == BrewProcess.Ferment){
-                Log.d(this.getClass().getName(), "Ferment in progress. Disabling START");
-                stopButton.setEnabled(true);
-                stopButton.setActivated(true);
-                startButton.setEnabled(false);
-                startButton.setActivated(false);
+        //Set VAR1 = Temp1 (http://88.84.50.37/api/setvar.cgi?varid=1&value=xxx) (999 = 99,9°C)
+        controllerService.setVariable("varid=1&value=" + fermentTemperatureValue, new ControllerResult() {
+            @Override
+            public void done(HttpURLConnection result) {
             }
-            else{
-                Log.d(this.getClass().getName(), "Ferment not in progress. Enabling START");
-                startButton.setEnabled(true);
-                startButton.setActivated(true);
-                stopButton.setEnabled(false);
-                stopButton.setActivated(false);
+        });
+        //Set UROM1=4 (http://88.84.50.37/api/seturom.cgi?uromid=1&value=4
+        controllerService.setUROMVariable("uromid=1&value=4", new ControllerResult() {
+            public void done(HttpURLConnection result) {
             }
-        }
+        });
+
+    }
+
+    private void stopFermentProcessInPLS(){
+        //Set UROM1=0 (http://88.84.50.37/api/seturom.cgi?uromid=1&value=0)
+
+        controllerService.setUROMVariable("uromid=1&value=0", new ControllerResult() {
+            public void done(HttpURLConnection result) {
+            }
+        });
+
+        controllerService.setVariable("varid=1&value=0", new ControllerResult() {
+            @Override
+            public void done(HttpURLConnection result) {
+            }
+        });
+    }
+
+    private void updateValuesFromPLS() {
+        controllerService.getStatusXml(new ControllerResult() {
+            @Override
+            public void done(HttpURLConnection result) {
+                try {
+                    StatusXml statusXml = new StatusXml(result.getInputStream());
+                    setValuesInView(statusXml.getTemp4Value(), statusXml.getVar2Value(), BrewProcess.createFrom(statusXml.getUrom1Value()));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    private String getTimeFromCounter(String time) {
+        //TODO: Regn om tid fra sekunder fra år 2000 til nå. Husk sommertid/vintertid
+        return "NA";
+    }
+
+    private void setValuesInView(final String tempFerment, final String timeSpent, final BrewProcess brewProcess) {
+
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                currentFermentTemperatureTextView.setText(tempFerment);
+                currentFermentTimeTextView.setText(getTimeFromCounter(timeSpent));
+
+                if(brewProcess == BrewProcess.FERMENT){
+                    Log.d(this.getClass().getName(), "FERMENT in progress. Disabling START");
+                    stopButton.setEnabled(true);
+                    stopButton.setActivated(true);
+                    startButton.setEnabled(false);
+                    startButton.setActivated(false);
+                }
+                else{
+                    Log.d(this.getClass().getName(), "FERMENT not in progress. Enabling START");
+                    startButton.setEnabled(true);
+                    startButton.setActivated(true);
+                    stopButton.setEnabled(false);
+                    stopButton.setActivated(false);
+                }
+            }
+        });
     }
 }

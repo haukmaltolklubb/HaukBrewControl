@@ -35,7 +35,11 @@ public class BrewControlConnectionMockup implements IBrewControlConnection {
         return null;
     }
 
-    public boolean postURLRequest(String query) throws Exception {
+    public boolean setPLSVarValue(String query) throws Exception {
+        return true;
+    }
+
+    public boolean setPLSUromValue(String query) throws Exception{
         return true;
     }
 }

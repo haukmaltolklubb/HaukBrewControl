@@ -2,26 +2,32 @@ package no.gravem.hauk.haukbrewcontrol;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
+import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.common.base.Strings;
+import org.joda.time.DateTime;
+import org.joda.time.Duration;
+
+import java.io.IOException;
+import java.net.HttpURLConnection;
 
 /**
  * Created by GTG on 06.01.2015.
  */
-public class Heat extends Activity {
+public class Heat extends ActionBarActivity {
 
-    public HeatTask heatTask;
-    ExecuteHeatTask executeHeatTask;
-    Button startButton;
-    Button stopButton;
+    ControllerService controllerService = new ControllerService();
+
+    private Button startButton, stopButton;
+    private TextView heatTempText, heatTimeText;
+    private EditText heatTemperatureEditText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,42 +37,115 @@ public class Heat extends Activity {
         startButton = (Button)findViewById(R.id.heatStartBtn);
         stopButton = (Button)findViewById(R.id.heatStopBtn);
 
-        heatTask = new HeatTask();
-        heatTask.execute();
-        executeHeatTask = new ExecuteHeatTask();
-        executeHeatTask.execute("");
+        heatTempText = (TextView) findViewById(R.id.currentHeatTemp);
+        heatTimeText = (TextView) findViewById(R.id.currentHeatTime);
+
+        heatTemperatureEditText = (EditText) findViewById(R.id.heatTemp);
+
+        updateValuesFromPLS();
+
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_heat, menu);
+        return true;
     }
 
-    public void getCurrentProsessData(View view){
+    private void updateValuesFromPLS() {
+        controllerService.getStatusXml(new ControllerResult() {
+            @Override
+            public void done(HttpURLConnection result) {
+                try {
+                    StatusXml statusXml = new StatusXml(result.getInputStream());
+                    setValuesInView(statusXml.getTemp1Value(), statusXml.getVar2Value());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    private void setValuesInView(final String temp1Value, final String time) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                heatTempText.setText(temp1Value);
+                heatTimeText.setText(getTimeFromCounter(time));
+            }
+        });
+    }
+
+    public void getCurrentProsessData(View view) {
         //Temp fra t1
         //Tid fra RAM9
-        heatTask.updateValues();
+        updateValuesFromPLS();
     }
 
-    public void startHeatingProcess(View view){
-        //Start heating task
+    private String getTimeFromCounter(String time) {
+        //TODO: Regn om tid fra sekunder fra år 2000 til nå. Husk sommertid/vintertid
+        //DateTime timeSet = new DateTime(year, month + 1, day, hour, minute);
+        DateTime zeroPointTime = new DateTime(2000, 1, 1, 0, 0);
+        //Duration duration = new Duration(zeroPointTime, time);
+        //int secondsSince2000 = (int) duration.getStandardSeconds();
 
-        //executeHeatTask.startHeating();
+        return "NA";
+    }
+
+    private String getPLSFormattedTemperatureString(String temperature){
+        return temperature.replace(".", "");
+    }
+
+    public void startHeatingProcess(View view) {
+        startButton.setEnabled(false);
+        startButton.setActivated(false);
 
         stopButton.setEnabled(true);
         stopButton.setActivated(true);
-        startButton.setEnabled(false);
-        startButton.setActivated(false);
+
+        startHeatProcessInPLS();
 
         Toast toast = Toast.makeText(getApplicationContext(), "Koking startet", Toast.LENGTH_SHORT);
         toast.show();
     }
 
-    public void stopHeatingProcess(View view){
-        //Stop heating task
-        executeHeatTask = new ExecuteHeatTask();
-        executeHeatTask.execute("");
-        executeHeatTask.stopHeating();
+    private void startHeatProcessInPLS(){
+        //Set VAR1 = Temp (http://88.84.50.37/api/setvar.cgi?varid=1&value=xxx) (999 = 99,9°C)
+        String heatTemperatureValue = getPLSFormattedTemperatureString(heatTemperatureEditText.getText().toString());
 
+        Log.d(this.getClass().getName(), "Heat temp set to: " + heatTemperatureValue);
+        controllerService.setVariable("varid=1&value=" + heatTemperatureValue, new ControllerResult() {
+            @Override
+            public void done(HttpURLConnection result) {
+            }
+        });
+        //Set UROM1=1 (http://88.84.50.37/api/seturom.cgi?uromid=1&value=1)
+        controllerService.setUROMVariable("uromid=1&value=1", new ControllerResult() {
+            public void done(HttpURLConnection result) {
+            }
+        });
+    }
+
+    private void stopHeatProcessInPLS(){
+        controllerService.setUROMVariable("uromid=1&value=0", new ControllerResult() {
+            public void done(HttpURLConnection result) {
+            }
+        });
+
+        controllerService.setVariable("varid=1&value=0", new ControllerResult() {
+            @Override
+            public void done(HttpURLConnection result) {
+            }
+        });
+    }
+
+    public void stopHeatingProcess(View view) {
         startButton.setEnabled(true);
         startButton.setActivated(true);
         stopButton.setEnabled(false);
         stopButton.setActivated(false);
+
+        stopHeatProcessInPLS();
 
         Toast toast = Toast.makeText(getApplicationContext(), "Koking stoppet", Toast.LENGTH_SHORT);
         toast.show();
@@ -74,120 +153,9 @@ public class Heat extends Activity {
         startActivity(new Intent(this, MainActivity.class));
     }
 
-    public void updateHeatTemperature(View view){
-        heatTask.updateHeatTemperature();
+    public void updateHeatTemperature(View view) {
 
-    }
-
-    private class HeatTask extends AsyncTask<String, Integer, String> {
-
-        HaukBrewControlApplication myApp;
-        BrewControlOperations operations = null;
-
-        @Override
-        protected String doInBackground(String... params) {
-            myApp = (HaukBrewControlApplication) getApplication();
-            operations = new BrewControlOperations(myApp.getXmlDocument());
-
-            return null;
-        }
-
-        protected void onPostExecute(String result) {
-            super.onPostExecute(result);
-            updateValues();
-        }
-
-
-
-        public void updateHeatTemperature(){
-            Log.d(this.getClass().getName(), "Set heat temperature");
-            EditText tempValueView = (EditText)findViewById(R.id.heatTemp);
-            String tempValue = tempValueView.getText().toString();
-            Log.d(this.getClass().getName(), "Temp set to: " + tempValue);
-
-            //Set var1
-            //TODO: Set var1
-        }
-
-        private void updateValues(){
-            String temp1 = operations.getNodeValue("ts1");
-            String time = operations.getNodeValue("var2");
-
-            updateButtonStatus();
-
-            TextView heatTempText = (TextView) findViewById(R.id.currentHeatTemp);
-            heatTempText.setText(temp1);
-
-            TextView heatTimeText = (TextView) findViewById(R.id.currentHeatTime);
-            heatTimeText.setText(getTimeFromCounter(time));
-        }
-
-        private void updateButtonStatus() {
-            String brewProcessValue = operations.getNodeValue("urom1");
-            BrewProcess brewProcess = operations.getBrewProcess(brewProcessValue);
-            if(brewProcess == BrewProcess.Heat){
-                Log.d(this.getClass().getName(), "Heat in progress. Disabling START");
-                stopButton.setEnabled(true);
-                stopButton.setActivated(true);
-                startButton.setEnabled(false);
-                startButton.setActivated(false);
-            }
-            else{
-                Log.d(this.getClass().getName(), "Heat not in progress. Enabling START");
-                startButton.setEnabled(true);
-                startButton.setActivated(true);
-                stopButton.setEnabled(false);
-                stopButton.setActivated(false);
-            }
-        }
-
-        private String getTimeFromCounter(String time){
-            //TODO: Regn om tid fra sekunder fra år 2000 til nå. Husk sommertid/vintertid
-            return "NA";
-        }
-    }
-
-    private class ExecuteHeatTask extends AsyncTask<String, Integer, String>{
-
-        HaukBrewControlApplication myApp;
-
-        @Override
-        protected String doInBackground(String... params) {
-            myApp = (HaukBrewControlApplication) getApplication();
-            return null;
-        }
-
-        private void startHeating(){
-            Log.d(this.getClass().getName(), "Start heating!");
-            if(myApp == null){
-                Log.d(this.getClass().getName(), "myApp is null!");
-            }
-            IBrewControlConnection brewControlConnection = myApp.getBrewControlConnection();
-            try {
-                //TODO: Legg til oppdateringskode for koking!
-                //Sjekk temp settpunkt forskjellig fra 0
-                //Set VAR1 = Temp (http://88.84.50.37/api/setvar.cgi?varid=1&value=xxx) (999 = 99,9°C)
-                //Set UROM1=1 (http://88.84.50.37/api/seturom.cgi?uromid=1&value=1)
-                EditText tempValueView = (EditText)findViewById(R.id.heatTemp);
-                String tempValue = tempValueView.getText().toString();
-                //if(!Strings.isNullOrEmpty(tempValue)){
-                Log.d(this.getClass().getName(), "Temp is: " + tempValue);
-                //String queryString = "setvar.cgi?varid=1&value="+tempValue;
-                String queryString = "seturom.cgi?uromid=1&value=3";
-                brewControlConnection.postURLRequest(queryString);
-                Log.d(this.getClass().getName(), "Satt urom til 3.");
-                //}
-
-            } catch (Exception e) {
-                Log.e(this.getClass().getName(), "Error during start heating: " + e.getMessage(), e);
-            }
-        }
-
-        private void stopHeating(){
-            Log.d(this.getClass().getName(), "Stop heating!");
-
-            //TODO: Legg til oppdateringskode for koking!
-            // Set UROM1=0 (http://88.84.50.37/api/seturom.cgi?uromid=1&value=0)
-        }
+        //TODO: Trenger vi denne metoden?
+        updateValuesFromPLS();
     }
 }

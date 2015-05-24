@@ -10,7 +10,7 @@ import org.w3c.dom.Document;
  */
 public class HaukBrewControlApplication extends Application {
 
-    private Document xmlDocument = null;
+/**    private Document xmlDocument = null;
     IBrewControlConnection controlConnection = null;
     private static HaukBrewControlApplication ourInstance = new HaukBrewControlApplication();
 
@@ -44,5 +44,5 @@ public class HaukBrewControlApplication extends Application {
 
     public void setXmlDocument(Document xmlDocument){
         this.xmlDocument = xmlDocument;
-    }
+    }**/
 }

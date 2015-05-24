@@ -1,33 +1,54 @@
 package no.gravem.hauk.haukbrewcontrol;
 
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-import org.w3c.dom.Document;
+import java.io.IOException;
+import java.net.HttpURLConnection;
 
-import java.io.InputStream;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
+import static no.gravem.hauk.haukbrewcontrol.BrewProcess.NONE;
 
 
 public class MainActivity extends ActionBarActivity {
 
-    BrewControlOperations operations = null;
+    ControllerService controllerService = new ControllerService();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        MainActivityTask activityTask = new MainActivityTask();
-        activityTask.execute("");
+        updateCurrentProcessFromPLS();
+    }
+
+    private void startProcessActivity(final BrewProcess brewProcess){
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if(brewProcess != NONE) {
+                    startActivity(new Intent(getApplicationContext(), brewProcess.getActivityClass()));
+                }
+            }
+        });
+    }
+
+    private void updateCurrentProcessFromPLS() {
+        controllerService.getStatusXml(new ControllerResult() {
+            @Override
+            public void done(HttpURLConnection result) {
+                try {
+                    StatusXml statusXml = new StatusXml(result.getInputStream());
+                    BrewProcess brewProcess = BrewProcess.createFrom(statusXml.getUrom1Value());
+                    startProcessActivity(brewProcess);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
     @Override
@@ -58,38 +79,5 @@ public class MainActivity extends ActionBarActivity {
 
     public void openStartBrewActivity(View view){startActivity(new Intent(this, StartBrew.class)); }
 
-    private class MainActivityTask extends AsyncTask<String, Integer, String> {
 
-        @Override
-        protected String doInBackground(String... params) {
-            HaukBrewControlApplication myApp = (HaukBrewControlApplication) getApplication();
-            operations = new BrewControlOperations(myApp.getXmlDocument());
-
-            String urom1 = operations.getNodeValue("urom1");
-            BrewProcess brewProcess = operations.getBrewProcess(urom1);
-
-            Log.d(this.getClass().getName(), "BrewProcess: " + brewProcess);
-
-            switch (brewProcess){
-                case None:
-                    //startActivity(new Intent(this, BrewStatus.class));
-                    break;
-                case Heat:
-                    startActivity(new Intent(getApplicationContext(), Heat.class));
-                    break;
-                case Mash:
-                    startActivity(new Intent(getApplicationContext(), Mash.class));
-                    break;
-                case Pump:
-                    startActivity(new Intent(getApplicationContext(), Pump.class));
-                    break;
-                case Ferment:
-                    startActivity(new Intent(getApplicationContext(), Ferment.class));
-                    break;
-                default:
-                    startActivity(new Intent(getApplicationContext(), BrewStatus.class));
-            }
-            return null;
-        }
-    }
 }

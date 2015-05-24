@@ -1,24 +1,33 @@
 package no.gravem.hauk.haukbrewcontrol;
 
-import android.os.AsyncTask;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import java.io.IOException;
+import java.net.HttpURLConnection;
 
 public class BrewStatus extends ActionBarActivity {
 
-    BrewStatusTask brewStatusTask = null;
+    private ControllerService controllerService = new ControllerService();
+    private TextView t1TextView, t2TextView, t3TextView, t4TextView, processTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_brew_status);
 
-        getStatusFromPLS();
+        this.t1TextView = (TextView) findViewById(R.id.temp1);
+        this.t2TextView = (TextView) findViewById(R.id.temp2);
+        this.t3TextView = (TextView) findViewById(R.id.temp3);
+        this.t4TextView = (TextView) findViewById(R.id.temp4);
+        this.processTextView = (TextView) findViewById(R.id.currentProcess);
+
+        updateFromPLS();
     }
 
     @Override
@@ -39,91 +48,68 @@ public class BrewStatus extends ActionBarActivity {
         if (id == R.id.action_settings) {
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
-    public void getStatusFromPLS(){
-        brewStatusTask = new BrewStatusTask();
-        brewStatusTask.execute("");
+    public void updateFromPLS() {
+        updateTemperaturesFromPLS();
+        updateCurrentProcessFromPLS();
     }
 
-    public void updateValues(View view){
-        brewStatusTask.getTemperatures();
-    }
-
-    private class BrewStatusTask extends AsyncTask<String, Integer, String> {
-
-        BrewControlOperations operations = null;
-        private String tempIkkeFunnet = "Temperatur ikke funnet";
-
-        @Override
-        protected String doInBackground(String... params) {
-
-            HaukBrewControlApplication myApp = (HaukBrewControlApplication) getApplication();
-            operations = new BrewControlOperations(myApp.getXmlDocument());
-            return "";
-        }
-
-        @Override
-        protected void onProgressUpdate(Integer... values) {
-            super.onProgressUpdate(values);
-        }
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-
-        protected void onPostExecute(String result) {
-            super.onPostExecute(result);
-
-            getTemperatures();
-            getCurrentProcess();
-        }
-
-        private void getCurrentProcess(){
-            String urom1 = operations.getNodeValue("urom1");
-            BrewProcess brewProcess = operations.getBrewProcess(urom1);
-
-            TextView currentProcess = (TextView)findViewById(R.id.currentProcess);
-            switch (brewProcess){
-                case None:
-                    currentProcess.setText(BrewProcess.None.toString());
-                    break;
-                case Heat:
-                    currentProcess.setText(BrewProcess.Heat.toString());
-                    break;
-                case Mash:
-                    currentProcess.setText(BrewProcess.Mash.toString());
-                    break;
-                case Pump:
-                    currentProcess.setText(BrewProcess.Pump.toString());
-                    break;
-                case Ferment:
-                    currentProcess.setText(BrewProcess.Ferment.toString());
-                    break;
-                default:
-                    currentProcess.setText(BrewProcess.None.toString());
+    private void setTemperaturesInView(final String t1, final String t2, final String t3, final String t4) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                t1TextView.setText(t1);
+                t2TextView.setText(t2);
+                t3TextView.setText(t3);
+                t4TextView.setText(t4);
             }
-        }
+        });
+    }
 
-        private void getTemperatures(){
+    private void updateTemperaturesFromPLS() {
+        controllerService.getStatusXml(new ControllerResult() {
+            @Override
+            public void done(HttpURLConnection result) {
+                try {
+                    StatusXml statusXml = new StatusXml(result.getInputStream());
+                    setTemperaturesInView(statusXml.getTemp1Value(), statusXml.getTemp2Value(), statusXml.getTemp3Value(), statusXml.getTemp4Value());
+                } catch (IOException e) {
+                    // TODO: Vis feilmelding.
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
 
-            String temp1 = operations.getNodeValue("ts1");
-            String temp2 = operations.getNodeValue("ts2");
-            String temp3 = operations.getNodeValue("ts3");
-            String temp4 = operations.getNodeValue("ts4");
+    private void setProcessInView(final String process){
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                processTextView.setText(process);
+            }
+        });
+    }
 
-            getTemperature(temp1, R.id.temp1);
-            getTemperature(temp2, R.id.temp2);
-            getTemperature(temp3, R.id.temp3);
-            getTemperature(temp4, R.id.temp4);
-        }
+    private void updateCurrentProcessFromPLS() {
 
-        private void getTemperature(String nodeValue, int textViewId){
-            TextView editText = (TextView) findViewById(textViewId);
-            editText.setText(nodeValue);
-        }
+        controllerService.getStatusXml(new ControllerResult() {
+
+            @Override
+            public void done(HttpURLConnection result) {
+                try {
+                    StatusXml statusXml = new StatusXml(result.getInputStream());
+                    BrewProcess brewProcess = BrewProcess.createFrom(statusXml.getUrom1Value());
+                    setProcessInView(brewProcess.toString());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    public void updateValues(View view) {
+        updateTemperaturesFromPLS();
     }
 }

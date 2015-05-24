@@ -17,5 +17,7 @@ public interface IBrewControlConnection {
 
     public Document getStatusXmlDocument(Context context);
 
-    public boolean postURLRequest(String query) throws Exception;
+    public boolean setPLSVarValue(String query) throws Exception;
+
+    public boolean setPLSUromValue(String query) throws Exception;
 }

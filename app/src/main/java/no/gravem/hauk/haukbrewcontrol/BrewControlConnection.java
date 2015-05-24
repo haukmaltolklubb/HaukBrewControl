@@ -24,8 +24,13 @@ import javax.xml.parsers.DocumentBuilderFactory;
  */
 public class BrewControlConnection implements IBrewControlConnection{
 
-    private String sensorUrl = "http://88.84.50.37/api/";
+    private String sensorUrl = "http://88.84.49.55/api/";
     private String statusXmlName = "status.xml";
+    private String setVar = "setvar.cgi?";
+    private String setUromVar = "seturom.cgi?";
+
+
+
 
     private String userName = "admin";
     private String password = "hannah2002";
@@ -60,10 +65,11 @@ public class BrewControlConnection implements IBrewControlConnection{
         return connection;
     }
 
-    public boolean postURLRequest(String query) throws Exception {
+    public boolean setPLSVarValue(String query) throws Exception {
         Log.d(this.getClass().getName(), "Opening SET connection for PLS");
+        Log.d(this.getClass().getName(), "Request sent: " + sensorUrl+setUromVar+query);
 
-        URL url = new URL(sensorUrl);
+        URL url = new URL(sensorUrl+setUromVar+query);
         Authenticator.setDefault(new Authenticator() {
             protected PasswordAuthentication getPasswordAuthentication() {
                 return new PasswordAuthentication(userName, password.toCharArray());
@@ -71,18 +77,35 @@ public class BrewControlConnection implements IBrewControlConnection{
         });
 
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-        connection.setDoOutput(true);
+        connection.setRequestMethod("GET");
         connection.setRequestProperty("Accept", "application/xml");
 
-        Log.d(this.getClass().getName(), "Writing to buffer....");
-        OutputStream os = connection.getOutputStream();
-        BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(os, "UTF-8"));
-        writer.write(query);
-        writer.flush();
-        writer.close();
-        os.close();
+        int responseCode = connection.getResponseCode();
+        String response = connection.getResponseMessage();
+        Log.d(this.getClass().getName(), "Responsecode: " + responseCode +". Msg: " + response);
 
-        connection.connect();
+        return true;
+    }
+
+    public boolean setPLSUromValue(String query) throws Exception{
+
+        Log.d(this.getClass().getName(), "Opening SET connection for PLS");
+        Log.d(this.getClass().getName(), "Request sent: " + sensorUrl+setVar+query);
+
+        URL url = new URL(sensorUrl+setUromVar+query);
+        Authenticator.setDefault(new Authenticator() {
+            protected PasswordAuthentication getPasswordAuthentication() {
+                return new PasswordAuthentication(userName, password.toCharArray());
+            }
+        });
+
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        connection.setRequestMethod("GET");
+        connection.setRequestProperty("Accept", "application/xml");
+
+        int responseCode = connection.getResponseCode();
+        String response = connection.getResponseMessage();
+        Log.d(this.getClass().getName(), "Responsecode: " + responseCode +". Msg: " + response);
 
         return true;
     }
