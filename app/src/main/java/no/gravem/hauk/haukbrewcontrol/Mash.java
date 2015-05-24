@@ -3,11 +3,17 @@ package no.gravem.hauk.haukbrewcontrol;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.common.base.Strings;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
@@ -15,10 +21,12 @@ import java.net.HttpURLConnection;
 /**
  * Created by GTG on 20.01.2015.
  */
-public class Mash extends Activity{
+public class Mash extends ActionBarActivity {
 
     Button startButton, stopButton;
     private TextView mashTempBottom, mashTempTop, mashTime;
+    private EditText level1Temperature, level1Time, level2Temperature, level2Time, level3Temperature, level3Time;
+
 
     private ControllerService controllerService = new ControllerService();
 
@@ -34,7 +42,35 @@ public class Mash extends Activity{
         mashTempBottom = (TextView) findViewById(R.id.mashTempBottom);
         mashTime = (TextView) findViewById(R.id.mashTime);
 
+        level1Temperature = (EditText) findViewById(R.id.mashLevel1Temperature);
+        level1Time = (EditText)findViewById(R.id.mashLevel1Time);
+        level2Temperature = (EditText)findViewById(R.id.mashLevel2Temperature);
+        level2Time = (EditText)findViewById(R.id.mashLevel2Time);
+        level3Temperature = (EditText)findViewById(R.id.mashLevel3Temperature);
+        level3Time = (EditText)findViewById(R.id.mashLevel3Time);
+
         updateValuesFromPLS();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_mash, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private void updateValuesFromPLS() {
@@ -82,17 +118,23 @@ public class Mash extends Activity{
     }
 
     public void startMash(View view){
-        Log.d(this.getClass().getName(), "startMash");
+        if(requiredVariablesAreSet()) {
+            Log.d(this.getClass().getName(), "startMash");
 
-        startMashProcessInPLS();
+            startMashProcessInPLS();
 
-        stopButton.setEnabled(true);
-        stopButton.setActivated(true);
-        startButton.setEnabled(false);
-        startButton.setActivated(false);
+            stopButton.setEnabled(true);
+            stopButton.setActivated(true);
+            startButton.setEnabled(false);
+            startButton.setActivated(false);
 
-        Toast toast = Toast.makeText(getApplicationContext(), "Mesking startet", Toast.LENGTH_SHORT);
-        toast.show();
+            Toast toast = Toast.makeText(getApplicationContext(), "Mesking startet", Toast.LENGTH_SHORT);
+            toast.show();
+        }
+        else{
+            Toast toast = Toast.makeText(getApplicationContext(), "Mangler påkrevde verdier", Toast.LENGTH_SHORT);
+            toast.show();
+        }
     }
 
     public void stopMash(View view){
@@ -111,44 +153,60 @@ public class Mash extends Activity{
     }
 
     private String getPLSFormattedTemperatureString(String temperature){
-        return temperature.replaceAll(".", "").replaceAll("C", "").trim();
+        return temperature.replace(".", "");
+    }
+
+    private String getPLSFormattedTimeString(String time){
+        //time angis i minutt. PLS ønsker sekunder.
+        return String.valueOf(Integer.valueOf(time)*60);
+    }
+
+    private boolean requiredVariablesAreSet(){
+        return !Strings.isNullOrEmpty(level1Temperature.getText().toString()) &&
+                !Strings.isNullOrEmpty(level1Time.getText().toString()) &&
+                !Strings.isNullOrEmpty(level2Temperature.getText().toString()) &&
+                !Strings.isNullOrEmpty(level2Time.getText().toString()) &&
+                !Strings.isNullOrEmpty(level3Temperature.getText().toString()) &&
+                !Strings.isNullOrEmpty(level3Time.getText().toString());
     }
 
     public void startMashProcessInPLS() {
-
-        String tempTopValue = mashTempTop.getText().toString();
-        String tempBottomValue = mashTempBottom.getText().toString();
-        String time = mashTime.getText().toString();
-
-
-
-        controllerService.setVariable("varid=1&value="+getPLSFormattedTemperatureString(tempTopValue), new ControllerResult() {
+        //Set VAR1 = Temp1 (http://88.84.50.37/api/setvar.cgi?varid=1&value=xxx) (999 = 99,9°C)
+        controllerService.setVariable("varid=1&value=" + getPLSFormattedTemperatureString(level1Temperature.getText().toString()), new ControllerResult() {
             @Override
-            public void done(HttpURLConnection result) {
-
-            }
+            public void done(HttpURLConnection result) {}
         });
 
-        //Set UROM1=1 (http://88.84.50.37/api/seturom.cgi?uromid=1&value=2)
+        //Set VAR2 = Temp2 (http://88.84.50.37/api/setvar.cgi?varid=1&value=xxx) (999 = 99,9°C)
+        controllerService.setVariable("varid=2&value=" + getPLSFormattedTemperatureString(level2Temperature.getText().toString()), new ControllerResult() {
+            @Override
+            public void done(HttpURLConnection result) {}
+        });
+        //Set VAR3 = Temp3 (http://88.84.50.37/api/setvar.cgi?varid=1&value=xxx) (999 = 99,9°C)
+        controllerService.setVariable("varid=3&value=" + getPLSFormattedTemperatureString(level3Temperature.getText().toString()), new ControllerResult() {
+            @Override
+            public void done(HttpURLConnection result) {}
+        });
+        //Set VAR4 = Tid1 (http://88.84.50.37/api/setvar1.cgi?varid=1&value=xxx) (3600 = 1 t)
+        controllerService.setVariable("varid=4&value=" + getPLSFormattedTimeString(level1Time.getText().toString()), new ControllerResult() {
+            @Override
+            public void done(HttpURLConnection result) {}
+        });
+        //Set VAR5 = Tid2 (http://88.84.50.37/api/setvar1.cgi?varid=1&value=xxx) (3600 = 1 t)
+        controllerService.setVariable("varid=5&value=" + getPLSFormattedTimeString(level2Time.getText().toString()), new ControllerResult() {
+            @Override
+            public void done(HttpURLConnection result) {}
+        });
+        //Set VAR6 = Tid3 (http://88.84.50.37/api/setvar1.cgi?varid=1&value=xxx) (3600 = 1 t)
+        controllerService.setVariable("varid=6&value=" + getPLSFormattedTimeString(level3Time.getText().toString()), new ControllerResult() {
+            @Override
+            public void done(HttpURLConnection result) {}
+        });
+        //Set UROM1=2 (http://88.84.50.37/api/seturom.cgi?uromid=1&value=2)
         controllerService.setUROMVariable("uromid=1&value=2", new ControllerResult() {
             public void done(HttpURLConnection result) {
             }
         });
-
-
-        //TODO: Legg til oppdateringskode!
-        //Sjekk temp settpunkt og tider forskjellig fra 0
-        //Set VAR1 = Temp1 (http://88.84.50.37/api/setvar.cgi?varid=1&value=xxx) (999 = 99,9°C)
-        //Set VAR2 = Temp2 (http://88.84.50.37/api/setvar.cgi?varid=1&value=xxx) (999 = 99,9°C)
-        //Set VAR3 = Temp3 (http://88.84.50.37/api/setvar.cgi?varid=1&value=xxx) (999 = 99,9°C)
-        //Set VAR4 = Tid1 (http://88.84.50.37/api/setvar1.cgi?varid=1&value=xxx) (3600 = 1 t)
-        //Set VAR5 = Tid2 (http://88.84.50.37/api/setvar1.cgi?varid=1&value=xxx) (3600 = 1 t)
-        //Set VAR6 = Tid3 (http://88.84.50.37/api/setvar1.cgi?varid=1&value=xxx) (3600 = 1 t)
-        //Set UROM1=2 (http://88.84.50.37/api/seturom.cgi?uromid=1&value=2)
-
-        Toast toast = Toast.makeText(getApplicationContext(), "Mesking startet", Toast.LENGTH_SHORT);
-        toast.show();
-
     }
 
     public void stopMashProcessInPLS(){
@@ -162,11 +220,5 @@ public class Mash extends Activity{
             public void done(HttpURLConnection result) {
             }
         });
-
-        Toast toast = Toast.makeText(getApplicationContext(), "Mesking stoppet", Toast.LENGTH_SHORT);
-        toast.show();
-
-        startActivity(new Intent(this, MainActivity.class));
     }
-
 }

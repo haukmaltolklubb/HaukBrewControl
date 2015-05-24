@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="match_parent"
-    android:background="@drawable/beer_wallpaper"
+    android:background="@drawable/beer4"
     android:orientation="vertical"
     android:gravity="top|center"
     android:padding="10dp"
@@ -15,7 +15,7 @@
         android:id="@+id/heatHeading"
         android:textSize="40sp"
         android:textColor="@android:color/black"
-        />
+        android:visibility="invisible" />
 
     <LinearLayout
         android:orientation="horizontal"
@@ -29,7 +29,7 @@
             android:layout_height="wrap_content"
             android:paddingLeft="90dp"
             android:text="@string/mash_temp_heading"
-            android:id="@+id/MashTempHeading"
+            android:id="@+id/mashTemperatureHeading"
             android:textSize="24sp"
             android:textColor="@android:color/black" />
 
@@ -38,7 +38,7 @@
             android:layout_height="wrap_content"
             android:paddingLeft="20dp"
             android:text="@string/mash_time_heading"
-            android:id="@+id/MashTimeHeading"
+            android:id="@+id/mashTimeHeading"
             android:textSize="24sp"
             android:textColor="@android:color/black" />
     </LinearLayout>
@@ -54,7 +54,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/mash_step1_descr"
-            android:id="@+id/heatTempLabel"
+            android:id="@+id/mashLevel1Label"
             android:textSize="24sp"
             android:textColor="@android:color/black"
             android:layout_alignParentTop="true"
@@ -68,7 +68,7 @@
             android:inputType="number"
             android:imeOptions="actionDone"
             android:ems="10"
-            android:id="@+id/heatTemp"
+            android:id="@+id/mashLevel1Temperature"
             android:paddingLeft="0dp"
             android:textColor="@android:color/black"
             android:textSize="24sp"
@@ -82,7 +82,7 @@
             android:inputType="number"
             android:imeOptions="actionDone"
             android:ems="10"
-            android:id="@+id/Mash1Time"
+            android:id="@+id/mashLevel1Time"
             android:layout_alignParentTop="true"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
@@ -94,12 +94,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/mash_step2_descr"
-            android:id="@+id/Mash2Descr"
+            android:id="@+id/mashLevel2Label"
             android:textSize="24sp"
             android:textColor="@android:color/black"
-            android:layout_alignBottom="@+id/Mash2Temp"
-            android:layout_alignLeft="@+id/heatTempLabel"
-            android:layout_alignStart="@+id/heatTempLabel" />
+            android:layout_alignBottom="@+id/mashLevel2Temperature"
+            android:layout_alignLeft="@+id/mashLevel1Label"
+            android:layout_alignStart="@+id/mashLevel1Label" />
 
         <EditText
             android:layout_width="80dp"
@@ -107,10 +107,10 @@
             android:inputType="number"
             android:imeOptions="actionDone"
             android:ems="10"
-            android:id="@+id/Mash2Temp"
-            android:layout_below="@+id/heatTemp"
-            android:layout_alignLeft="@+id/heatTemp"
-            android:layout_alignStart="@+id/heatTemp"
+            android:id="@+id/mashLevel2Temperature"
+            android:layout_below="@+id/mashLevel1Temperature"
+            android:layout_alignLeft="@+id/mashLevel1Temperature"
+            android:layout_alignStart="@+id/mashLevel1Temperature"
             android:textColor="@android:color/black"
             android:textSize="24sp"
             android:gravity="center" />
@@ -121,10 +121,10 @@
             android:inputType="number"
             android:imeOptions="actionDone"
             android:ems="10"
-            android:id="@+id/Mash2Time"
-            android:layout_below="@+id/Mash1Time"
-            android:layout_alignLeft="@+id/Mash1Time"
-            android:layout_alignStart="@+id/Mash1Time"
+            android:id="@+id/mashLevel2Time"
+            android:layout_below="@+id/mashLevel1Time"
+            android:layout_alignLeft="@+id/mashLevel1Time"
+            android:layout_alignStart="@+id/mashLevel1Time"
             android:textColor="@android:color/black"
             android:textSize="24sp"
             android:gravity="center" />
@@ -133,12 +133,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/mash_step3_descr"
-            android:id="@+id/Mash3Descr"
+            android:id="@+id/mashLevel3Label"
             android:textSize="24sp"
             android:textColor="@android:color/black"
-            android:layout_below="@+id/Mash2Descr"
-            android:layout_alignLeft="@+id/Mash2Descr"
-            android:layout_alignStart="@+id/Mash2Descr"
+            android:layout_below="@+id/mashLevel2Label"
+            android:layout_alignLeft="@+id/mashLevel2Label"
+            android:layout_alignStart="@+id/mashLevel2Label"
             android:layout_marginTop="15dp" />
 
         <EditText
@@ -147,15 +147,15 @@
             android:inputType="number"
             android:imeOptions="actionDone"
             android:ems="10"
-            android:id="@+id/Mash3Temp"
+            android:id="@+id/mashLevel3Temperature"
             android:textColor="@android:color/black"
             android:textSize="24sp"
             android:gravity="center"
-            android:layout_alignBottom="@+id/Mash3Descr"
-            android:layout_alignLeft="@+id/Mash2Temp"
-            android:layout_alignStart="@+id/Mash2Temp"
-            android:layout_alignRight="@+id/Mash2Temp"
-            android:layout_alignEnd="@+id/Mash2Temp" />
+            android:layout_alignBottom="@+id/mashLevel3Label"
+            android:layout_alignLeft="@+id/mashLevel2Temperature"
+            android:layout_alignStart="@+id/mashLevel2Temperature"
+            android:layout_alignRight="@+id/mashLevel2Temperature"
+            android:layout_alignEnd="@+id/mashLevel2Temperature" />
 
         <EditText
             android:layout_width="wrap_content"
@@ -163,13 +163,13 @@
             android:inputType="number"
             android:imeOptions="actionDone"
             android:ems="10"
-            android:id="@+id/Mash3Time"
+            android:id="@+id/mashLevel3Time"
             android:textColor="@android:color/black"
             android:textSize="24sp"
             android:gravity="center"
-            android:layout_alignTop="@+id/Mash3Temp"
-            android:layout_alignLeft="@+id/Mash2Time"
-            android:layout_alignStart="@+id/Mash2Time" />
+            android:layout_alignTop="@+id/mashLevel3Temperature"
+            android:layout_alignLeft="@+id/mashLevel2Time"
+            android:layout_alignStart="@+id/mashLevel2Time" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -297,6 +297,7 @@
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="Prosessdata"
             android:id="@+id/textView"
+            android:textSize="24sp"
             android:layout_centerHorizontal="true" />
 
         <ImageButton

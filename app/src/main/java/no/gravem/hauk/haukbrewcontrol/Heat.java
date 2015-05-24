@@ -1,18 +1,19 @@
 package no.gravem.hauk.haukbrewcontrol;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.joda.time.DateTime;
+import com.google.common.base.Strings;
+
 import org.joda.time.Duration;
 
 import java.io.IOException;
@@ -40,7 +41,7 @@ public class Heat extends ActionBarActivity {
         heatTempText = (TextView) findViewById(R.id.currentHeatTemp);
         heatTimeText = (TextView) findViewById(R.id.currentHeatTime);
 
-        heatTemperatureEditText = (EditText) findViewById(R.id.heatTemp);
+        heatTemperatureEditText = (EditText) findViewById(R.id.mashLevel1Temperature);
 
         updateValuesFromPLS();
 
@@ -50,6 +51,20 @@ public class Heat extends ActionBarActivity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_heat, menu);
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private void updateValuesFromPLS() {
@@ -83,13 +98,10 @@ public class Heat extends ActionBarActivity {
     }
 
     private String getTimeFromCounter(String time) {
-        //TODO: Regn om tid fra sekunder fra år 2000 til nå. Husk sommertid/vintertid
-        //DateTime timeSet = new DateTime(year, month + 1, day, hour, minute);
-        DateTime zeroPointTime = new DateTime(2000, 1, 1, 0, 0);
-        //Duration duration = new Duration(zeroPointTime, time);
-        //int secondsSince2000 = (int) duration.getStandardSeconds();
+        long milliSeconds = Long.valueOf(time)*1000;
 
-        return "NA";
+        Duration duration = new Duration(milliSeconds);
+        return duration.toString();
     }
 
     private String getPLSFormattedTemperatureString(String temperature){
@@ -97,16 +109,27 @@ public class Heat extends ActionBarActivity {
     }
 
     public void startHeatingProcess(View view) {
-        startButton.setEnabled(false);
-        startButton.setActivated(false);
+        if(requiredVariablesAreSet()) {
+            startButton.setEnabled(false);
+            startButton.setActivated(false);
 
-        stopButton.setEnabled(true);
-        stopButton.setActivated(true);
+            stopButton.setEnabled(true);
+            stopButton.setActivated(true);
 
-        startHeatProcessInPLS();
+            startHeatProcessInPLS();
 
-        Toast toast = Toast.makeText(getApplicationContext(), "Koking startet", Toast.LENGTH_SHORT);
-        toast.show();
+            Toast toast = Toast.makeText(getApplicationContext(), "Koking startet", Toast.LENGTH_SHORT);
+            toast.show();
+        }
+        else{
+            Toast toast = Toast.makeText(getApplicationContext(), "Sett temperatur først!", Toast.LENGTH_SHORT);
+            toast.show();
+        }
+    }
+
+    private boolean requiredVariablesAreSet(){
+        Log.d(this.getClass().getName(), "Heat temp is: " + heatTemperatureEditText.getText().toString());
+        return !Strings.isNullOrEmpty(heatTemperatureEditText.getText().toString());
     }
 
     private void startHeatProcessInPLS(){

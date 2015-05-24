@@ -20,12 +20,20 @@
         </activity>
         <activity
             android:name=".Heat"
-            android:label="OpenHeatMenu"
-            android:theme="@style/AppTheme" />
+            android:label="@string/title_activity_heat"
+            android:parentActivityName=".MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="no.gravem.hauk.haukbrewcontrol.MainActivity" />
+        </activity>
         <activity
             android:name=".Mash"
-            android:label="OpenMashMenu"
-            android:theme="@style/AppTheme" />
+            android:label="@string/title_activity_mash"
+            android:parentActivityName=".MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="no.gravem.hauk.haukbrewcontrol.MainActivity" />
+        </activity>
         <activity
             android:name=".BrewStatus"
             android:label="@string/title_activity_brew_status"
@@ -44,7 +52,7 @@
         </activity>
         <activity
             android:name=".Ferment"
-            android:label="@string/title_activity_ferment_menu"
+            android:label="@string/title_activity_ferment"
             android:parentActivityName=".BrewStatus" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

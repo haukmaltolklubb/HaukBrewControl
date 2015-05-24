@@ -109,7 +109,7 @@ public class BrewStatus extends ActionBarActivity {
         });
     }
 
-    public void updateValues(View view) {
+    public void getCurrentProsessData(View view) {
         updateTemperaturesFromPLS();
     }
 }

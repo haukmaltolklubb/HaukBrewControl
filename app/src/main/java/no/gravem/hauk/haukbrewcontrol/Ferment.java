@@ -12,6 +12,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.joda.time.Duration;
+
 import java.io.IOException;
 import java.net.HttpURLConnection;
 
@@ -102,7 +104,7 @@ public class Ferment extends ActionBarActivity {
 
 
     private String getPLSFormattedTemperatureString(String temperature){
-        return temperature.replaceAll(".", "").replaceAll("C", "").trim();
+        return temperature.replace(".", "");
     }
 
     private void startFermentProcessInPLS(){
@@ -156,8 +158,10 @@ public class Ferment extends ActionBarActivity {
     }
 
     private String getTimeFromCounter(String time) {
-        //TODO: Regn om tid fra sekunder fra år 2000 til nå. Husk sommertid/vintertid
-        return "NA";
+        long milliSeconds = Long.valueOf(time)*1000;
+
+        Duration duration = new Duration(milliSeconds);
+        return duration.toString();
     }
 
     private void setValuesInView(final String tempFerment, final String timeSpent, final BrewProcess brewProcess) {
