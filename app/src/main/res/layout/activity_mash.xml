@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="match_parent"
-    android:background="@drawable/beer4"
+    android:background="@drawable/yellow_gradientsquare"
     android:orientation="vertical"
     android:gravity="top|center"
     android:padding="10dp"

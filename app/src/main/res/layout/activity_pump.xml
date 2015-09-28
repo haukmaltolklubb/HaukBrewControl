@@ -1,6 +1,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent" android:layout_height="match_parent"
-        android:background="@drawable/beer4"
+        android:background="@drawable/yellow_gradientsquare"
         android:orientation="vertical"
         android:gravity="top|center"
         android:padding="10dp"
@@ -18,13 +18,12 @@
         android:textColor="@android:color/black"
         android:visibility="invisible" />
 
-        <RelativeLayout
+        <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="100dp"
             android:weightSum="1"
             android:paddingTop="20dp"
-            android:layout_marginLeft="10dp"
             android:layout_marginTop="10dp">
 
             <Button
@@ -36,11 +35,8 @@
                 android:textSize="24sp"
                 android:background="@drawable/sandrift_button"
                 style="@style/btnStyleSandrift"
-                android:layout_marginLeft="36dp"
-                android:layout_marginStart="36dp"
-                android:layout_centerVertical="true"
-                android:layout_toRightOf="@+id/pumpStartBtn"
-                android:layout_toEndOf="@+id/pumpStartBtn" />
+                android:layout_marginLeft="50dp"
+                android:layout_centerVertical="true" />
 
             <Button
                 android:layout_width="wrap_content"
@@ -51,18 +47,19 @@
                 android:background="@drawable/sandrift_button"
                 style="@style/btnStyleSandrift"
                 android:onClick="startPumpProcess"
-                android:layout_alignTop="@+id/pumpStopBtn"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
                 android:layout_marginLeft="48dp"
                 android:layout_marginStart="48dp" />
 
-        </RelativeLayout>
+        </LinearLayout>
+        <Space
+            android:layout_width="fill_parent"
+            android:layout_height="20dp" />
 
-        <RelativeLayout
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
+            android:layout_height="250dp"
+            android:background="@drawable/grey_gradientsquare">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -71,80 +68,79 @@
                 android:id="@+id/processData"
                 android:textSize="24sp"
                 android:paddingTop="5dp"
-                android:layout_above="@+id/tempTopRoste"
-                android:layout_centerHorizontal="true"
                 android:layout_marginBottom="10dp" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Temp røste topp"
-                android:textSize="24sp"
-                android:paddingTop="5dp"
-                android:id="@+id/tempTopRosteLabel"
-                android:layout_above="@+id/tempBottomRosteLabel" />
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="fill_parent"
+                android:layout_height="40dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="Temp røste topp"
+                    android:width="200dp"
+                    android:textSize="24sp"
+                    android:paddingTop="5dp"
+                    android:id="@+id/tempTopRosteLabel" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="NA"
+                    android:id="@+id/tempTopRoste"
+                    android:textSize="24sp"
+                    android:paddingTop="5dp"
+                    android:layout_marginLeft="30dp"/>
+            </LinearLayout>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="NA"
-                android:id="@+id/tempTopRoste"
-                android:textSize="24sp"
-                android:paddingTop="5dp"
-                android:layout_above="@+id/tempBottomRoste"
-                android:layout_toRightOf="@+id/processData"
-                android:layout_toEndOf="@+id/processData" />
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="fill_parent"
+                android:layout_height="40dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="Temp røste bunn"
+                    android:id="@+id/tempBottomRosteLabel"
+                    android:textSize="24sp"
+                    android:width="200dp"
+                    android:paddingTop="5dp" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Temp røste bunn"
-                android:id="@+id/tempBottomRosteLabel"
-                android:textSize="24sp"
-                android:paddingTop="5dp"
-                android:layout_alignTop="@+id/tempBottomRoste"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="NA"
-                android:id="@+id/tempBottomRoste"
-                android:textSize="24sp"
-                android:paddingTop="5dp"
-                android:layout_centerVertical="true"
-                android:layout_alignLeft="@+id/tempTopRoste"
-                android:layout_alignStart="@+id/tempTopRoste" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Temp koker"
-                android:id="@+id/tempHeaterLabel"
-                android:textSize="24sp"
-                android:paddingTop="5dp"
-                android:layout_below="@+id/tempBottomRosteLabel"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="NA"
-                android:id="@+id/tempHeater"
-                android:textSize="24sp"
-                android:paddingTop="5dp"
-                android:layout_below="@+id/tempBottomRoste"
-                android:layout_alignLeft="@+id/tempBottomRoste"
-                android:layout_alignStart="@+id/tempBottomRoste" />
-
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="NA"
+                    android:id="@+id/tempBottomRoste"
+                    android:textSize="24sp"
+                    android:paddingTop="5dp"
+                    android:layout_marginLeft="30dp"/>
+            </LinearLayout>
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="fill_parent"
+                android:layout_height="40dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="Temp koker"
+                    android:id="@+id/tempHeaterLabel"
+                    android:textSize="24sp"
+                    android:width="200dp"
+                    android:paddingTop="5dp" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="NA"
+                    android:id="@+id/tempHeater"
+                    android:textSize="24sp"
+                    android:paddingTop="5dp"
+                    android:layout_marginLeft="30dp"/>
+            </LinearLayout>
             <ImageButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -154,11 +150,9 @@
                 android:background="@drawable/sandrift_button"
                 android:src="@android:drawable/stat_notify_sync"
                 android:onClick="getCurrentProsessData"
-                android:layout_below="@+id/tempHeater"
-                android:layout_alignRight="@+id/tempTopRoste"
-                android:layout_alignEnd="@+id/tempTopRoste"
-                android:layout_marginTop="45dp" />
-        </RelativeLayout>
+                android:layout_marginTop="25dp"
+                android:contentDescription="" />
+        </LinearLayout>
 
 
 </LinearLayout>

@@ -13,19 +13,22 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import org.joda.time.DateTime;
 import org.joda.time.Duration;
 
+import java.io.IOException;
+import java.net.HttpURLConnection;
 import java.util.Calendar;
 
 
 public class StartBrew extends ActionBarActivity {
 
     private TextView dateDisplay;
-    private Button pickDateBtn;
+    private ImageButton pickDateBtn;
     private Calendar calendar;
     Bundle dateTimeBundle;
     private int year;
@@ -34,6 +37,7 @@ public class StartBrew extends ActionBarActivity {
     private int hour;
     private int minute;
     private int secondsToStart;
+    private ControllerService controllerService = new ControllerService();
 
     DialogFragment timePicker;
     DialogFragment datePicker;
@@ -45,7 +49,7 @@ public class StartBrew extends ActionBarActivity {
         setContentView(R.layout.activity_start_brew);
 
         dateDisplay = (TextView) findViewById(R.id.dateDisplay);
-        pickDateBtn = (Button) findViewById(R.id.setStartDatoBtn);
+        pickDateBtn = (ImageButton) findViewById(R.id.setStartDatoBtn);
 
         createTimeDatePicker();
         pickDateBtn.setOnClickListener(new View.OnClickListener() {
@@ -205,12 +209,22 @@ public class StartBrew extends ActionBarActivity {
         int secondsSince2000 = (int) duration.getStandardSeconds();
         //TODO: Is that the same as secondstostart?
 
+        Log.d(this.getClass().getName(), "Updating starttime ");
+        controllerService.setUROMVariable("uromid=2&value=" + secondsSince2000, new ControllerResult() {
+            @Override
+            public void done(HttpURLConnection result) {
+                try {
+                    Log.d(this.getClass().getName(), "SetUromResult: " + result.getResponseMessage().toString());
+                } catch (IOException e) {
+                    Log.e(this.getClass().getName(), "SetUromResult NORESULT: " + e.getMessage());
+                    e.printStackTrace();
+                }
+            }
+        });
         Log.d(this.getClass().getName(), "Date set: " + timeSet.toString());
         Log.d(this.getClass().getName(), "Zero point: " + zeroPointTime.toString());
         Log.d(this.getClass().getName(), "Seconds since year 2000: " + secondsSince2000);
         Toast toast = Toast.makeText(getApplicationContext(), "Oppdatert starttid", Toast.LENGTH_SHORT);
         toast.show();
     }
-
-
 }

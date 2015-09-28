@@ -83,11 +83,11 @@ public class BrewStatus extends ActionBarActivity {
         });
     }
 
-    private void setProcessInView(final String process){
+    private void setProcessInView(final BrewProcess process){
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                processTextView.setText(process);
+                processTextView.setText(BrewProcess.getProcessText(process));
             }
         });
     }
@@ -101,7 +101,7 @@ public class BrewStatus extends ActionBarActivity {
                 try {
                     StatusXml statusXml = new StatusXml(result.getInputStream());
                     BrewProcess brewProcess = BrewProcess.createFrom(statusXml.getUrom1Value());
-                    setProcessInView(brewProcess.toString());
+                    setProcessInView(brewProcess);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

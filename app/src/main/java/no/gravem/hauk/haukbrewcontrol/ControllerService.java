@@ -22,10 +22,12 @@ public class ControllerService {
     }
 
     public void setVariable(String query, ControllerResult callback) {
+        Log.d(this.getClass().getName(), String.format("/setvar.cgi?%s", query));
         new DoGetRequest(callback).execute(String.format("/setvar.cgi?%s", query));
     }
 
     public void setUROMVariable(String query, ControllerResult callback) {
+        Log.d(this.getClass().getName(), String.format("/seturom.cgi?%s", query));
         new DoGetRequest(callback).execute(String.format("/seturom.cgi?%s", query));
     }
 
@@ -54,6 +56,7 @@ public class ControllerService {
         protected Void doInBackground(String... params) {
             try {
                 URL url = new URL(rootUrl + params[0]);
+                Log.d(this.getClass().getName(), "URL: " + url.toString());
                 Authenticator.setDefault(new Authenticator() {
                     protected PasswordAuthentication getPasswordAuthentication() {
                         return new PasswordAuthentication(userName, password.toCharArray());

@@ -105,7 +105,10 @@ public class Heat extends ActionBarActivity {
     }
 
     private String getPLSFormattedTemperatureString(String temperature){
-        return temperature.replace(".", "");
+        String formattedTemp = temperature.replace(".", "");
+        if(formattedTemp.length()<=2)
+            return formattedTemp+"0";
+        return  formattedTemp;
     }
 
     public void startHeatingProcess(View view) {
@@ -140,11 +143,23 @@ public class Heat extends ActionBarActivity {
         controllerService.setVariable("varid=1&value=" + heatTemperatureValue, new ControllerResult() {
             @Override
             public void done(HttpURLConnection result) {
+                try {
+                    Log.d(this.getClass().getName(), "setTempVar: " + result.getResponseMessage().toString());
+                } catch (IOException e) {
+                    Log.e(this.getClass().getName(), "setTempVar NORESULT: " + e.getMessage());
+                    e.printStackTrace();
+                }
             }
         });
         //Set UROM1=1 (http://88.84.50.37/api/seturom.cgi?uromid=1&value=1)
         controllerService.setUROMVariable("uromid=1&value=1", new ControllerResult() {
             public void done(HttpURLConnection result) {
+                try {
+                    Log.d(this.getClass().getName(), "SetUromResult: " + result.getResponseMessage().toString());
+                } catch (IOException e) {
+                    Log.e(this.getClass().getName(), "SetUromResult NORESULT: " + e.getMessage());
+                    e.printStackTrace();
+                }
             }
         });
     }
@@ -152,12 +167,24 @@ public class Heat extends ActionBarActivity {
     private void stopHeatProcessInPLS(){
         controllerService.setUROMVariable("uromid=1&value=0", new ControllerResult() {
             public void done(HttpURLConnection result) {
+                try {
+                    Log.d(this.getClass().getName(), "setHeatProcess: " + result.getResponseMessage().toString());
+                } catch (IOException e) {
+                    Log.e(this.getClass().getName(), "setHeatProcess NORESULT: " + e.getMessage());
+                    e.printStackTrace();
+                }
             }
         });
 
         controllerService.setVariable("varid=1&value=0", new ControllerResult() {
             @Override
             public void done(HttpURLConnection result) {
+                try {
+                    Log.d(this.getClass().getName(), "setHeatTemp: " + result.getResponseMessage().toString());
+                } catch (IOException e) {
+                    Log.e(this.getClass().getName(), "setHeatTemp NORESULT: " + e.getMessage());
+                    e.printStackTrace();
+                }
             }
         });
     }

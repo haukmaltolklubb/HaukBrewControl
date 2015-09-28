@@ -6,35 +6,31 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.TextView;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
 
 import static no.gravem.hauk.haukbrewcontrol.BrewProcess.NONE;
 
-
 public class MainActivity extends ActionBarActivity {
 
     ControllerService controllerService = new ControllerService();
+    private TextView currentProcessTextView;
+    private ImageButton startNewBrewButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        currentProcessTextView = (TextView) findViewById(R.id.currentProcess);
+        startNewBrewButton = (ImageButton)findViewById(R.id.startNewBrewBtn);
         updateCurrentProcessFromPLS();
     }
 
-    private void startProcessActivity(final BrewProcess brewProcess){
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                if(brewProcess != NONE) {
-                    startActivity(new Intent(getApplicationContext(), brewProcess.getActivityClass()));
-                }
-            }
-        });
-    }
 
     private void updateCurrentProcessFromPLS() {
         controllerService.getStatusXml(new ControllerResult() {
@@ -43,10 +39,24 @@ public class MainActivity extends ActionBarActivity {
                 try {
                     StatusXml statusXml = new StatusXml(result.getInputStream());
                     BrewProcess brewProcess = BrewProcess.createFrom(statusXml.getUrom1Value());
-                    startProcessActivity(brewProcess);
+                    setProcessInView(brewProcess);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+            }
+        });
+    }
+
+    private void setProcessInView(final BrewProcess process){
+
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                startNewBrewButton.setEnabled(false);
+                if (process.equals(BrewProcess.NONE)) {
+                    startNewBrewButton.setEnabled(true);
+                }
+                currentProcessTextView.setText(BrewProcess.getProcessText(process));
             }
         });
     }

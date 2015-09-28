@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="match_parent"
-    android:background="@drawable/beer4"
+    android:background="@drawable/yellow_gradientsquare"
     android:orientation="vertical"
     android:gravity="top|center"
     android:padding="10dp"
@@ -19,7 +19,8 @@
         android:focusable="true"
         android:visibility="invisible" />
 
-    <RelativeLayout
+    <LinearLayout
+        android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="100dp">
 
@@ -32,11 +33,7 @@
             android:layout_marginStart="60dp"
             android:longClickable="true"
             android:textSize="24sp"
-            android:textColor="@android:color/black"
-            android:layout_alignBottom="@+id/mashLevel1Temperature"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
-
+            android:textColor="@android:color/black" />
         <EditText
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -46,21 +43,14 @@
             android:textSize="24sp"
             android:numeric="decimal"
             android:imeOptions="actionDone"
-            android:onClick="updateHeatTemperature"
-            android:layout_centerVertical="true"
-            android:layout_toRightOf="@+id/mashLevel1Label"
-            android:layout_toEndOf="@+id/mashLevel1Label" />
-
+            android:onClick="updateHeatTemperature" />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="@string/degreesCelciusLabel"
-            android:id="@+id/degreesCelciusLabel"
-            android:layout_alignTop="@+id/mashLevel1Temperature"
-            android:layout_toRightOf="@+id/mashLevel1Temperature"
-            android:layout_toEndOf="@+id/mashLevel1Temperature" />
-    </RelativeLayout>
+            android:id="@+id/degreesCelciusLabel" />
+    </LinearLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
