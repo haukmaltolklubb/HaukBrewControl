@@ -15,6 +15,7 @@
     <string name="heat_set_temp_descr">Set temp:</string>
     <string name="heat_actual_temp_descr">Temp koker</string>
     <string name="heat_time_descr">Koketid:</string>
+    <string name="start_time_desc">Oppstartstid:</string>
     <string name="startButton_text">START</string>
     <string name="stopButton_text">STOPP</string>
     <string name="mash_heading">Mesking</string>

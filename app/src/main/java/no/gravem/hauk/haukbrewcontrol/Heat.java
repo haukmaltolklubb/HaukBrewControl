@@ -14,9 +14,13 @@ import android.widget.Toast;
 
 import com.google.common.base.Strings;
 
+import org.joda.time.DateTime;
 import org.joda.time.Duration;
+import org.joda.time.Minutes;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * Created by GTG on 06.01.2015.
@@ -26,7 +30,7 @@ public class Heat extends ActionBarActivity {
     ControllerService controllerService = new ControllerService();
 
     private Button startButton, stopButton;
-    private TextView heatTempText, heatTimeText;
+    private TextView heatTempText, heatTimeText, startTimeText;
     private EditText heatTemperatureEditText;
 
     @Override
@@ -39,6 +43,7 @@ public class Heat extends ActionBarActivity {
 
         heatTempText = (TextView) findViewById(R.id.currentHeatTemp);
         heatTimeText = (TextView) findViewById(R.id.currentHeatTime);
+        //startTimeText = (TextView) findViewById(R.id.startTime);
 
         heatTemperatureEditText = (EditText) findViewById(R.id.mashLevel1Temperature);
 
@@ -72,7 +77,7 @@ public class Heat extends ActionBarActivity {
             public void done(String result) {
                 try {
                     StatusXml statusXml = new StatusXml(result);
-                    setValuesInView(statusXml.getTemp1Value(), statusXml.getVar2Value());
+                    setValuesInView(statusXml.getTemp1Value(), statusXml.getVar2Value(), statusXml.getUrom2Value());
                 } catch (PLSConnectionException e) {
                     e.printStackTrace();
                 }
@@ -80,12 +85,13 @@ public class Heat extends ActionBarActivity {
         });
     }
 
-    private void setValuesInView(final String temp1Value, final String time) {
+    private void setValuesInView(final String temp1Value, final String time, final String startTime) {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 heatTempText.setText(temp1Value);
-                heatTimeText.setText(getTimeFromCounter(time));
+                heatTimeText.setText(getHeatDuration(time));
+                //startTimeText.setText(getTimeFromCounter(startTime));
             }
         });
     }
@@ -96,13 +102,33 @@ public class Heat extends ActionBarActivity {
         updateValuesFromPLS();
     }
 
-    private String getTimeFromCounter(String time) {
-        Log.d(this.getClass().getName(), "Heat time is: " + time);
+    private String getHeatDuration(String time){
+        Log.d(this.getClass().getName(), "Duration time is: " + time);
         long milliSeconds = Long.valueOf(time)*1000;
 
-        //TODO: Duration does not work
+        //Var2 value
+        if("".equals(time))
+            return "0 min";
+
+
+        return (new SimpleDateFormat("mm:ss")).format(new Date(milliSeconds));
+    }
+
+    private String getTimeFromCounter(String time) {
+        Log.d(this.getClass().getName(), "Start time is: " + time);
+        long milliSeconds = Long.valueOf(time)*1000;
+
+        DateTime zeroPointTime = new DateTime(2000, 1, 1, 0, 0);
+
         Duration duration = new Duration(milliSeconds);
-        return duration.toString();
+        //duration.
+
+        //TODO: Duration does not work
+
+
+        return "time";
+
+        //return duration.toString();
     }
 
     private String getPLSFormattedTemperatureString(String temperature){

@@ -54,7 +54,8 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="100dp">
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp">
 
         <Button
             android:layout_width="wrap_content"
@@ -90,7 +91,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="250dp">
+        android:layout_height="wrap_content">
 
         <TextView
             android:layout_width="wrap_content"
@@ -101,18 +102,37 @@
             android:textSize="24sp"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="55dp" />
+            android:layout_marginTop="15dp" />
+        <TextView
+            android:visibility="invisible"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/start_time_descr"
+            android:id="@+id/startTimeLabel"
+            android:textSize="24sp"
+            android:layout_below="@+id/progressData"
+            android:layout_toLeftOf="@+id/progressData"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
 
+        <TextView
+            android:visibility="invisible"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:id="@+id/startTime"
+            android:text="&lt;tid>"
+            android:textSize="24sp"
+            android:layout_alignBottom="@+id/startTimeLabel"
+            android:layout_alignRight="@+id/updateButton"
+            android:layout_alignEnd="@+id/updateButton" />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/heat_time_descr"
             android:id="@+id/currentHeatTimeLabel"
             android:textSize="24sp"
-            android:layout_below="@+id/progressData"
-            android:layout_toLeftOf="@+id/progressData"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
+            android:layout_below="@+id/startTimeLabel"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -121,9 +141,9 @@
             android:id="@+id/currentHeatTime"
             android:text="&lt;tid>"
             android:textSize="24sp"
-            android:layout_alignBottom="@+id/currentHeatTimeLabel"
+            android:layout_below="@+id/startTime"
             android:layout_alignRight="@+id/updateButton"
-            android:layout_alignEnd="@+id/updateButton" />
+            android:layout_alignEnd="@+id/updateButton"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -133,11 +153,7 @@
             android:id="@+id/currentHeatTempLabel"
             android:textSize="24sp"
             android:text="@string/currentTempLabel"
-            android:layout_below="@+id/currentHeatTimeLabel"
-            android:layout_alignLeft="@+id/heatStartBtn"
-            android:layout_alignStart="@+id/heatStartBtn"
-            android:layout_alignRight="@+id/mashLevel1Temperature"
-            android:layout_alignEnd="@+id/mashLevel1Temperature" />
+            android:layout_below="@+id/currentHeatTimeLabel" />
 
         <TextView
             android:layout_width="wrap_content"
