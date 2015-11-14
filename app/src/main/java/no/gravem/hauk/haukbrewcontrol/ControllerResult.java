@@ -1,5 +1,6 @@
 package no.gravem.hauk.haukbrewcontrol;
 
+import java.io.IOException;
 import java.net.HttpURLConnection;
 
 /**
@@ -7,5 +8,5 @@ import java.net.HttpURLConnection;
  */
 
 public interface ControllerResult {
-    void done(HttpURLConnection result);
+    void done(String result);
 }

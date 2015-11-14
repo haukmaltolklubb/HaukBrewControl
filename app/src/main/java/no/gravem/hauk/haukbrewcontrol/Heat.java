@@ -17,7 +17,6 @@ import com.google.common.base.Strings;
 import org.joda.time.Duration;
 
 import java.io.IOException;
-import java.net.HttpURLConnection;
 
 /**
  * Created by GTG on 06.01.2015.
@@ -70,11 +69,11 @@ public class Heat extends ActionBarActivity {
     private void updateValuesFromPLS() {
         controllerService.getStatusXml(new ControllerResult() {
             @Override
-            public void done(HttpURLConnection result) {
+            public void done(String result) {
                 try {
-                    StatusXml statusXml = new StatusXml(result.getInputStream());
+                    StatusXml statusXml = new StatusXml(result);
                     setValuesInView(statusXml.getTemp1Value(), statusXml.getVar2Value());
-                } catch (IOException e) {
+                } catch (PLSConnectionException e) {
                     e.printStackTrace();
                 }
             }
@@ -98,8 +97,10 @@ public class Heat extends ActionBarActivity {
     }
 
     private String getTimeFromCounter(String time) {
+        Log.d(this.getClass().getName(), "Heat time is: " + time);
         long milliSeconds = Long.valueOf(time)*1000;
 
+        //TODO: Duration does not work
         Duration duration = new Duration(milliSeconds);
         return duration.toString();
     }
@@ -119,7 +120,12 @@ public class Heat extends ActionBarActivity {
             stopButton.setEnabled(true);
             stopButton.setActivated(true);
 
-            startHeatProcessInPLS();
+            try {
+                startHeatProcessInPLS();
+            }catch(PLSConnectionException e){
+                Toast toast = Toast.makeText(getApplicationContext(), "Fikk ikke kontakt med PLS", Toast.LENGTH_SHORT);
+                toast.show();
+            }
 
             Toast toast = Toast.makeText(getApplicationContext(), "Koking startet", Toast.LENGTH_SHORT);
             toast.show();
@@ -136,55 +142,19 @@ public class Heat extends ActionBarActivity {
     }
 
     private void startHeatProcessInPLS(){
-        //Set VAR1 = Temp (http://88.84.50.37/api/setvar.cgi?varid=1&value=xxx) (999 = 99,9°C)
-        String heatTemperatureValue = getPLSFormattedTemperatureString(heatTemperatureEditText.getText().toString());
+        final String heatTemperatureValue = getPLSFormattedTemperatureString(heatTemperatureEditText.getText().toString());
 
         Log.d(this.getClass().getName(), "Heat temp set to: " + heatTemperatureValue);
-        controllerService.setVariable("varid=1&value=" + heatTemperatureValue, new ControllerResult() {
-            @Override
-            public void done(HttpURLConnection result) {
-                try {
-                    Log.d(this.getClass().getName(), "setTempVar: " + result.getResponseMessage().toString());
-                } catch (IOException e) {
-                    Log.e(this.getClass().getName(), "setTempVar NORESULT: " + e.getMessage());
-                    e.printStackTrace();
-                }
-            }
-        });
-        //Set UROM1=1 (http://88.84.50.37/api/seturom.cgi?uromid=1&value=1)
         controllerService.setUROMVariable("uromid=1&value=1", new ControllerResult() {
-            public void done(HttpURLConnection result) {
-                try {
-                    Log.d(this.getClass().getName(), "SetUromResult: " + result.getResponseMessage().toString());
-                } catch (IOException e) {
-                    Log.e(this.getClass().getName(), "SetUromResult NORESULT: " + e.getMessage());
-                    e.printStackTrace();
-                }
+            public void done(String result) {
+                controllerService.setVariable("varid=1&value=" + heatTemperatureValue);
             }
         });
     }
 
     private void stopHeatProcessInPLS(){
         controllerService.setUROMVariable("uromid=1&value=0", new ControllerResult() {
-            public void done(HttpURLConnection result) {
-                try {
-                    Log.d(this.getClass().getName(), "setHeatProcess: " + result.getResponseMessage().toString());
-                } catch (IOException e) {
-                    Log.e(this.getClass().getName(), "setHeatProcess NORESULT: " + e.getMessage());
-                    e.printStackTrace();
-                }
-            }
-        });
-
-        controllerService.setVariable("varid=1&value=0", new ControllerResult() {
-            @Override
-            public void done(HttpURLConnection result) {
-                try {
-                    Log.d(this.getClass().getName(), "setHeatTemp: " + result.getResponseMessage().toString());
-                } catch (IOException e) {
-                    Log.e(this.getClass().getName(), "setHeatTemp NORESULT: " + e.getMessage());
-                    e.printStackTrace();
-                }
+            public void done(String result) {
             }
         });
     }

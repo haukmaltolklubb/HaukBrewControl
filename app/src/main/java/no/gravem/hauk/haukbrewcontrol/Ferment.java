@@ -15,7 +15,6 @@ import android.widget.Toast;
 import org.joda.time.Duration;
 
 import java.io.IOException;
-import java.net.HttpURLConnection;
 
 
 public class Ferment extends ActionBarActivity {
@@ -117,12 +116,12 @@ public class Ferment extends ActionBarActivity {
         //Set VAR1 = Temp1 (http://88.84.50.37/api/setvar.cgi?varid=1&value=xxx) (999 = 99,9°C)
         controllerService.setVariable("varid=1&value=" + fermentTemperatureValue, new ControllerResult() {
             @Override
-            public void done(HttpURLConnection result) {
+            public void done(String result) {
             }
         });
         //Set UROM1=4 (http://88.84.50.37/api/seturom.cgi?uromid=1&value=4
         controllerService.setUROMVariable("uromid=1&value=4", new ControllerResult() {
-            public void done(HttpURLConnection result) {
+            public void done(String result) {
             }
         });
 
@@ -132,13 +131,13 @@ public class Ferment extends ActionBarActivity {
         //Set UROM1=0 (http://88.84.50.37/api/seturom.cgi?uromid=1&value=0)
 
         controllerService.setUROMVariable("uromid=1&value=0", new ControllerResult() {
-            public void done(HttpURLConnection result) {
+            public void done(String result) {
             }
         });
 
         controllerService.setVariable("varid=1&value=0", new ControllerResult() {
             @Override
-            public void done(HttpURLConnection result) {
+            public void done(String result) {
             }
         });
     }
@@ -146,11 +145,11 @@ public class Ferment extends ActionBarActivity {
     private void updateValuesFromPLS() {
         controllerService.getStatusXml(new ControllerResult() {
             @Override
-            public void done(HttpURLConnection result) {
+            public void done(String result) {
                 try {
-                    StatusXml statusXml = new StatusXml(result.getInputStream());
+                    StatusXml statusXml = new StatusXml(result);
                     setValuesInView(statusXml.getTemp4Value(), statusXml.getVar2Value(), BrewProcess.createFrom(statusXml.getUrom1Value()));
-                } catch (IOException e) {
+                } catch (PLSConnectionException e) {
                     e.printStackTrace();
                 }
             }

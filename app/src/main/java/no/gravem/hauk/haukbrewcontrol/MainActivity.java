@@ -6,26 +6,24 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
 import java.io.IOException;
-import java.net.HttpURLConnection;
-
-import static no.gravem.hauk.haukbrewcontrol.BrewProcess.NONE;
 
 public class MainActivity extends ActionBarActivity {
 
     ControllerService controllerService = new ControllerService();
     private TextView currentProcessTextView;
     private ImageButton startNewBrewButton;
+    BrewProcess brewProcess;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        brewProcess = BrewProcess.NONE;
         currentProcessTextView = (TextView) findViewById(R.id.currentProcess);
         startNewBrewButton = (ImageButton)findViewById(R.id.startNewBrewBtn);
         updateCurrentProcessFromPLS();
@@ -35,28 +33,32 @@ public class MainActivity extends ActionBarActivity {
     private void updateCurrentProcessFromPLS() {
         controllerService.getStatusXml(new ControllerResult() {
             @Override
-            public void done(HttpURLConnection result) {
+            public void done(String result) {
                 try {
-                    StatusXml statusXml = new StatusXml(result.getInputStream());
-                    BrewProcess brewProcess = BrewProcess.createFrom(statusXml.getUrom1Value());
-                    setProcessInView(brewProcess);
-                } catch (IOException e) {
+                    StatusXml statusXml = new StatusXml(result);
+                    brewProcess = BrewProcess.createFrom(statusXml.getUrom1Value());
+                    setProcessInView();
+
+                } catch (PLSConnectionException e) {
                     e.printStackTrace();
                 }
             }
         });
     }
 
-    private void setProcessInView(final BrewProcess process){
+    private void setProcessInView(){
 
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 startNewBrewButton.setEnabled(false);
-                if (process.equals(BrewProcess.NONE)) {
+                currentProcessTextView.setText(BrewProcess.getProcessText(brewProcess));
+                if (brewProcess.equals(BrewProcess.NONE)) {
                     startNewBrewButton.setEnabled(true);
+                    startNewBrewButton.setActivated(true);
+                } else {
+                    startNewBrewButton.setEnabled(false);
                 }
-                currentProcessTextView.setText(BrewProcess.getProcessText(process));
             }
         });
     }
@@ -83,11 +85,21 @@ public class MainActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void openStatusActivity(View view){
-        startActivity(new Intent(this, BrewStatus.class));
+    public void openCurrentActivity(View view){
+        if (brewProcess.equals(BrewProcess.HEAT))
+            startActivity(new Intent(this, Heat.class));
+        else if (brewProcess.equals(BrewProcess.MASH))
+            startActivity(new Intent(this, Mash.class));
+        else if (brewProcess.equals(BrewProcess.FERMENT))
+            startActivity(new Intent(this, Ferment.class));
+        else if (brewProcess.equals(BrewProcess.PUMP))
+            startActivity(new Intent(this, Pump.class));
+        else {
+            startActivity(new Intent(this, BrewStatus.class));
+        }
     }
 
-    public void openStartBrewActivity(View view){startActivity(new Intent(this, StartBrew.class)); }
-
-
+    public void openStartBrewActivity(View view) {
+        startActivity(new Intent(this, StartBrew.class));
+    }
 }

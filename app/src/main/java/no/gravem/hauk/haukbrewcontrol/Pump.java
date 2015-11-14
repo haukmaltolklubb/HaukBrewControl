@@ -1,10 +1,8 @@
 package no.gravem.hauk.haukbrewcontrol;
 
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -13,7 +11,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.IOException;
-import java.net.HttpURLConnection;
 
 
 public class Pump extends ActionBarActivity {
@@ -68,11 +65,11 @@ public class Pump extends ActionBarActivity {
     private void updateValuesFromPLS() {
         controllerService.getStatusXml(new ControllerResult() {
             @Override
-            public void done(HttpURLConnection result) {
+            public void done(String result) {
                 try {
-                    StatusXml statusXml = new StatusXml(result.getInputStream());
+                    StatusXml statusXml = new StatusXml(result);
                     setValuesInView(statusXml.getTemp1Value(), statusXml.getTemp2Value(), statusXml.getTemp3Value(), BrewProcess.createFrom(statusXml.getUrom1Value()));
-                } catch (IOException e) {
+                } catch (PLSConnectionException e) {
                     e.printStackTrace();
                 }
             }
@@ -133,7 +130,7 @@ public class Pump extends ActionBarActivity {
     private void startPumpProcessInPLS() {
         //Set UROM1=3 (http://88.84.50.37/api/seturom.cgi?uromid=1&value=3)
         controllerService.setUROMVariable("uromid=1&value=3", new ControllerResult() {
-            public void done(HttpURLConnection result) {
+            public void done(String result) {
             }
         });
     }
@@ -141,7 +138,7 @@ public class Pump extends ActionBarActivity {
     private void stopPumpProcessInPLS() {
         //Set UROM1=0 (http://88.84.50.37/api/seturom.cgi?uromid=1&value=0)
         controllerService.setUROMVariable("uromid=1&value=0", new ControllerResult() {
-            public void done(HttpURLConnection result) {
+            public void done(String result) {
             }
         });
     }

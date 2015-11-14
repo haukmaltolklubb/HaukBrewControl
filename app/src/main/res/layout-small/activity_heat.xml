@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:background="@drawable/yellow_gradientsquare"
+    android:orientation="vertical"
+    android:gravity="top|center"
+    android:padding="10dp"
+    android:weightSum="1">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/heat_heading"
+        android:id="@+id/heatHeading"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:textSize="40sp"
+        android:textColor="@android:color/black"
+        android:focusable="true"
+        android:visibility="invisible" />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="100dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/heat_set_temp_descr"
+            android:id="@+id/mashLevel1Label"
+            android:layout_marginLeft="60dp"
+            android:layout_marginStart="60dp"
+            android:longClickable="true"
+            android:textSize="24sp"
+            android:textColor="@android:color/black" />
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="numberDecimal"
+            android:ems="3"
+            android:id="@+id/mashLevel1Temperature"
+            android:textSize="24sp"
+            android:numeric="decimal"
+            android:imeOptions="actionDone"
+            android:onClick="updateHeatTemperature" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="@string/degreesCelciusLabel"
+            android:id="@+id/degreesCelciusLabel" />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="100dp">
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/startButton_text"
+            android:id="@+id/heatStartBtn"
+            android:textSize="24sp"
+            android:paddingTop="10dp"
+            android:background="@drawable/sandrift_button"
+            style="@style/btnStyleSandrift"
+            android:onClick="startHeatingProcess"
+            android:layout_alignTop="@+id/heatStopBtn"
+            android:layout_toLeftOf="@+id/heatStopBtn"
+            android:layout_toStartOf="@+id/heatStopBtn"
+            android:layout_marginRight="46dp"
+            android:layout_marginEnd="46dp" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/stopButton_text"
+            android:id="@+id/heatStopBtn"
+            android:textSize="24sp"
+            android:background="@drawable/sandrift_button"
+            style="@style/btnStyleSandrift"
+            android:onClick="stopHeatingProcess"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginRight="50dp"
+            android:layout_marginEnd="50dp" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="250dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Prosessdata"
+            android:id="@+id/progressData"
+            android:textSize="24sp"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="55dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/heat_time_descr"
+            android:id="@+id/currentHeatTimeLabel"
+            android:textSize="24sp"
+            android:layout_below="@+id/progressData"
+            android:layout_toLeftOf="@+id/progressData"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:id="@+id/currentHeatTime"
+            android:text="&lt;tid>"
+            android:textSize="24sp"
+            android:layout_alignBottom="@+id/currentHeatTimeLabel"
+            android:layout_alignRight="@+id/updateButton"
+            android:layout_alignEnd="@+id/updateButton" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="time"
+            android:ems="10"
+            android:id="@+id/currentHeatTempLabel"
+            android:textSize="24sp"
+            android:text="@string/currentTempLabel"
+            android:layout_below="@+id/currentHeatTimeLabel"
+            android:layout_alignLeft="@+id/heatStartBtn"
+            android:layout_alignStart="@+id/heatStartBtn"
+            android:layout_alignRight="@+id/mashLevel1Temperature"
+            android:layout_alignEnd="@+id/mashLevel1Temperature" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:id="@+id/currentHeatTemp"
+            android:textSize="24sp"
+            android:layout_alignTop="@+id/currentHeatTempLabel"
+            android:layout_alignRight="@+id/updateButton"
+            android:layout_alignEnd="@+id/updateButton"
+            android:text="&lt;temp>" />
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/updateButton"
+            android:src="@android:drawable/stat_notify_sync"
+            android:background="@drawable/sandrift_button"
+            style="@style/btnStyleSandrift"
+            android:onClick="getCurrentProsessData"
+            android:layout_alignParentBottom="true"
+            android:layout_toRightOf="@+id/currentHeatTempLabel"
+            android:layout_toEndOf="@+id/currentHeatTempLabel" />
+    </RelativeLayout>
+
+</LinearLayout>

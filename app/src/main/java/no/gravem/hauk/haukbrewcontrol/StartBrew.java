@@ -3,7 +3,6 @@ package no.gravem.hauk.haukbrewcontrol;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.ActionBarActivity;
@@ -11,7 +10,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -21,7 +19,6 @@ import org.joda.time.DateTime;
 import org.joda.time.Duration;
 
 import java.io.IOException;
-import java.net.HttpURLConnection;
 import java.util.Calendar;
 
 
@@ -212,10 +209,10 @@ public class StartBrew extends ActionBarActivity {
         Log.d(this.getClass().getName(), "Updating starttime ");
         controllerService.setUROMVariable("uromid=2&value=" + secondsSince2000, new ControllerResult() {
             @Override
-            public void done(HttpURLConnection result) {
+            public void done(String result) {
                 try {
-                    Log.d(this.getClass().getName(), "SetUromResult: " + result.getResponseMessage().toString());
-                } catch (IOException e) {
+                    Log.d(this.getClass().getName(), "SetUromResult: " + result);
+                } catch (PLSConnectionException e) {
                     Log.e(this.getClass().getName(), "SetUromResult NORESULT: " + e.getMessage());
                     e.printStackTrace();
                 }

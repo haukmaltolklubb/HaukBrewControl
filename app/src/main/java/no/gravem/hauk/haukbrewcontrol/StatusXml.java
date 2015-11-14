@@ -6,6 +6,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -18,13 +19,14 @@ public class StatusXml {
 
     private Document xmlDocument;
 
-    public StatusXml(InputStream xml) {
+    public StatusXml(String xml) {
         Log.d(this.getClass().getName(), "initXmlDocument");
         try {
 
             DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
             DocumentBuilder db = dbf.newDocumentBuilder();
-            xmlDocument = db.parse(xml);
+            Log.d(this.getClass().getName(), "XML: " + xml);
+            xmlDocument = db.parse(new ByteArrayInputStream(xml.getBytes()));
         } catch (Exception e) {
             Log.e(this.getClass().getName(), "InitXMLDocument", e);
         }

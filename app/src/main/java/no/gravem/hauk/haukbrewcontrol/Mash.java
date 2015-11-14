@@ -1,6 +1,5 @@
 package no.gravem.hauk.haukbrewcontrol;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -16,7 +15,8 @@ import android.widget.Toast;
 import com.google.common.base.Strings;
 
 import java.io.IOException;
-import java.net.HttpURLConnection;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by GTG on 20.01.2015.
@@ -76,11 +76,11 @@ public class Mash extends ActionBarActivity {
     private void updateValuesFromPLS() {
         controllerService.getStatusXml(new ControllerResult() {
             @Override
-            public void done(HttpURLConnection result) {
+            public void done(String result) {
                 try {
-                    StatusXml statusXml = new StatusXml(result.getInputStream());
+                    StatusXml statusXml = new StatusXml(result);
                     setValuesInView(statusXml.getTemp2Value(), statusXml.getTemp3Value(), statusXml.getVar2Value(), BrewProcess.createFrom(statusXml.getUrom1Value()));
-                } catch (IOException e) {
+                } catch (PLSConnectionException e) {
                     e.printStackTrace();
                 }
             }
@@ -152,13 +152,13 @@ public class Mash extends ActionBarActivity {
         startActivity(new Intent(this, MainActivity.class));
     }
 
-    private String getPLSFormattedTemperatureString(String temperature){
-        return temperature.replace(".", "");
+    private String getPLSFormattedTemperatureString(EditText temperature){
+        return temperature.getText().toString().replace(".", "");
     }
 
-    private String getPLSFormattedTimeString(String time){
+    private String getPLSFormattedTimeString(EditText time){
         //time angis i minutt. PLS ønsker sekunder.
-        return String.valueOf(Integer.valueOf(time)*60);
+        return String.valueOf(Integer.valueOf(time.getText().toString())*60);
     }
 
     private boolean requiredVariablesAreSet(){
@@ -172,39 +172,27 @@ public class Mash extends ActionBarActivity {
 
     public void startMashProcessInPLS() {
         //Set VAR1 = Temp1 (http://88.84.50.37/api/setvar.cgi?varid=1&value=xxx) (999 = 99,9°C)
-        controllerService.setVariable("varid=1&value=" + getPLSFormattedTemperatureString(level1Temperature.getText().toString()), new ControllerResult() {
-            @Override
-            public void done(HttpURLConnection result) {}
-        });
 
-        //Set VAR2 = Temp2 (http://88.84.50.37/api/setvar.cgi?varid=1&value=xxx) (999 = 99,9°C)
-        controllerService.setVariable("varid=2&value=" + getPLSFormattedTemperatureString(level2Temperature.getText().toString()), new ControllerResult() {
-            @Override
-            public void done(HttpURLConnection result) {}
-        });
-        //Set VAR3 = Temp3 (http://88.84.50.37/api/setvar.cgi?varid=1&value=xxx) (999 = 99,9°C)
-        controllerService.setVariable("varid=3&value=" + getPLSFormattedTemperatureString(level3Temperature.getText().toString()), new ControllerResult() {
-            @Override
-            public void done(HttpURLConnection result) {}
-        });
-        //Set VAR4 = Tid1 (http://88.84.50.37/api/setvar1.cgi?varid=1&value=xxx) (3600 = 1 t)
-        controllerService.setVariable("varid=4&value=" + getPLSFormattedTimeString(level1Time.getText().toString()), new ControllerResult() {
-            @Override
-            public void done(HttpURLConnection result) {}
-        });
-        //Set VAR5 = Tid2 (http://88.84.50.37/api/setvar1.cgi?varid=1&value=xxx) (3600 = 1 t)
-        controllerService.setVariable("varid=5&value=" + getPLSFormattedTimeString(level2Time.getText().toString()), new ControllerResult() {
-            @Override
-            public void done(HttpURLConnection result) {}
-        });
-        //Set VAR6 = Tid3 (http://88.84.50.37/api/setvar1.cgi?varid=1&value=xxx) (3600 = 1 t)
-        controllerService.setVariable("varid=6&value=" + getPLSFormattedTimeString(level3Time.getText().toString()), new ControllerResult() {
-            @Override
-            public void done(HttpURLConnection result) {}
-        });
         //Set UROM1=2 (http://88.84.50.37/api/seturom.cgi?uromid=1&value=2)
         controllerService.setUROMVariable("uromid=1&value=2", new ControllerResult() {
-            public void done(HttpURLConnection result) {
+            public void done(String result) {
+                List<String> variablesToSet = new ArrayList<String>();
+                variablesToSet.add("varid=1&value=" + getPLSFormattedTemperatureString(level1Temperature));
+                variablesToSet.add("varid=2&value=" + getPLSFormattedTemperatureString(level2Temperature));
+                variablesToSet.add("varid=3&value=" + getPLSFormattedTemperatureString(level3Temperature));
+                variablesToSet.add("varid=4&value=" + getPLSFormattedTimeString(level1Time));
+                variablesToSet.add("varid=5&value=" + getPLSFormattedTimeString(level2Time));
+                variablesToSet.add("varid=6&value=" + getPLSFormattedTimeString(level3Time));
+
+                controllerService.setVariables(variablesToSet);
+
+                //TODO: Create self-returning method for setting multiple variables
+               // controllerService
+                 //       .setVariables()
+                   //     .setVar(1, getPLSFormattedTemperatureString(level1Temperature))
+                     //   .setVar(2, getPLSFormattedTemperatureString(level1Temperatu))
+                       // .setVar(3, )=
+
             }
         });
     }
@@ -217,8 +205,7 @@ public class Mash extends ActionBarActivity {
         stopButton.setActivated(false);
 
         controllerService.setUROMVariable("uromid=1&value=0", new ControllerResult() {
-            public void done(HttpURLConnection result) {
-            }
+            public void done(String result) {}
         });
     }
 }

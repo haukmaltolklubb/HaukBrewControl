@@ -2,14 +2,12 @@ package no.gravem.hauk.haukbrewcontrol;
 
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
 import java.io.IOException;
-import java.net.HttpURLConnection;
 
 public class BrewStatus extends ActionBarActivity {
 
@@ -71,11 +69,11 @@ public class BrewStatus extends ActionBarActivity {
     private void updateTemperaturesFromPLS() {
         controllerService.getStatusXml(new ControllerResult() {
             @Override
-            public void done(HttpURLConnection result) {
+            public void done(String result) {
                 try {
-                    StatusXml statusXml = new StatusXml(result.getInputStream());
+                    StatusXml statusXml = new StatusXml(result);
                     setTemperaturesInView(statusXml.getTemp1Value(), statusXml.getTemp2Value(), statusXml.getTemp3Value(), statusXml.getTemp4Value());
-                } catch (IOException e) {
+                } catch (PLSConnectionException e) {
                     // TODO: Vis feilmelding.
                     e.printStackTrace();
                 }
@@ -97,12 +95,12 @@ public class BrewStatus extends ActionBarActivity {
         controllerService.getStatusXml(new ControllerResult() {
 
             @Override
-            public void done(HttpURLConnection result) {
+            public void done(String result) {
                 try {
-                    StatusXml statusXml = new StatusXml(result.getInputStream());
+                    StatusXml statusXml = new StatusXml(result);
                     BrewProcess brewProcess = BrewProcess.createFrom(statusXml.getUrom1Value());
                     setProcessInView(brewProcess);
-                } catch (IOException e) {
+                } catch (PLSConnectionException e) {
                     e.printStackTrace();
                 }
             }
