@@ -29,6 +29,18 @@
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:text="@string/startButton_text"
+                android:id="@+id/pumpStartBtn"
+                android:textSize="24sp"
+                android:background="@drawable/sandrift_button"
+                style="@style/btnStyleSandrift"
+                android:onClick="startPumpProcess"
+                android:layout_marginLeft="48dp"
+                android:layout_marginStart="48dp" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:text="@string/stopButton_text"
                 android:id="@+id/pumpStopBtn"
                 android:onClick="stopPumpProcess"
@@ -38,17 +50,6 @@
                 android:layout_marginLeft="50dp"
                 android:layout_centerVertical="true" />
 
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/startButton_text"
-                android:id="@+id/pumpStartBtn"
-                android:textSize="24sp"
-                android:background="@drawable/sandrift_button"
-                style="@style/btnStyleSandrift"
-                android:onClick="startPumpProcess"
-                android:layout_marginLeft="48dp"
-                android:layout_marginStart="48dp" />
 
         </LinearLayout>
         <Space

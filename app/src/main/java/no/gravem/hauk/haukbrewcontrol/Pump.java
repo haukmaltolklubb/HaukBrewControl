@@ -3,6 +3,7 @@ package no.gravem.hauk.haukbrewcontrol;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -128,9 +129,12 @@ public class Pump extends ActionBarActivity {
     }
 
     private void startPumpProcessInPLS() {
+        Log.d(this.getClass().getName(), "Start pumping!");
         //Set UROM1=3 (http://88.84.50.37/api/seturom.cgi?uromid=1&value=3)
         controllerService.setUROMVariable("uromid=1&value=3", new ControllerResult() {
             public void done(String result) {
+                Log.d(this.getClass().getName(), "Set Var1 to 1");
+                controllerService.setVariable("varid=1&value=1");
             }
         });
     }

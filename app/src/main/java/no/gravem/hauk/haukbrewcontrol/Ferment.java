@@ -106,8 +106,7 @@ public class Ferment extends ActionBarActivity {
 
     private void startFermentProcessInPLS(){
         Log.d(this.getClass().getName(), "Start fermenting!");
-        //TODO: Legg til kode for oppstart Gjæring
-        //Sjekk temp settpunkt forskjellig fra 0
+        //TODO: Sjekk temp settpunkt forskjellig fra 0
 
         final String fermentTemperatureValue = getPLSFormattedTemperatureString(fermentTemperatureEditText.getText().toString());
 
@@ -117,6 +116,7 @@ public class Ferment extends ActionBarActivity {
                 controllerService.setVariable("varid=1&value=" + fermentTemperatureValue);
             }
         });
+
     }
 
     private void stopFermentProcessInPLS(){

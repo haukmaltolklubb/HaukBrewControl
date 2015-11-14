@@ -53,11 +53,14 @@
                 android:text="@string/degreesCelciusLabel"
                 android:id="@+id/degreesCelciusLabel" />
         </LinearLayout>
-
         <LinearLayout
+            android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp">
+            android:layout_height="100dp"
+            android:weightSum="1"
+            android:paddingTop="20dp"
+            android:layout_marginTop="10dp">
+
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -65,66 +68,99 @@
                 android:id="@+id/fermentStartBtn"
                 android:textSize="24sp"
                 android:background="@drawable/sandrift_button"
-                android:paddingTop="10dp"
                 style="@style/btnStyleSandrift"
-                android:onClick="startFermentProcess"
-                android:layout_marginRight="46dp"
-                android:layout_marginEnd="46dp" />
+                android:onClick="fermentStartBtn"
+                android:layout_marginLeft="48dp"
+                android:layout_marginStart="48dp" />
+
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/stopButton_text"
                 android:id="@+id/fermentStopBtn"
+                android:onClick="stopFermentProcess"
                 android:textSize="24sp"
                 android:background="@drawable/sandrift_button"
                 style="@style/btnStyleSandrift"
-                android:onClick="stopFermentProcess"
-                android:layout_centerVertical="true"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true"
-                android:layout_marginRight="50dp"
-                android:layout_marginEnd="50dp"/>
+                android:layout_marginLeft="50dp"
+                android:layout_centerVertical="true" />
         </LinearLayout>
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="250dp"
-            android:orientation="vertical">
-            <LinearLayout
+            android:layout_height="wrap_content">
+
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Koketid"
-                    android:id="@+id/currentFermentTimeLabel"
-                    android:textSize="24sp"
-                    android:phoneNumber="true" />
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:id="@+id/currentFermentTime"
-                    android:text="&lt;tid>" />
-            </LinearLayout>
-            <LinearLayout
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Prosessdata"
+                android:id="@+id/progressData"
+                android:textSize="24sp"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="15dp" />
+            <TextView
+                android:visibility="invisible"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:inputType="time"
-                    android:id="@+id/currentFermentTempLabel"
-                    android:textSize="24sp"
-                    android:text="@string/currentTempLabel"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:id="@+id/currentFermentTemp"
-                    android:text="&lt;temp>" />
-            </LinearLayout>
+                android:text="@string/start_time_descr"
+                android:id="@+id/startTimeLabel"
+                android:textSize="24sp"
+                android:layout_below="@+id/progressData"
+                android:layout_toLeftOf="@+id/progressData"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true" />
+
+            <TextView
+                android:visibility="invisible"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:id="@+id/startTime"
+                android:text="&lt;tid>"
+                android:textSize="24sp"
+                android:layout_alignBottom="@+id/startTimeLabel"
+                android:layout_alignRight="@+id/updateButton"
+                android:layout_alignEnd="@+id/updateButton" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/heat_time_descr"
+                android:id="@+id/currentHeatTimeLabel"
+                android:textSize="24sp"
+                android:layout_below="@+id/startTimeLabel"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:id="@+id/currentFermentTime"
+                android:text="&lt;tid>"
+                android:textSize="24sp"
+                android:layout_below="@+id/startTime"
+                android:layout_alignRight="@+id/updateButton"
+                android:layout_alignEnd="@+id/updateButton"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="time"
+                android:ems="10"
+                android:id="@+id/currentHeatTempLabel"
+                android:textSize="24sp"
+                android:text="@string/currentTempLabel"
+                android:layout_below="@+id/currentHeatTimeLabel" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:id="@+id/currentFermentTemp"
+                android:textSize="24sp"
+                android:layout_alignTop="@+id/currentHeatTempLabel"
+                android:layout_alignRight="@+id/updateButton"
+                android:layout_alignEnd="@+id/updateButton"
+                android:text="&lt;temp>" />
 
             <ImageButton
                 android:layout_width="wrap_content"
@@ -133,9 +169,10 @@
                 android:src="@android:drawable/stat_notify_sync"
                 android:background="@drawable/sandrift_button"
                 style="@style/btnStyleSandrift"
-                android:layout_marginTop="38dp"
                 android:onClick="getCurrentProsessData"
-                android:layout_gravity="end"/>
-        </LinearLayout>
+                android:layout_alignParentBottom="true"
+                android:layout_toRightOf="@+id/currentHeatTempLabel"
+                android:layout_toEndOf="@+id/currentHeatTempLabel" />
+        </RelativeLayout>
     </LinearLayout>
 </LinearLayout>
