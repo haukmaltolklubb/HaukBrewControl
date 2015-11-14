@@ -68,8 +68,10 @@ public class StatusXml {
         return getNodeValue("var1");
     }
 
-    public String getVar2Value(){
-        return getNodeValue("var2");
+    public Integer getProcessRunningTimeInMinutes(){
+        String nodeValue = getNodeValue("var2");
+
+        return Integer.valueOf(nodeValue)/60;
     }
 
     public BrewProcess getBrewProcess(String brewProcess){

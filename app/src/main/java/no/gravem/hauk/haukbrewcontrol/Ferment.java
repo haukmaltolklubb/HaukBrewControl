@@ -14,8 +14,6 @@ import android.widget.Toast;
 
 import org.joda.time.Duration;
 
-import java.io.IOException;
-
 
 public class Ferment extends ActionBarActivity {
 
@@ -111,32 +109,19 @@ public class Ferment extends ActionBarActivity {
         //TODO: Legg til kode for oppstart Gjæring
         //Sjekk temp settpunkt forskjellig fra 0
 
-        String fermentTemperatureValue = getPLSFormattedTemperatureString(fermentTemperatureEditText.getText().toString());
+        final String fermentTemperatureValue = getPLSFormattedTemperatureString(fermentTemperatureEditText.getText().toString());
 
         //Set VAR1 = Temp1 (http://88.84.50.37/api/setvar.cgi?varid=1&value=xxx) (999 = 99,9°C)
-        controllerService.setVariable("varid=1&value=" + fermentTemperatureValue, new ControllerResult() {
-            @Override
-            public void done(String result) {
-            }
-        });
-        //Set UROM1=4 (http://88.84.50.37/api/seturom.cgi?uromid=1&value=4
         controllerService.setUROMVariable("uromid=1&value=4", new ControllerResult() {
             public void done(String result) {
+                controllerService.setVariable("varid=1&value=" + fermentTemperatureValue);
             }
         });
-
     }
 
     private void stopFermentProcessInPLS(){
         //Set UROM1=0 (http://88.84.50.37/api/seturom.cgi?uromid=1&value=0)
-
         controllerService.setUROMVariable("uromid=1&value=0", new ControllerResult() {
-            public void done(String result) {
-            }
-        });
-
-        controllerService.setVariable("varid=1&value=0", new ControllerResult() {
-            @Override
             public void done(String result) {
             }
         });
@@ -148,7 +133,7 @@ public class Ferment extends ActionBarActivity {
             public void done(String result) {
                 try {
                     StatusXml statusXml = new StatusXml(result);
-                    setValuesInView(statusXml.getTemp4Value(), statusXml.getVar2Value(), BrewProcess.createFrom(statusXml.getUrom1Value()));
+                    setValuesInView(statusXml.getTemp4Value(), statusXml.getProcessRunningTimeInMinutes(), BrewProcess.createFrom(statusXml.getUrom1Value()));
                 } catch (PLSConnectionException e) {
                     e.printStackTrace();
                 }
@@ -156,20 +141,13 @@ public class Ferment extends ActionBarActivity {
         });
     }
 
-    private String getTimeFromCounter(String time) {
-        long milliSeconds = Long.valueOf(time)*1000;
-
-        Duration duration = new Duration(milliSeconds);
-        return duration.toString();
-    }
-
-    private void setValuesInView(final String tempFerment, final String timeSpent, final BrewProcess brewProcess) {
+    private void setValuesInView(final String tempFerment, final int timeSpent, final BrewProcess brewProcess) {
 
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 currentFermentTemperatureTextView.setText(tempFerment);
-                currentFermentTimeTextView.setText(getTimeFromCounter(timeSpent));
+                currentFermentTimeTextView.setText(timeSpent + " min");
 
                 if(brewProcess == BrewProcess.FERMENT){
                     Log.d(this.getClass().getName(), "FERMENT in progress. Disabling START");

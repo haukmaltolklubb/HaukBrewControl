@@ -16,9 +16,7 @@ import com.google.common.base.Strings;
 
 import org.joda.time.DateTime;
 import org.joda.time.Duration;
-import org.joda.time.Minutes;
 
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -77,7 +75,7 @@ public class Heat extends ActionBarActivity {
             public void done(String result) {
                 try {
                     StatusXml statusXml = new StatusXml(result);
-                    setValuesInView(statusXml.getTemp1Value(), statusXml.getVar2Value(), statusXml.getUrom2Value());
+                    setValuesInView(statusXml.getTemp1Value(), statusXml.getProcessRunningTimeInMinutes(), statusXml.getUrom2Value());
                 } catch (PLSConnectionException e) {
                     e.printStackTrace();
                 }
@@ -85,12 +83,12 @@ public class Heat extends ActionBarActivity {
         });
     }
 
-    private void setValuesInView(final String temp1Value, final String time, final String startTime) {
+    private void setValuesInView(final String temp1Value, final int time, final String startTime) {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 heatTempText.setText(temp1Value);
-                heatTimeText.setText(getHeatDuration(time));
+                heatTimeText.setText(time + " min");
                 //startTimeText.setText(getTimeFromCounter(startTime));
             }
         });
@@ -100,18 +98,6 @@ public class Heat extends ActionBarActivity {
         //Temp fra t1
         //Tid fra RAM9
         updateValuesFromPLS();
-    }
-
-    private String getHeatDuration(String time){
-        Log.d(this.getClass().getName(), "Duration time is: " + time);
-        long milliSeconds = Long.valueOf(time)*1000;
-
-        //Var2 value
-        if("".equals(time))
-            return "0 min";
-
-
-        return (new SimpleDateFormat("mm:ss")).format(new Date(milliSeconds));
     }
 
     private String getTimeFromCounter(String time) {

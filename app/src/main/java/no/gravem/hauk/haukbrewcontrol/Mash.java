@@ -14,7 +14,6 @@ import android.widget.Toast;
 
 import com.google.common.base.Strings;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -79,7 +78,7 @@ public class Mash extends ActionBarActivity {
             public void done(String result) {
                 try {
                     StatusXml statusXml = new StatusXml(result);
-                    setValuesInView(statusXml.getTemp2Value(), statusXml.getTemp3Value(), statusXml.getVar2Value(), BrewProcess.createFrom(statusXml.getUrom1Value()));
+                    setValuesInView(statusXml.getTemp2Value(), statusXml.getTemp3Value(), statusXml.getProcessRunningTimeInMinutes(), BrewProcess.createFrom(statusXml.getUrom1Value()));
                 } catch (PLSConnectionException e) {
                     e.printStackTrace();
                 }
@@ -87,13 +86,13 @@ public class Mash extends ActionBarActivity {
         });
     }
 
-    private void setValuesInView(final String t2, final String t3, final String time, final BrewProcess brewProcess){
+    private void setValuesInView(final String t2, final String t3, final int time, final BrewProcess brewProcess){
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 mashTempTop.setText(t2);
                 mashTempBottom.setText(t3);
-                mashTime.setText(time);
+                mashTime.setText(time + " min");
 
                 if (brewProcess == BrewProcess.MASH) {
                     startButton.setEnabled(false);
@@ -178,11 +177,11 @@ public class Mash extends ActionBarActivity {
             public void done(String result) {
                 List<String> variablesToSet = new ArrayList<String>();
                 variablesToSet.add("varid=1&value=" + getPLSFormattedTemperatureString(level1Temperature));
-                variablesToSet.add("varid=2&value=" + getPLSFormattedTemperatureString(level2Temperature));
-                variablesToSet.add("varid=3&value=" + getPLSFormattedTemperatureString(level3Temperature));
-                variablesToSet.add("varid=4&value=" + getPLSFormattedTimeString(level1Time));
-                variablesToSet.add("varid=5&value=" + getPLSFormattedTimeString(level2Time));
-                variablesToSet.add("varid=6&value=" + getPLSFormattedTimeString(level3Time));
+                variablesToSet.add("varid=3&value=" + getPLSFormattedTemperatureString(level2Temperature));
+                variablesToSet.add("varid=4&value=" + getPLSFormattedTemperatureString(level3Temperature));
+                variablesToSet.add("varid=5&value=" + getPLSFormattedTimeString(level1Time));
+                variablesToSet.add("varid=6&value=" + getPLSFormattedTimeString(level2Time));
+                variablesToSet.add("varid=7&value=" + getPLSFormattedTimeString(level3Time));
 
                 controllerService.setVariables(variablesToSet);
 
