@@ -110,6 +110,37 @@ public class ControllerService {
         protected Void doInBackground(String... params) {
             for (String param : params){
                 Log.d(this.getClass().getName(), "Param:" + param);
+                try {
+                    URL url = new URL(rootUrl + param);
+                    Log.d(this.getClass().getName(), "URL: " + url.toString());
+                    Authenticator.setDefault(new Authenticator() {
+                        protected PasswordAuthentication getPasswordAuthentication() {
+                            return new PasswordAuthentication(userName, password.toCharArray());
+                        }
+                    });
+
+                    HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                    connection.setRequestMethod("GET");
+                    connection.connect();
+
+                    connection.getResponseCode(); // sic: This forces the request to be executed.
+                    Log.d(this.getClass().getName(), "Responsestatus: " + connection.getResponseCode() + ". Msg: " + connection.getResponseMessage());
+
+                    if(resultCallback != null) {
+                        String responseBody = "";
+                        BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                        String responseLine = null;
+                        while ((responseLine = reader.readLine()) != null) {
+                            responseBody += responseLine;
+                        }
+
+                        resultCallback.done(responseBody);
+                    }
+
+                } catch (Exception e) {
+                    throw new PLSConnectionException(e);
+                }
+
             }
 
             return null;
