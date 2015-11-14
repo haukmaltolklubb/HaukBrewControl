@@ -69,7 +69,7 @@
                 android:textSize="24sp"
                 android:background="@drawable/sandrift_button"
                 style="@style/btnStyleSandrift"
-                android:onClick="fermentStartBtn"
+                android:onClick="startFermentProcess"
                 android:layout_marginLeft="48dp"
                 android:layout_marginStart="48dp" />
 
