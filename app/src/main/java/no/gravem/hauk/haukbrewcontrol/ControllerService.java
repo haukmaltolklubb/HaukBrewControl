@@ -40,10 +40,14 @@ public class ControllerService {
         new DoGetMultipleRequests().execute(strings);
     }
 
-    public void setUROMVariable(String query, ControllerResult callback) {
+    private void setUROMVariable(String query, ControllerResult callback) {
         new DoGetRequest(callback).execute(String.format("/seturom.cgi?%s", query));
     }
 
+    public ControllerService setUROMVariable(int variableNumber, int value, ControllerResult callback) {
+        setUROMVariable(String.format("uromid=%s&value=%s", variableNumber, value), callback);
+        return this;
+    }
 
     private class DoGetRequest extends AsyncTask<String, Integer, Void> {
 

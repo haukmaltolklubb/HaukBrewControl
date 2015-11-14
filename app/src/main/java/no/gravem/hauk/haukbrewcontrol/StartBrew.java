@@ -207,7 +207,7 @@ public class StartBrew extends ActionBarActivity {
         //TODO: Is that the same as secondstostart?
 
         Log.d(this.getClass().getName(), "Updating starttime ");
-        controllerService.setUROMVariable("uromid=2&value=" + secondsSince2000, new ControllerResult() {
+        controllerService.setUROMVariable(2, secondsSince2000, new ControllerResult() {
             @Override
             public void done(String result) {
                 try {

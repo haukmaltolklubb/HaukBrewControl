@@ -111,7 +111,7 @@ public class Ferment extends ActionBarActivity {
         final String fermentTemperatureValue = getPLSFormattedTemperatureString(fermentTemperatureEditText.getText().toString());
 
         //Set VAR1 = Temp1 (http://88.84.50.37/api/setvar.cgi?varid=1&value=xxx) (999 = 99,9°C)
-        controllerService.setUROMVariable("uromid=1&value=4", new ControllerResult() {
+        controllerService.setUROMVariable(1, 4, new ControllerResult() {
             public void done(String result) {
                 controllerService.setVariable("varid=1&value=" + fermentTemperatureValue);
             }
@@ -121,7 +121,7 @@ public class Ferment extends ActionBarActivity {
 
     private void stopFermentProcessInPLS(){
         //Set UROM1=0 (http://88.84.50.37/api/seturom.cgi?uromid=1&value=0)
-        controllerService.setUROMVariable("uromid=1&value=0", new ControllerResult() {
+        controllerService.setUROMVariable(1, 0, new ControllerResult() {
             public void done(String result) {
             }
         });

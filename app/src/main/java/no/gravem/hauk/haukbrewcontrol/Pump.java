@@ -130,8 +130,7 @@ public class Pump extends ActionBarActivity {
 
     private void startPumpProcessInPLS() {
         Log.d(this.getClass().getName(), "Start pumping!");
-        //Set UROM1=3 (http://88.84.50.37/api/seturom.cgi?uromid=1&value=3)
-        controllerService.setUROMVariable("uromid=1&value=3", new ControllerResult() {
+        controllerService.setUROMVariable(1, 3, new ControllerResult() {
             public void done(String result) {
                 Log.d(this.getClass().getName(), "Set Var1 to 1");
                 controllerService.setVariable("varid=1&value=1");
@@ -140,8 +139,7 @@ public class Pump extends ActionBarActivity {
     }
 
     private void stopPumpProcessInPLS() {
-        //Set UROM1=0 (http://88.84.50.37/api/seturom.cgi?uromid=1&value=0)
-        controllerService.setUROMVariable("uromid=1&value=0", new ControllerResult() {
+        controllerService.setUROMVariable(1, 0, new ControllerResult() {
             public void done(String result) {
             }
         });

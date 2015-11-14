@@ -157,7 +157,7 @@ public class Heat extends ActionBarActivity {
         final String heatTemperatureValue = getPLSFormattedTemperatureString(heatTemperatureEditText.getText().toString());
 
         Log.d(this.getClass().getName(), "Heat temp set to: " + heatTemperatureValue);
-        controllerService.setUROMVariable("uromid=1&value=1", new ControllerResult() {
+        controllerService.setUROMVariable(1, 1, new ControllerResult() {
             public void done(String result) {
                 controllerService.setVariable("varid=1&value=" + heatTemperatureValue);
             }
@@ -165,7 +165,7 @@ public class Heat extends ActionBarActivity {
     }
 
     private void stopHeatProcessInPLS(){
-        controllerService.setUROMVariable("uromid=1&value=0", new ControllerResult() {
+        controllerService.setUROMVariable(1, 0, new ControllerResult() {
             public void done(String result) {
             }
         });

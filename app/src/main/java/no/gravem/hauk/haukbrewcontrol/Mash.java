@@ -173,7 +173,7 @@ public class Mash extends ActionBarActivity {
         //Set VAR1 = Temp1 (http://88.84.50.37/api/setvar.cgi?varid=1&value=xxx) (999 = 99,9°C)
 
         //Set UROM1=2 (http://88.84.50.37/api/seturom.cgi?uromid=1&value=2)
-        controllerService.setUROMVariable("uromid=1&value=2", new ControllerResult() {
+        controllerService.setUROMVariable(1, 2, new ControllerResult() {
             public void done(String result) {
                 List<String> variablesToSet = new ArrayList<String>();
                 variablesToSet.add("varid=1&value=" + getPLSFormattedTemperatureString(level1Temperature));
@@ -203,7 +203,7 @@ public class Mash extends ActionBarActivity {
         stopButton.setEnabled(false);
         stopButton.setActivated(false);
 
-        controllerService.setUROMVariable("uromid=1&value=0", new ControllerResult() {
+        controllerService.setUROMVariable(1, 0, new ControllerResult() {
             public void done(String result) {}
         });
     }
