@@ -3,24 +3,22 @@ package no.gravem.hauk.haukbrewcontrol;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import java.io.BufferedInputStream;
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Authenticator;
 import java.net.HttpURLConnection;
 import java.net.PasswordAuthentication;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by agravem on 19.05.2015.
- */
 public class ControllerService {
 
     private static String rootUrl = "http://88.84.49.55/api";
     private static String userName = "admin";
     private static String password = "hannah2002";
+
+    List<String> ops = new ArrayList<>();
 
     public void getStatusXml(ControllerResult callback) {
         new DoGetRequest(callback).execute("/status.xml");
@@ -32,6 +30,42 @@ public class ControllerService {
     public void setVariable(String query) {
         new DoGetRequest().execute(String.format("/setvar.cgi?%s", query));
     }
+
+    public ControllerService setVar(int varId, int value) {
+        ops.add(String.format("/setvar.cgi?varid=%s&value=%s", varId, value));
+        return this;
+    }
+
+    public ControllerService execute() {
+        execute(ops);
+        return this;
+    }
+
+    public void execute(final List<String> operations) {
+        Log.d("Hei", operations.size() + "");
+        if(operations.size() != 0) {
+            String op = operations.get(0);
+            Log.d("På", op);
+            new DoGetRequest(new ControllerResult() {
+                @Override
+                public void done(String result) {
+                    execute(operations.subList(1, operations.size()));
+                }
+            }).execute(op);
+
+        }
+    }
+
+    public ControllerService setUrom(int uromId, int value, ControllerResult callback) {
+        setUrom(String.format("/seturom.cgi?uromid=%s&value=%s", uromId, value), callback);
+        return this;
+    }
+
+    public ControllerService setUrom(int uromId, int value) {
+        ops.add(String.format("/seturom.cgi?uromid=%s&value=%s", uromId, value));
+        return this;
+    }
+
     public void setVariables(List<String> queries){
         String[] strings = new String[queries.size()];
         for(int i = 0; i < queries.size(); i++){
@@ -40,13 +74,8 @@ public class ControllerService {
         new DoGetMultipleRequests().execute(strings);
     }
 
-    private void setUROMVariable(String query, ControllerResult callback) {
+    private void setUrom(String query, ControllerResult callback) {
         new DoGetRequest(callback).execute(String.format("/seturom.cgi?%s", query));
-    }
-
-    public ControllerService setUROMVariable(int variableNumber, int value, ControllerResult callback) {
-        setUROMVariable(String.format("uromid=%s&value=%s", variableNumber, value), callback);
-        return this;
     }
 
     private class DoGetRequest extends AsyncTask<String, Integer, Void> {

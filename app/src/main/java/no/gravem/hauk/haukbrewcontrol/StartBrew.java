@@ -18,7 +18,6 @@ import android.widget.Toast;
 import org.joda.time.DateTime;
 import org.joda.time.Duration;
 
-import java.io.IOException;
 import java.util.Calendar;
 
 
@@ -207,7 +206,7 @@ public class StartBrew extends ActionBarActivity {
         //TODO: Is that the same as secondstostart?
 
         Log.d(this.getClass().getName(), "Updating starttime ");
-        controllerService.setUROMVariable(2, secondsSince2000, new ControllerResult() {
+        controllerService.setUrom(2, secondsSince2000, new ControllerResult() {
             @Override
             public void done(String result) {
                 try {

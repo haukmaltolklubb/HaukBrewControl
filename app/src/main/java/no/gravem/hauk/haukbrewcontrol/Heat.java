@@ -17,9 +17,6 @@ import com.google.common.base.Strings;
 import org.joda.time.DateTime;
 import org.joda.time.Duration;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 /**
  * Created by GTG on 06.01.2015.
  */
@@ -157,7 +154,7 @@ public class Heat extends ActionBarActivity {
         final String heatTemperatureValue = getPLSFormattedTemperatureString(heatTemperatureEditText.getText().toString());
 
         Log.d(this.getClass().getName(), "Heat temp set to: " + heatTemperatureValue);
-        controllerService.setUROMVariable(1, 1, new ControllerResult() {
+        controllerService.setUrom(1, 1, new ControllerResult() {
             public void done(String result) {
                 controllerService.setVariable("varid=1&value=" + heatTemperatureValue);
             }
@@ -165,7 +162,7 @@ public class Heat extends ActionBarActivity {
     }
 
     private void stopHeatProcessInPLS(){
-        controllerService.setUROMVariable(1, 0, new ControllerResult() {
+        controllerService.setUrom(1, 0, new ControllerResult() {
             public void done(String result) {
             }
         });

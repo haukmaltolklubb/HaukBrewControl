@@ -11,8 +11,6 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.io.IOException;
-
 
 public class Pump extends ActionBarActivity {
 
@@ -130,7 +128,7 @@ public class Pump extends ActionBarActivity {
 
     private void startPumpProcessInPLS() {
         Log.d(this.getClass().getName(), "Start pumping!");
-        controllerService.setUROMVariable(1, 3, new ControllerResult() {
+        controllerService.setUrom(1, 3, new ControllerResult() {
             public void done(String result) {
                 Log.d(this.getClass().getName(), "Set Var1 to 1");
                 controllerService.setVariable("varid=1&value=1");
@@ -139,7 +137,7 @@ public class Pump extends ActionBarActivity {
     }
 
     private void stopPumpProcessInPLS() {
-        controllerService.setUROMVariable(1, 0, new ControllerResult() {
+        controllerService.setUrom(1, 0, new ControllerResult() {
             public void done(String result) {
             }
         });
