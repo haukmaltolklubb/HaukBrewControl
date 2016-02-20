@@ -42,22 +42,20 @@ public class ControllerService {
     }
 
     public void execute(final List<String> operations) {
-        Log.d("Hei", operations.size() + "");
+        Log.d(this.getClass().getName(), "Op size: " + operations.size() + "");
         if(operations.size() != 0) {
             String op = operations.get(0);
-            Log.d("På", op);
             new DoGetRequest(new ControllerResult() {
                 @Override
                 public void done(String result) {
                     execute(operations.subList(1, operations.size()));
                 }
             }).execute(op);
-
         }
     }
 
     public ControllerService setUrom(int uromId, int value, ControllerResult callback) {
-        setUrom(String.format("/seturom.cgi?uromid=%s&value=%s", uromId, value), callback);
+        setUrom(String.format("uromid=%s&value=%s", uromId, value), callback);
         return this;
     }
 
