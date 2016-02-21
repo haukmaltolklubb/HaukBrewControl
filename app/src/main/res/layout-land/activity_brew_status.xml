@@ -21,18 +21,16 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="20dp"
-            android:background="@android:color/darker_gray"/>
+            android:background="@android:color/darker_gray"
+            android:layout_marginBottom="5dp" />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textSize="30sp"
-            android:layout_marginBottom="10dp"
+            android:textSize="18sp"
+            android:layout_marginBottom="5dp"
             android:text="@string/tempsLabel"
-            android:id="@+id/temperaturesLabel"
-            android:textColor="@color/abc_input_method_navigation_guard" />
+            android:id="@+id/temperaturesLabel" />
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -43,14 +41,14 @@
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="@string/temp1Label"
                 android:id="@+id/temp1Label"
-                android:textSize="24sp" />
+                android:textSize="18sp" />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:inputType="number"
                 android:ems="3"
                 android:id="@+id/temp1"
-                android:textSize="24sp"
+                android:textSize="18sp"
                 android:layout_marginLeft="20dp" />
         </LinearLayout>
         <LinearLayout
@@ -63,14 +61,14 @@
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="@string/temp2Label"
                 android:id="@+id/temp2Label"
-                android:textSize="24sp" />
+                android:textSize="18sp" />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:inputType="number"
                 android:ems="3"
                 android:id="@+id/temp2"
-                android:textSize="24sp"
+                android:textSize="18sp"
                 android:layout_marginLeft="20dp" />
         </LinearLayout>
         <LinearLayout
@@ -82,14 +80,14 @@
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="@string/temp3Label"
-                android:textSize="24sp" />
+                android:textSize="18sp" />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:inputType="number"
                 android:ems="3"
                 android:id="@+id/temp3"
-                android:textSize="24sp"
+                android:textSize="18sp"
                 android:layout_marginLeft="20dp" />
         </LinearLayout>
         <LinearLayout
@@ -102,26 +100,27 @@
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="@string/temp4Label"
                 android:id="@+id/temp4Label"
-                android:textSize="24sp" />
+                android:textSize="18sp" />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:inputType="number"
                 android:ems="3"
                 android:id="@+id/temp4"
-                android:textSize="24sp"
+                android:textSize="18sp"
                 android:layout_marginLeft="20dp" />
         </LinearLayout>
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
             android:background="@android:color/darker_gray"/>
+
         <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="41dp">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -129,8 +128,7 @@
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="@string/brewStatusCurrentProcess"
                 android:id="@+id/currentProcessLabel"
-                android:textSize="30sp"
-                android:textColor="@color/abc_input_method_navigation_guard" />
+                android:textSize="18sp"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -140,23 +138,25 @@
                 android:textSize="24sp"
                 android:minWidth="200dp"
                 android:layout_marginLeft="20dp" />
+
         </LinearLayout>
+
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="10dp"
             android:layout_marginBottom="20dp"
             android:background="@android:color/darker_gray"/>
 
-            <ImageButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/refreshBtn"
-                android:src="@android:drawable/stat_notify_sync"
-                android:background="@drawable/sandrift_button"
-                style="@style/btnStyleSandrift"
-                android:layout_gravity="end"
-                android:onClick="getCurrentProsessData" />
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/refreshBtn"
+            android:src="@android:drawable/stat_notify_sync"
+            android:background="@drawable/sandrift_button"
+            style="@style/btnStyleSandrift"
+            android:layout_gravity="right"
+            android:onClick="getCurrentProsessData" />
 
     </LinearLayout>
 </LinearLayout>

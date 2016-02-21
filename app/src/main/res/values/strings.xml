@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <string name="app_name">Hauk Brew Control</string>
     <string name="action_settings">Settings</string>
     <string name="heading">HAUK</string>
@@ -37,10 +36,10 @@
     <string name="title_activity_pump">Pumping</string>
     <string name="title_activity_set_start_brew_time">SetStartBrewTime</string>
     <string name="timePickerButtonLabel">Tid satt</string>
-    <string name="temp1Label">Sensor 1</string>
-    <string name="temp2Label">Sensor 2</string>
-    <string name="temp3Label">Sensor 3</string>
-    <string name="temp4Label">Sensor 4</string>
+    <string name="temp1Label">Koking:</string>
+    <string name="temp2Label">Topp røste: </string>
+    <string name="temp3Label">Bunn røste:</string>
+    <string name="temp4Label">Gjæring:</string>
     <string name="brew_status">Bryggestatus</string>
     <string name="refreshBtn">Oppdater</string>
     <string name="dateSetLabel">Oppstart:</string>
@@ -48,10 +47,11 @@
     <string name="timeSetLabel">Tid satt:</string>
     <string name="currentTempLabel">Temperatur:</string>
     <string name="brewStatusCurrentProcess">Prosess</string>
-    <string name="tempsLabel">Temp</string>
+    <string name="tempsLabel">Temperatur</string>
     <string name="degreesCelciusLabel">°C</string>
     <string name="mashTempBottomLabel">Temp bunn</string>
     <string name="mashTempTopLabel">Temp topp</string>
     <string name="pumpHeading">Pumping</string>
+    <string name="currentFermentTime">Gjæringstid:</string>
 
 </resources>

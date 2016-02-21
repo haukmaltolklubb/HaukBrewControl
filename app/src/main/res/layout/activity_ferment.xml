@@ -87,7 +87,9 @@
         </LinearLayout>
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:transitionGroup="true"
+            android:background="@drawable/grey_gradientsquare">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -95,10 +97,11 @@
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="Prosessdata"
                 android:id="@+id/progressData"
-                android:textSize="24sp"
+                android:textSize="30sp"
                 android:layout_alignParentTop="true"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="15dp" />
+                android:layout_marginTop="15dp"
+                android:textColor="@android:color/black" />
             <TextView
                 android:visibility="invisible"
                 android:layout_width="wrap_content"
@@ -125,8 +128,8 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/heat_time_descr"
-                android:id="@+id/currentHeatTimeLabel"
+                android:text="@string/currentFermentTime"
+                android:id="@+id/currentFermentTimeLabel"
                 android:textSize="24sp"
                 android:layout_below="@+id/startTimeLabel"/>
 
@@ -149,7 +152,7 @@
                 android:id="@+id/currentHeatTempLabel"
                 android:textSize="24sp"
                 android:text="@string/currentTempLabel"
-                android:layout_below="@+id/currentHeatTimeLabel" />
+                android:layout_below="@+id/currentFermentTimeLabel" />
 
             <TextView
                 android:layout_width="wrap_content"

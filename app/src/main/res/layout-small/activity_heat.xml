@@ -107,7 +107,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/heat_time_descr"
-            android:id="@+id/currentHeatTimeLabel"
+            android:id="@+id/currentFermentTimeLabel"
             android:textSize="24sp"
             android:layout_below="@+id/progressData"
             android:layout_toLeftOf="@+id/progressData"
@@ -121,7 +121,7 @@
             android:id="@+id/currentHeatTime"
             android:text="&lt;tid>"
             android:textSize="24sp"
-            android:layout_alignBottom="@+id/currentHeatTimeLabel"
+            android:layout_alignBottom="@+id/currentFermentTimeLabel"
             android:layout_alignRight="@+id/updateButton"
             android:layout_alignEnd="@+id/updateButton" />
 
@@ -133,7 +133,7 @@
             android:id="@+id/currentHeatTempLabel"
             android:textSize="24sp"
             android:text="@string/currentTempLabel"
-            android:layout_below="@+id/currentHeatTimeLabel"
+            android:layout_below="@+id/currentFermentTimeLabel"
             android:layout_alignLeft="@+id/heatStartBtn"
             android:layout_alignStart="@+id/heatStartBtn"
             android:layout_alignRight="@+id/mashLevel1Temperature"

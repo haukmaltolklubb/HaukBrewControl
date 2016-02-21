@@ -62,12 +62,12 @@
             android:imeOptions="actionDone"
             android:ems="10"
             android:id="@+id/mashLevel1Temperature"
-            android:paddingLeft="0dp"
             android:textColor="@android:color/black"
-            android:textSize="24sp"
+            android:textSize="18sp"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
-            android:gravity="center" />
+            android:gravity="bottom|center_horizontal"
+            android:paddingTop="10dp" />
 
         <EditText
             android:layout_width="80dp"
@@ -80,7 +80,7 @@
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
             android:textColor="@android:color/black"
-            android:textSize="24sp"
+            android:textSize="18sp"
             android:gravity="center" />
 
         <TextView
@@ -105,7 +105,7 @@
             android:layout_alignLeft="@+id/mashLevel1Temperature"
             android:layout_alignStart="@+id/mashLevel1Temperature"
             android:textColor="@android:color/black"
-            android:textSize="24sp"
+            android:textSize="18sp"
             android:gravity="center" />
 
         <EditText
@@ -119,7 +119,7 @@
             android:layout_alignLeft="@+id/mashLevel1Time"
             android:layout_alignStart="@+id/mashLevel1Time"
             android:textColor="@android:color/black"
-            android:textSize="24sp"
+            android:textSize="18sp"
             android:gravity="center" />
 
         <TextView
@@ -142,7 +142,7 @@
             android:ems="10"
             android:id="@+id/mashLevel3Temperature"
             android:textColor="@android:color/black"
-            android:textSize="24sp"
+            android:textSize="18sp"
             android:gravity="center"
             android:layout_alignBottom="@+id/mashLevel3Label"
             android:layout_alignLeft="@+id/mashLevel2Temperature"
@@ -158,11 +158,12 @@
             android:ems="10"
             android:id="@+id/mashLevel3Time"
             android:textColor="@android:color/black"
-            android:textSize="24sp"
+            android:textSize="18sp"
             android:gravity="center"
             android:layout_alignTop="@+id/mashLevel3Temperature"
             android:layout_alignLeft="@+id/mashLevel2Time"
-            android:layout_alignStart="@+id/mashLevel2Time" />
+            android:layout_alignStart="@+id/mashLevel2Time"
+            android:paddingTop="5dp" />
     </RelativeLayout>
 
     <RelativeLayout

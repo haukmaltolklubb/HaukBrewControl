@@ -33,7 +33,7 @@ public enum BrewProcess {
                 processText = "Koker opp ";
                 break;
             case NONE:
-                processText = "Ingen aktive brygg";
+                processText = "Ingen aktiv prosess";
                 break;
             case MASH:
                 processText = "Mesking pågår";
