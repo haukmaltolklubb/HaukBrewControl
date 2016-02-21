@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Hauk Brew Control</string>
-    <string name="action_settings">Settings</string>
+    <string name="action_settings">Instillinger</string>
     <string name="heading">HAUK</string>
     <string name="startBrewTimeHeading">Bryggestart</string>
     <string name="heatBtn_text">Koking</string>
