@@ -128,18 +128,14 @@ public class Pump extends ActionBarActivity {
 
     private void startPumpProcessInPLS() {
         Log.d(this.getClass().getName(), "Start pumping!");
-        controllerService.setUrom(1, 3, new ControllerResult() {
-            public void done(String result) {
-                Log.d(this.getClass().getName(), "Set Var1 to 1");
-                controllerService.setVariable("varid=1&value=1");
-            }
-        });
+
+        controllerService
+                .setUrom(1,3)
+                .setVar(1,1)
+                .execute();
     }
 
     private void stopPumpProcessInPLS() {
-        controllerService.setUrom(1, 0, new ControllerResult() {
-            public void done(String result) {
-            }
-        });
+        controllerService.setUrom(1, 0).execute();
     }
 }

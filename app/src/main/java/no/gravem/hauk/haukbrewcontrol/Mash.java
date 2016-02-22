@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import com.google.common.base.Strings;
 
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -151,15 +152,6 @@ public class Mash extends ActionBarActivity {
         startActivity(new Intent(this, MainActivity.class));
     }
 
-    private String getPLSFormattedTemperatureString(EditText temperature){
-        return temperature.getText().toString().replace(".", "");
-    }
-
-    private String getPLSFormattedTimeString(EditText time){
-        //time angis i minutt. PLS ønsker sekunder.
-        return String.valueOf(Integer.valueOf(time.getText().toString())*60);
-    }
-
     private boolean requiredVariablesAreSet(){
         return !Strings.isNullOrEmpty(level1Temperature.getText().toString()) &&
                 !Strings.isNullOrEmpty(level1Time.getText().toString()) &&
@@ -172,28 +164,15 @@ public class Mash extends ActionBarActivity {
     public void startMashProcessInPLS() {
         //Set VAR1 = Temp1 (http://88.84.50.37/api/setvar.cgi?varid=1&value=xxx) (999 = 99,9°C)
 
-        //Set UROM1=2 (http://88.84.50.37/api/seturom.cgi?uromid=1&value=2)
-        controllerService.setUrom(1, 2, new ControllerResult() {
-            public void done(String result) {
-                List<String> variablesToSet = new ArrayList<String>();
-                variablesToSet.add("varid=1&value=" + getPLSFormattedTemperatureString(level1Temperature));
-                variablesToSet.add("varid=3&value=" + getPLSFormattedTemperatureString(level2Temperature));
-                variablesToSet.add("varid=4&value=" + getPLSFormattedTemperatureString(level3Temperature));
-                variablesToSet.add("varid=5&value=" + getPLSFormattedTimeString(level1Time));
-                variablesToSet.add("varid=6&value=" + getPLSFormattedTimeString(level2Time));
-                variablesToSet.add("varid=7&value=" + getPLSFormattedTimeString(level3Time));
-
-                controllerService.setVariables(variablesToSet);
-
-                //TODO: Create self-returning method for setting multiple variables
-                // controllerService
-                //       .setVariables()
-                //     .setVar(1, getPLSFormattedTemperatureString(level1Temperature))
-                //   .setVar(2, getPLSFormattedTemperatureString(level1Temperatu))
-                // .setVar(3, )=
-
-            }
-        });
+         controllerService
+             .setUrom(1,2)
+             .setVar(1, TemperatureService.getPLSFormattedTemperatureInt(level1Temperature.getText().toString()))
+             .setVar(3, TemperatureService.getPLSFormattedTemperatureInt(level2Temperature.getText().toString()))
+             .setVar(4, TemperatureService.getPLSFormattedTemperatureInt(level3Temperature.getText().toString()))
+             .setVar(5, TimeService.getPLSFormattedTime(level1Time.getText().toString()))
+             .setVar(6, TimeService.getPLSFormattedTime(level2Time.getText().toString()))
+             .setVar(7, TimeService.getPLSFormattedTime(level3Time.getText().toString()))
+             .execute();
     }
 
     public void stopMashProcessInPLS(){
@@ -203,9 +182,6 @@ public class Mash extends ActionBarActivity {
         stopButton.setEnabled(false);
         stopButton.setActivated(false);
 
-        controllerService.setUrom(1, 0, new ControllerResult() {
-            public void done(String result) {
-            }
-        });
+        controllerService.setUrom(1, 0).execute();
     }
 }

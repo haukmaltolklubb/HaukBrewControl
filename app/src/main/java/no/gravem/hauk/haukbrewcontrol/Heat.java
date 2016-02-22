@@ -97,29 +97,6 @@ public class Heat extends ActionBarActivity {
         updateValuesFromPLS();
     }
 
-    private String getTimeFromCounter(String time) {
-        Log.d(this.getClass().getName(), "Start time is: " + time);
-        long milliSeconds = Long.valueOf(time)*1000;
-
-        DateTime zeroPointTime = new DateTime(2000, 1, 1, 0, 0);
-
-        Duration duration = new Duration(milliSeconds);
-        //duration.
-
-        //TODO: Duration does not work
-
-
-        return "time";
-
-        //return duration.toString();
-    }
-
-    private String getPLSFormattedTemperatureString(String temperature){
-        String formattedTemp = temperature.replace(".", "");
-        if(formattedTemp.length()<=2)
-            return formattedTemp+"0";
-        return  formattedTemp;
-    }
 
     public void startHeatingProcess(View view) {
         if(requiredVariablesAreSet()) {
@@ -151,21 +128,19 @@ public class Heat extends ActionBarActivity {
     }
 
     private void startHeatProcessInPLS(){
-        final String heatTemperatureValue = getPLSFormattedTemperatureString(heatTemperatureEditText.getText().toString());
+        final int heatTemperatureValue = TemperatureService.getPLSFormattedTemperatureInt(heatTemperatureEditText.getText().toString());
 
         Log.d(this.getClass().getName(), "Heat temp set to: " + heatTemperatureValue);
-        controllerService.setUrom(1, 1, new ControllerResult() {
-            public void done(String result) {
-                controllerService.setVariable("varid=1&value=" + heatTemperatureValue);
-            }
-        });
+
+        controllerService
+                .setUrom(1,1)
+                .setVar(1,heatTemperatureValue)
+                .execute();
+
     }
 
     private void stopHeatProcessInPLS(){
-        controllerService.setUrom(1, 0, new ControllerResult() {
-            public void done(String result) {
-            }
-        });
+        controllerService.setUrom(1, 0).execute();
     }
 
     public void stopHeatingProcess(View view) {

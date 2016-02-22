@@ -93,31 +93,22 @@ public class Ferment extends ActionBarActivity {
     }
 
     public void getCurrentProsessData(View view){
-
         updateValuesFromPLS();
-    }
-
-
-    private String getPLSFormattedTemperatureString(String temperature){
-        return temperature.replace(".", "");
     }
 
     private void startFermentProcessInPLS(){
         Log.d(this.getClass().getName(), "Start gjæring!");
-        final String fermentTemperatureValue = getPLSFormattedTemperatureString(fermentTemperatureEditText.getText().toString());
+        final int fermentTemperatureValue = TemperatureService.getPLSFormattedTemperatureInt(fermentTemperatureEditText.getText().toString());
 
         controllerService
                 .setUrom(1, 4)
-                .setVar(1, Integer.valueOf(fermentTemperatureValue))
+                .setVar(1, fermentTemperatureValue)
                 .execute();
     }
 
     private void stopFermentProcessInPLS(){
         //Set UROM1=0 (http://88.84.50.37/api/seturom.cgi?uromid=1&value=0)
-        controllerService.setUrom(1, 0, new ControllerResult() {
-            public void done(String result) {
-            }
-        });
+        controllerService.setUrom(1, 0).execute();
     }
 
     private void updateValuesFromPLS() {
