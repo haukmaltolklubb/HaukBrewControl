@@ -18,7 +18,6 @@ import android.widget.Toast;
 import org.joda.time.DateTime;
 import org.joda.time.Duration;
 
-import java.io.IOException;
 import java.util.Calendar;
 
 
@@ -74,6 +73,7 @@ public class StartBrew extends ActionBarActivity {
                 };
         ((DatePickerFragment) datePicker).setDatePickerListener(dateSetListener);
 
+        updateValuesFromPLS();
     }
 
     @Override
@@ -200,14 +200,12 @@ public class StartBrew extends ActionBarActivity {
 
     private void calculateTime() {
         // Month is 0 based so add 1
-        DateTime timeSet = new DateTime(year, month + 1, day, hour, minute);
-        DateTime zeroPointTime = new DateTime(2000, 1, 1, 0, 0);
-        Duration duration = new Duration(zeroPointTime, timeSet);
-        int secondsSince2000 = (int) duration.getStandardSeconds();
-        //TODO: Is that the same as secondstostart?
+        DateTime timeSet = new DateTime(year, month+1, day, hour, minute);
+        Log.d(this.getClass().getName(), "Date set: " + timeSet.toString());
+        int secondsSince2000 = TimeService.getSecondsToStart(timeSet);
 
         Log.d(this.getClass().getName(), "Updating starttime ");
-        controllerService.setUROMVariable(2, secondsSince2000, new ControllerResult() {
+        controllerService.setUrom(2, secondsSince2000, new ControllerResult() {
             @Override
             public void done(String result) {
                 try {
@@ -218,10 +216,34 @@ public class StartBrew extends ActionBarActivity {
                 }
             }
         });
-        Log.d(this.getClass().getName(), "Date set: " + timeSet.toString());
-        Log.d(this.getClass().getName(), "Zero point: " + zeroPointTime.toString());
-        Log.d(this.getClass().getName(), "Seconds since year 2000: " + secondsSince2000);
+
         Toast toast = Toast.makeText(getApplicationContext(), "Oppdatert starttid", Toast.LENGTH_SHORT);
         toast.show();
+    }
+
+    private void updateValuesFromPLS() {
+        controllerService.getStatusXml(new ControllerResult() {
+            @Override
+            public void done(String result) {
+                try {
+                    StatusXml statusXml = new StatusXml(result);
+                    setValuesInView(statusXml.getUrom2Value());
+                } catch (PLSConnectionException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    private void setValuesInView(final String startTime) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                DateTime timeSet = TimeService.getDateTimeFromSeconds(Integer.parseInt(startTime));
+
+                dateDisplay.setText( timeSet.toString("d.MM.yy HH:mm"));
+
+            }
+        });
     }
 }

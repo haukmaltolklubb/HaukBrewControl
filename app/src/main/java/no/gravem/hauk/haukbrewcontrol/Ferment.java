@@ -12,8 +12,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.joda.time.Duration;
-
 
 public class Ferment extends ActionBarActivity {
 
@@ -95,36 +93,22 @@ public class Ferment extends ActionBarActivity {
     }
 
     public void getCurrentProsessData(View view){
-
         updateValuesFromPLS();
     }
 
-
-    private String getPLSFormattedTemperatureString(String temperature){
-        return temperature.replace(".", "");
-    }
-
     private void startFermentProcessInPLS(){
-        Log.d(this.getClass().getName(), "Start fermenting!");
-        //TODO: Sjekk temp settpunkt forskjellig fra 0
+        Log.d(this.getClass().getName(), "Start gjæring!");
+        final int fermentTemperatureValue = TemperatureService.getPLSFormattedTemperatureInt(fermentTemperatureEditText.getText().toString());
 
-        final String fermentTemperatureValue = getPLSFormattedTemperatureString(fermentTemperatureEditText.getText().toString());
-
-        //Set VAR1 = Temp1 (http://88.84.50.37/api/setvar.cgi?varid=1&value=xxx) (999 = 99,9°C)
-        controllerService.setUROMVariable(1, 4, new ControllerResult() {
-            public void done(String result) {
-                controllerService.setVariable("varid=1&value=" + fermentTemperatureValue);
-            }
-        });
-
+        controllerService
+                .setUrom(1, 4)
+                .setVar(1, fermentTemperatureValue)
+                .execute();
     }
 
     private void stopFermentProcessInPLS(){
         //Set UROM1=0 (http://88.84.50.37/api/seturom.cgi?uromid=1&value=0)
-        controllerService.setUROMVariable(1, 0, new ControllerResult() {
-            public void done(String result) {
-            }
-        });
+        controllerService.setUrom(1, 0).execute();
     }
 
     private void updateValuesFromPLS() {
