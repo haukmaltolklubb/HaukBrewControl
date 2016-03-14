@@ -1,6 +1,8 @@
 package no.gravem.hauk.haukbrewcontrol;
 
 import android.content.Intent;
+import android.os.Handler;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -8,6 +10,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -18,6 +21,9 @@ public class Pump extends ActionBarActivity {
 
     Button startButton, stopButton;
     private TextView temperatureTop, temperatureBottom, temperatureHeater;
+    private SwipeRefreshLayout swipeLayout;
+    private ProgressBar progressBar;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,8 +36,46 @@ public class Pump extends ActionBarActivity {
         temperatureTop = (TextView) findViewById(R.id.tempTopRoste);
         temperatureBottom = (TextView) findViewById(R.id.tempBottomRoste);
         temperatureHeater = (TextView) findViewById(R.id.tempHeater);
+        progressBar = (ProgressBar) findViewById(R.id.pumpProcessDataProgressBar);
+        progressBar.setVisibility(View.VISIBLE);
+        swipeLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_pumpContainer);
+        swipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                swipeLayout.setRefreshing(true);
+                updateValuesFromPLS();
+            }
+        });
+
 
         updateValuesFromPLS();
+    }
+
+    /*
+ * Listen for option item selections so that we receive a notification
+ * when the user requests a refresh by selecting the refresh action bar item.
+ */
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+
+            // Check if user triggered a refresh:
+            case R.id.menu_refresh:
+                Log.i(this.getClass().getName(), "Refresh menu item selected");
+
+                // Signal SwipeRefreshLayout to start the progress indicator
+                swipeLayout.setRefreshing(true);
+
+                // Start the refresh background task.
+                // This method calls setRefreshing(false) when it's finished.
+                updateValuesFromPLS();
+
+                return true;
+        }
+
+        // User didn't trigger a refresh, let the superclass handle this action
+        return super.onOptionsItemSelected(item);
+
     }
 
 
@@ -42,20 +86,6 @@ public class Pump extends ActionBarActivity {
         return true;
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
 
     public void getCurrentProsessData(View view) {
         updateValuesFromPLS();
@@ -95,6 +125,8 @@ public class Pump extends ActionBarActivity {
                     stopButton.setEnabled(false);
                     stopButton.setActivated(false);
                 }
+                progressBar.setVisibility(View.GONE);
+                swipeLayout.setRefreshing(false);
             }
         });
     }

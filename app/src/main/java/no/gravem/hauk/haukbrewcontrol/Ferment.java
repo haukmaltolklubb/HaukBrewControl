@@ -1,6 +1,7 @@
 package no.gravem.hauk.haukbrewcontrol;
 
 import android.content.Intent;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -9,6 +10,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,6 +21,8 @@ public class Ferment extends ActionBarActivity {
     Button startButton, stopButton;
     private EditText fermentTemperatureEditText;
     private TextView currentFermentTemperatureTextView, currentFermentTimeTextView;
+    private SwipeRefreshLayout swipeLayout;
+    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +36,16 @@ public class Ferment extends ActionBarActivity {
         currentFermentTemperatureTextView = (TextView) findViewById(R.id.currentFermentTemp);
         currentFermentTimeTextView = (TextView) findViewById(R.id.currentFermentTime);
 
+        progressBar = (ProgressBar) findViewById(R.id.fermentProcessDataProgressBar);
+        progressBar.setVisibility(View.VISIBLE);
+        swipeLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_fermentContainer);
+        swipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                swipeLayout.setRefreshing(true);
+                updateValuesFromPLS();
+            }
+        });
         updateValuesFromPLS();
     }
 
@@ -147,6 +161,8 @@ public class Ferment extends ActionBarActivity {
                     stopButton.setEnabled(false);
                     stopButton.setActivated(false);
                 }
+                progressBar.setVisibility(View.GONE);
+                swipeLayout.setRefreshing(false);
             }
         });
     }

@@ -2,6 +2,7 @@ package no.gravem.hauk.haukbrewcontrol;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -9,6 +10,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,6 +29,8 @@ public class Heat extends ActionBarActivity {
     private Button startButton, stopButton;
     private TextView heatTempText, heatTimeText, startTimeText;
     private EditText heatTemperatureEditText;
+    private SwipeRefreshLayout swipeLayout;
+    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +45,17 @@ public class Heat extends ActionBarActivity {
         //startTimeText = (TextView) findViewById(R.id.startTime);
 
         heatTemperatureEditText = (EditText) findViewById(R.id.mashLevel1Temperature);
+        progressBar = (ProgressBar) findViewById(R.id.heatProcessDataProgressBar);
+        progressBar.setVisibility(View.VISIBLE);
 
+        swipeLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_heatContainer);
+        swipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                swipeLayout.setRefreshing(true);
+                updateValuesFromPLS();
+            }
+        });
         updateValuesFromPLS();
 
     }
@@ -67,6 +81,7 @@ public class Heat extends ActionBarActivity {
     }
 
     private void updateValuesFromPLS() {
+
         controllerService.getStatusXml(new ControllerResult() {
             @Override
             public void done(String result) {
@@ -84,9 +99,13 @@ public class Heat extends ActionBarActivity {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
+
                 heatTempText.setText(temp1Value);
                 heatTimeText.setText(time + " min");
                 //startTimeText.setText(getTimeFromCounter(startTime));
+                progressBar.setVisibility(View.GONE);
+                swipeLayout.setRefreshing(false);
+
             }
         });
     }

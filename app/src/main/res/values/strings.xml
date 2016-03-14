@@ -20,9 +20,11 @@
     <string name="mash_heading">Mesking</string>
     <string name="mash_temp_heading">Temp(°C)</string>
     <string name="mash_time_heading">Tid(min)</string>
-    <string name="mash_step1_descr">Trinn 1:</string>
-    <string name="mash_step2_descr">Trinn 2:</string>
-    <string name="mash_step3_descr">Trinn 3:</string>
+    <string name="degrees">°C</string>
+    <string name="minutes">min</string>
+    <string name="mash_step1_descr">Steg 1</string>
+    <string name="mash_step2_descr">Steg 2</string>
+    <string name="mash_step3_descr">Steg 3</string>
     <string name="mash_toptemp_head_text">Topp</string>
     <string name="mash_bottomtemp_head_text">Bunn</string>
     <string name="mash_chk_button_text">Temp:</string>

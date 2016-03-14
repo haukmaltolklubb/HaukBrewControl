@@ -2,6 +2,7 @@ package no.gravem.hauk.haukbrewcontrol;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -9,14 +10,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.common.base.Strings;
-
-import java.sql.Time;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by GTG on 20.01.2015.
@@ -26,7 +24,8 @@ public class Mash extends ActionBarActivity {
     Button startButton, stopButton;
     private TextView mashTempBottom, mashTempTop, mashTime;
     private EditText level1Temperature, level1Time, level2Temperature, level2Time, level3Temperature, level3Time;
-
+    private SwipeRefreshLayout swipeLayout;
+    private ProgressBar progressBar;
 
     private ControllerService controllerService = new ControllerService();
 
@@ -49,6 +48,17 @@ public class Mash extends ActionBarActivity {
         level3Temperature = (EditText)findViewById(R.id.mashLevel3Temperature);
         level3Time = (EditText)findViewById(R.id.mashLevel3Time);
 
+        progressBar = (ProgressBar) findViewById(R.id.mashProcessDataProgressBar);
+        progressBar.setVisibility(View.VISIBLE);
+
+        swipeLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_mashContainer);
+        swipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                swipeLayout.setRefreshing(true);
+                updateValuesFromPLS();
+            }
+        });
         updateValuesFromPLS();
     }
 
@@ -80,6 +90,7 @@ public class Mash extends ActionBarActivity {
                 try {
                     StatusXml statusXml = new StatusXml(result);
                     setValuesInView(statusXml.getTemp2Value(), statusXml.getTemp3Value(), statusXml.getProcessRunningTimeInMinutes(), BrewProcess.createFrom(statusXml.getUrom1Value()));
+
                 } catch (PLSConnectionException e) {
                     e.printStackTrace();
                 }
@@ -91,6 +102,7 @@ public class Mash extends ActionBarActivity {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
+
                 mashTempTop.setText(t2);
                 mashTempBottom.setText(t3);
                 mashTime.setText(time + " min");
@@ -106,6 +118,8 @@ public class Mash extends ActionBarActivity {
                     stopButton.setEnabled(false);
                     stopButton.setActivated(false);
                 }
+                progressBar.setVisibility(View.GONE);
+                swipeLayout.setRefreshing(false);
             }
         });
     }
@@ -113,7 +127,6 @@ public class Mash extends ActionBarActivity {
 
     public void getCurrentProsessData(View view){
         Log.d(this.getClass().getName(), "updateMashData");
-
         updateValuesFromPLS();
     }
 
