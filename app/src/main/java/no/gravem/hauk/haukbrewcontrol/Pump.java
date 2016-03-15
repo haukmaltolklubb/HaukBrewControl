@@ -10,6 +10,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -19,7 +20,7 @@ public class Pump extends ActionBarActivity {
 
     ControllerService controllerService = new ControllerService();
 
-    Button startButton, stopButton;
+    ImageButton startButton, stopButton;
     private TextView temperatureTop, temperatureBottom, temperatureHeater;
     private SwipeRefreshLayout swipeLayout;
     private ProgressBar progressBar;
@@ -30,8 +31,8 @@ public class Pump extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pump);
 
-        startButton = (Button) findViewById(R.id.pumpStartBtn);
-        stopButton = (Button) findViewById(R.id.pumpStopBtn);
+        startButton = (ImageButton) findViewById(R.id.pumpStartBtn);
+        stopButton = (ImageButton) findViewById(R.id.pumpStopBtn);
 
         temperatureTop = (TextView) findViewById(R.id.tempTopRoste);
         temperatureBottom = (TextView) findViewById(R.id.tempBottomRoste);

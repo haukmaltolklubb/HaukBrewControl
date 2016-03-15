@@ -5,6 +5,7 @@ import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -12,6 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,6 +36,8 @@ public class StartBrew extends ActionBarActivity {
     private int minute;
     private int secondsToStart;
     private ControllerService controllerService = new ControllerService();
+    private SwipeRefreshLayout swipeLayout;
+    private ProgressBar progressBar;
 
     DialogFragment timePicker;
     DialogFragment datePicker;
@@ -73,6 +77,17 @@ public class StartBrew extends ActionBarActivity {
                 };
         ((DatePickerFragment) datePicker).setDatePickerListener(dateSetListener);
 
+        progressBar = (ProgressBar) findViewById(R.id.startBrewProcessDataProgressBar);
+        progressBar.setVisibility(View.VISIBLE);
+        swipeLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_startBrewContainer);
+        swipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                swipeLayout.setRefreshing(true);
+                updateValuesFromPLS();
+            }
+        });
+
         updateValuesFromPLS();
     }
 
@@ -85,14 +100,20 @@ public class StartBrew extends ActionBarActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
+        switch (item.getItemId()) {
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+            // Check if user triggered a refresh:
+            case R.id.menu_refresh:
+                Log.i(this.getClass().getName(), "Refresh menu item selected");
+
+                // Signal SwipeRefreshLayout to start the progress indicator
+                swipeLayout.setRefreshing(true);
+
+                // Start the refresh background task.
+                // This method calls setRefreshing(false) when it's finished.
+                updateValuesFromPLS();
+
+                return true;
         }
 
         return super.onOptionsItemSelected(item);
@@ -242,7 +263,7 @@ public class StartBrew extends ActionBarActivity {
                 DateTime timeSet = TimeService.getDateTimeFromSeconds(Integer.parseInt(startTime));
 
                 dateDisplay.setText( timeSet.toString("d.MM.yy HH:mm"));
-
+                progressBar.setVisibility(View.GONE);
             }
         });
     }

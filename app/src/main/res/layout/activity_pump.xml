@@ -35,31 +35,29 @@
                 android:paddingTop="20dp"
                 android:layout_marginTop="10dp">
 
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                <ImageButton
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
                     android:text="@string/startButton_text"
                     android:id="@+id/pumpStartBtn"
                     android:textSize="24sp"
-                    android:background="@drawable/sandrift_button"
+                    android:background="@drawable/ic_play_circle_outline_black_24dp"
                     style="@style/btnStyleSandrift"
                     android:onClick="startPumpProcess"
                     android:layout_marginLeft="48dp"
                     android:layout_marginStart="48dp" />
 
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                <ImageButton
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
                     android:text="@string/stopButton_text"
                     android:id="@+id/pumpStopBtn"
                     android:onClick="stopPumpProcess"
                     android:textSize="24sp"
-                    android:background="@drawable/sandrift_button"
+                    android:background="@drawable/ic_pause_circle_outline_black_24dp"
                     style="@style/btnStyleSandrift"
                     android:layout_marginLeft="50dp"
                     android:layout_centerVertical="true" />
-
-
             </LinearLayout>
             <Space
                 android:layout_width="fill_parent"
@@ -68,14 +66,15 @@
             <LinearLayout
                 android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="250dp"
+                android:layout_height="wrap_content"
                 android:background="@drawable/grey_gradientsquare">
                 <ProgressBar
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    style="?android:attr/progressBarStyleSmall"
+                    style="?android:attr/progressBarStyleLarge"
                     android:id="@+id/pumpProcessDataProgressBar"
-                    android:layout_centerHorizontal="true" />
+                    android:layout_centerHorizontal="true"
+                    android:visibility="gone"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -104,7 +103,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:text="NA"
+                        android:text="@string/degrees"
                         android:id="@+id/tempTopRoste"
                         android:textSize="24sp"
                         android:paddingTop="5dp"
@@ -129,7 +128,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:text="NA"
+                        android:text="@string/degrees"
                         android:id="@+id/tempBottomRoste"
                         android:textSize="24sp"
                         android:paddingTop="5dp"
@@ -152,7 +151,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:text="NA"
+                        android:text="@string/degrees"
                         android:id="@+id/tempHeater"
                         android:textSize="24sp"
                         android:paddingTop="5dp"

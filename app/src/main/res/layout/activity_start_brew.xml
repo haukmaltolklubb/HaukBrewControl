@@ -1,6 +1,17 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.SwipeRefreshLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/swipe_startBrewContainer"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/yellow_gradientsquare">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="match_parent"
-    android:background="@drawable/yellow_gradientsquare"
     android:orientation="vertical"
     android:gravity="top|center"
     android:padding="10dp"
@@ -27,42 +38,35 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
-
         </LinearLayout>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Tid"
+            android:text="@string/dateSetLabel"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textSize="18sp"/>
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/dateSetLabel"
-                android:id="@+id/dateDisplayLabel"
-                android:textSize="24sp" />
+            android:orientation="horizontal"
+            android:id="@+id/setStartDato">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="&lt;tid>"
+                android:text="Ikke satt"
                 android:id="@+id/dateDisplay"
-                android:layout_marginLeft="10dp"
                 android:textSize="24sp"
-                android:minWidth="200dp"/>
+                android:minWidth="250dp"
+                android:layout_marginLeft="20dp"/>
             <ImageButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:id="@+id/setStartDatoBtn"
                 style="@style/btnStyleSandrift"
-                android:background="@drawable/chronometer"
-                android:onClick="setFermentTemperature"
-                android:textSize="24sp"
-                android:layout_marginLeft="10dp"
+                android:background="@drawable/ic_schedule_black_24dp"
+                android:onClick=""
+                android:paddingLeft="10dp"
                 android:layout_gravity="end" />
         </LinearLayout>
     </LinearLayout>
@@ -92,7 +96,7 @@
                 android:id="@+id/startHeatProcess"
                 android:text="@string/heatBtn_text"
                 android:textSize="24sp"
-                android:minWidth="280dp"
+                android:minWidth="250dp"
                 android:layout_marginLeft="20dp" />
             <ImageButton
                 android:layout_width="wrap_content"
@@ -122,7 +126,7 @@
                 android:id="@+id/startMashProcess"
                 android:text="@string/meshBtn_text"
                 android:textSize="24sp"
-                android:minWidth="280dp"
+                android:minWidth="250dp"
                 android:layout_marginLeft="20dp" />
             <ImageButton
                 android:layout_width="wrap_content"
@@ -153,7 +157,7 @@
                 android:id="@+id/startFermentProcess"
                 android:text="@string/fermentBtn_text"
                 android:textSize="24sp"
-                android:minWidth="280dp"
+                android:minWidth="250dp"
                 android:layout_marginLeft="20dp" />
             <ImageButton
                 android:layout_width="wrap_content"
@@ -184,7 +188,7 @@
                 android:id="@+id/startPumpProcess"
                 android:text="@string/pumpBtn_text"
                 android:textSize="24sp"
-                android:minWidth="280dp"
+                android:minWidth="250dp"
                 android:layout_marginLeft="20dp" />
             <ImageButton
                 android:layout_width="wrap_content"
@@ -201,4 +205,13 @@
             android:layout_height="1dp"
             android:background="@android:color/darker_gray"/>
     </LinearLayout>
+    <ProgressBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="?android:attr/progressBarStyleSmall"
+        android:id="@+id/startBrewProcessDataProgressBar"
+        android:layout_centerHorizontal="true"
+        android:visibility="gone"/>
 </LinearLayout>
+    </ScrollView>
+</android.support.v4.widget.SwipeRefreshLayout>

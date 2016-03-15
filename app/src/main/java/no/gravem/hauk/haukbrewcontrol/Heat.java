@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -26,7 +27,7 @@ public class Heat extends ActionBarActivity {
 
     ControllerService controllerService = new ControllerService();
 
-    private Button startButton, stopButton;
+    private ImageButton startButton, stopButton;
     private TextView heatTempText, heatTimeText, startTimeText;
     private EditText heatTemperatureEditText;
     private SwipeRefreshLayout swipeLayout;
@@ -37,12 +38,12 @@ public class Heat extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_heat);
 
-        startButton = (Button)findViewById(R.id.heatStartBtn);
-        stopButton = (Button)findViewById(R.id.heatStopBtn);
+        startButton = (ImageButton)findViewById(R.id.heatStartBtn);
+        stopButton = (ImageButton)findViewById(R.id.heatStopBtn);
 
         heatTempText = (TextView) findViewById(R.id.currentHeatTemp);
         heatTimeText = (TextView) findViewById(R.id.currentHeatTime);
-        //startTimeText = (TextView) findViewById(R.id.startTime);
+        startTimeText = (TextView) findViewById(R.id.startTime);
 
         heatTemperatureEditText = (EditText) findViewById(R.id.mashLevel1Temperature);
         progressBar = (ProgressBar) findViewById(R.id.heatProcessDataProgressBar);
@@ -68,15 +69,22 @@ public class Heat extends ActionBarActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
+        switch (item.getItemId()) {
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+            // Check if user triggered a refresh:
+            case R.id.menu_refresh:
+                Log.i(this.getClass().getName(), "Refresh menu item selected");
+
+                // Signal SwipeRefreshLayout to start the progress indicator
+                swipeLayout.setRefreshing(true);
+
+                // Start the refresh background task.
+                // This method calls setRefreshing(false) when it's finished.
+                updateValuesFromPLS();
+
+                return true;
         }
+
         return super.onOptionsItemSelected(item);
     }
 

@@ -32,24 +32,19 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Tid"
+            android:text="@string/dateSetLabel"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textSize="18sp"/>
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/dateSetLabel"
-                android:id="@+id/dateDisplayLabel"
-                android:textSize="24sp" />
+            android:orientation="horizontal"
+            android:id="@+id/setStartDato">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="&lt;tid>"
+                android:text="Ikke satt"
                 android:id="@+id/dateDisplay"
                 android:layout_marginLeft="10dp"
                 android:textSize="24sp"
@@ -60,7 +55,7 @@
                 android:id="@+id/setStartDatoBtn"
                 style="@style/btnStyleSandrift"
                 android:background="@drawable/chronometer"
-                android:onClick="setFermentTemperature"
+                android:onClick=""
                 android:textSize="24sp"
                 android:layout_marginLeft="10dp"
                 android:layout_gravity="end" />

@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -18,7 +19,7 @@ import android.widget.Toast;
 public class Ferment extends ActionBarActivity {
 
     ControllerService controllerService = new ControllerService();
-    Button startButton, stopButton;
+    ImageButton startButton, stopButton;
     private EditText fermentTemperatureEditText;
     private TextView currentFermentTemperatureTextView, currentFermentTimeTextView;
     private SwipeRefreshLayout swipeLayout;
@@ -29,8 +30,8 @@ public class Ferment extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ferment);
 
-        startButton = (Button)findViewById(R.id.fermentStartBtn);
-        stopButton = (Button)findViewById(R.id.fermentStopBtn);
+        startButton = (ImageButton)findViewById(R.id.fermentStartBtn);
+        stopButton = (ImageButton)findViewById(R.id.fermentStopBtn);
 
         fermentTemperatureEditText = (EditText) findViewById(R.id.fermentTemp);
         currentFermentTemperatureTextView = (TextView) findViewById(R.id.currentFermentTemp);
@@ -59,14 +60,20 @@ public class Ferment extends ActionBarActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
+        switch (item.getItemId()) {
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+            // Check if user triggered a refresh:
+            case R.id.menu_refresh:
+                Log.i(this.getClass().getName(), "Refresh menu item selected");
+
+                // Signal SwipeRefreshLayout to start the progress indicator
+                swipeLayout.setRefreshing(true);
+
+                // Start the refresh background task.
+                // This method calls setRefreshing(false) when it's finished.
+                updateValuesFromPLS();
+
+                return true;
         }
 
         return super.onOptionsItemSelected(item);

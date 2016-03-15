@@ -1,10 +1,12 @@
 package no.gravem.hauk.haukbrewcontrol;
 
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import java.io.IOException;
@@ -13,6 +15,8 @@ public class BrewStatus extends ActionBarActivity {
 
     private ControllerService controllerService = new ControllerService();
     private TextView t1TextView, t2TextView, t3TextView, t4TextView, processTextView;
+    private SwipeRefreshLayout swipeLayout;
+    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
