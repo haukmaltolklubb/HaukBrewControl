@@ -48,7 +48,7 @@
     <string name="setStartDatoBtn_text">Set tid</string>
     <string name="timeSetLabel">Tid satt:</string>
     <string name="currentTempLabel">Temperatur:</string>
-    <string name="brewStatusCurrentProcess">Prosess</string>
+    <string name="brewStatusCurrentProcess">Aktiv prosess</string>
     <string name="tempsLabel">Temperatur</string>
     <string name="degreesCelciusLabel">°C</string>
     <string name="mashTempBottomLabel">Temp bunn</string>

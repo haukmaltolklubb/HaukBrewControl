@@ -3,7 +3,7 @@
     android:id="@+id/swipe_brewStatusContainer"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/yellow_gradientsquare">
+    android:background="#F7F2E0">
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">

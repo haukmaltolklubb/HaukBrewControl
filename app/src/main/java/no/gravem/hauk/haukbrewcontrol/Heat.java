@@ -71,18 +71,14 @@ public class Heat extends ActionBarActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-
             // Check if user triggered a refresh:
             case R.id.menu_refresh:
                 Log.i(this.getClass().getName(), "Refresh menu item selected");
-
                 // Signal SwipeRefreshLayout to start the progress indicator
                 swipeLayout.setRefreshing(true);
-
                 // Start the refresh background task.
                 // This method calls setRefreshing(false) when it's finished.
                 updateValuesFromPLS();
-
                 return true;
         }
 
@@ -129,12 +125,6 @@ public class Heat extends ActionBarActivity {
 
             }
         });
-    }
-
-    public void getCurrentProsessData(View view) {
-        //Temp fra t1
-        //Tid fra RAM9
-        updateValuesFromPLS();
     }
 
 

@@ -89,10 +89,6 @@ public class Pump extends ActionBarActivity {
     }
 
 
-    public void getCurrentProsessData(View view) {
-        updateValuesFromPLS();
-    }
-
     private void updateValuesFromPLS() {
         controllerService.getStatusXml(new ControllerResult() {
             @Override

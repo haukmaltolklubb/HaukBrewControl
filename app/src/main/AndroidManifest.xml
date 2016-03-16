@@ -14,14 +14,14 @@
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
             android:name=".Heat"
             android:label="@string/title_activity_heat"
-            android:parentActivityName=".MainActivity" >
+            android:windowSoftInputMode="stateHidden"
+            android:parentActivityName=".StartBrew" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="no.gravem.hauk.haukbrewcontrol.MainActivity" />
@@ -29,7 +29,8 @@
         <activity
             android:name=".Mash"
             android:label="@string/title_activity_mash"
-            android:parentActivityName=".MainActivity" >
+            android:windowSoftInputMode="stateHidden"
+            android:parentActivityName=".StartBrew" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="no.gravem.hauk.haukbrewcontrol.MainActivity" />
@@ -37,6 +38,7 @@
         <activity
             android:name=".BrewStatus"
             android:label="@string/title_activity_brew_status"
+            android:windowSoftInputMode="stateHidden"
             android:parentActivityName=".MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -45,6 +47,7 @@
         <activity
             android:name=".StartBrew"
             android:label="@string/title_activity_start_brew"
+            android:windowSoftInputMode="stateHidden"
             android:parentActivityName=".BrewStatus" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -53,7 +56,8 @@
         <activity
             android:name=".Ferment"
             android:label="@string/title_activity_ferment"
-            android:parentActivityName=".BrewStatus" >
+            android:windowSoftInputMode="stateHidden"
+            android:parentActivityName=".StartBrew" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="no.gravem.hauk.haukbrewcontrol.BrewStatus" />
@@ -61,7 +65,8 @@
         <activity
             android:name=".Pump"
             android:label="@string/title_activity_pump"
-            android:parentActivityName=".BrewStatus" >
+            android:windowSoftInputMode="stateHidden"
+            android:parentActivityName=".StartBrew" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="no.gravem.hauk.haukbrewcontrol.BrewStatus" />
@@ -69,6 +74,7 @@
         <activity
             android:name=".SetStartBrewTime"
             android:label="@string/title_activity_set_start_brew_time"
+            android:windowSoftInputMode="stateHidden"
             android:parentActivityName=".BrewStatus" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

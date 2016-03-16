@@ -3,7 +3,7 @@
     android:id="@+id/swipe_startBrewContainer"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/yellow_gradientsquare">
+    android:background="#F7F2E0">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -24,6 +24,15 @@
         android:textColor="@android:color/black"
         android:id="@+id/MainMenu"
         android:layout_centerHorizontal="true" />
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="?android:attr/progressBarStyleLarge"
+            android:id="@+id/startBrewProcessDataProgressBar"
+            android:layout_centerHorizontal="true"
+            android:indeterminate="true"
+            android:indeterminateDrawable="@drawable/progress_spinner_yellow"
+            android:visibility="gone"/>
 
     <View
         android:layout_width="match_parent"
@@ -205,13 +214,7 @@
             android:layout_height="1dp"
             android:background="@android:color/darker_gray"/>
     </LinearLayout>
-    <ProgressBar
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        style="?android:attr/progressBarStyleSmall"
-        android:id="@+id/startBrewProcessDataProgressBar"
-        android:layout_centerHorizontal="true"
-        android:visibility="gone"/>
+
 </LinearLayout>
     </ScrollView>
 </android.support.v4.widget.SwipeRefreshLayout>

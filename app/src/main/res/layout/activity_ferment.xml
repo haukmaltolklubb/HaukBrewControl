@@ -3,7 +3,7 @@
     android:id="@+id/swipe_fermentContainer"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/yellow_gradientsquare">
+    android:background="#F7F2E0">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -42,14 +42,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textSize="24sp"
-                        android:text="Sett verdi"/>
+                        android:text="Verdier"/>
                 </LinearLayout>
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"
                     android:transitionGroup="true"
-                    android:background="@drawable/grey_box">
+                    android:background="@drawable/yellow_box">
                     <LinearLayout
                         android:orientation="horizontal"
                         android:layout_width="match_parent"
@@ -63,8 +63,7 @@
                             android:longClickable="true"
                             android:textSize="24sp"
                             android:textColor="@android:color/black"
-                            android:layout_marginLeft="60dp"
-                            android:layout_marginStart="60dp" />
+                            android:layout_marginLeft="10dp"/>
                         <EditText
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -137,18 +136,21 @@
                     android:layout_weight="0.12"
                     android:layout_marginBottom="10dp"
                     android:transitionGroup="true"
-                    android:background="@drawable/grey_box">
+                    android:background="@drawable/yellow_box">
                     <LinearLayout
                         android:orientation="vertical"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:background="#F5ECCE">
+                        android:background="#F5ECCE"
+                        android:padding="10dp">
                         <ProgressBar
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             style="?android:attr/progressBarStyleLarge"
                             android:id="@+id/fermentProcessDataProgressBar"
                             android:layout_centerHorizontal="true"
+                            android:indeterminate="true"
+                            android:indeterminateDrawable="@drawable/progress_spinner_yellow"
                             android:visibility="gone"/>
 
                         <LinearLayout

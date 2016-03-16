@@ -1,12 +1,15 @@
 package no.gravem.hauk.haukbrewcontrol;
 
 import android.content.Intent;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import java.io.IOException;
@@ -17,6 +20,8 @@ public class MainActivity extends ActionBarActivity {
     private TextView currentProcessTextView;
     private ImageButton startNewBrewButton;
     BrewProcess brewProcess;
+    private SwipeRefreshLayout swipeLayout;
+    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +31,17 @@ public class MainActivity extends ActionBarActivity {
         brewProcess = BrewProcess.NONE;
         currentProcessTextView = (TextView) findViewById(R.id.currentProcess);
         startNewBrewButton = (ImageButton)findViewById(R.id.startNewBrewBtn);
+        progressBar = (ProgressBar) findViewById(R.id.mainProcessDataProgressBar);
+        progressBar.setVisibility(View.VISIBLE);
+        swipeLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_mainBrewContainer);
+        swipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                swipeLayout.setRefreshing(true);
+                updateCurrentProcessFromPLS();
+            }
+        });
+
         updateCurrentProcessFromPLS();
     }
 
@@ -47,7 +63,6 @@ public class MainActivity extends ActionBarActivity {
     }
 
     private void setProcessInView(){
-
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -59,6 +74,8 @@ public class MainActivity extends ActionBarActivity {
                 } else {
                     startNewBrewButton.setEnabled(false);
                 }
+                progressBar.setVisibility(View.GONE);
+                swipeLayout.setRefreshing(false);
             }
         });
     }
@@ -72,14 +89,20 @@ public class MainActivity extends ActionBarActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
+        switch (item.getItemId()) {
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+            // Check if user triggered a refresh:
+            case R.id.menu_refresh:
+                Log.i(this.getClass().getName(), "Refresh menu item selected");
+
+                // Signal SwipeRefreshLayout to start the progress indicator
+                swipeLayout.setRefreshing(true);
+
+                // Start the refresh background task.
+                // This method calls setRefreshing(false) when it's finished.
+                updateCurrentProcessFromPLS();
+
+                return true;
         }
 
         return super.onOptionsItemSelected(item);

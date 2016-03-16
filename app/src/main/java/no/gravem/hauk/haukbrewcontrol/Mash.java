@@ -135,12 +135,6 @@ public class Mash extends ActionBarActivity {
         });
     }
 
-
-    public void getCurrentProsessData(View view){
-        Log.d(this.getClass().getName(), "updateMashData");
-        updateValuesFromPLS();
-    }
-
     public void startMash(View view){
         if(requiredVariablesAreSet()) {
             Log.d(this.getClass().getName(), "startMash");

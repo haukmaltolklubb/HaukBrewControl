@@ -114,10 +114,6 @@ public class Ferment extends ActionBarActivity {
         startActivity(new Intent(this, MainActivity.class));
     }
 
-    public void getCurrentProsessData(View view){
-        updateValuesFromPLS();
-    }
-
     private void startFermentProcessInPLS(){
         Log.d(this.getClass().getName(), "Start gjæring!");
         final int fermentTemperatureValue = TemperatureService.getPLSFormattedTemperatureInt(fermentTemperatureEditText.getText().toString());

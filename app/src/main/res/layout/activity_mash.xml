@@ -4,7 +4,7 @@
     android:id="@+id/swipe_mashContainer"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/yellow_gradientsquare">
+    android:background="#F7F2E0">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -45,7 +45,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
                 android:transitionGroup="true"
-                android:background="@drawable/grey_box">
+                android:background="@drawable/yellow_box">
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -98,7 +98,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
                 android:transitionGroup="true"
-                android:background="@drawable/grey_box">
+                android:background="@drawable/yellow_box">
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -151,7 +151,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
                 android:transitionGroup="true"
-                android:background="@drawable/grey_box">
+                android:background="@drawable/yellow_box">
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -253,18 +253,21 @@
                 android:layout_weight="0.12"
                 android:layout_marginBottom="10dp"
                 android:transitionGroup="true"
-                android:background="@drawable/grey_box">
+                android:background="@drawable/yellow_box">
                 <LinearLayout
                     android:orientation="vertical"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="#F5ECCE">
+                    android:background="#F5ECCE"
+                    android:padding="10dp">
                     <ProgressBar
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         style="?android:attr/progressBarStyleLarge"
                         android:id="@+id/mashProcessDataProgressBar"
                         android:layout_centerHorizontal="true"
+                        android:indeterminate="true"
+                        android:indeterminateDrawable="@drawable/progress_spinner_yellow"
                         android:visibility="gone"/>
                     <LinearLayout
                         android:layout_width="wrap_content"
