@@ -226,7 +226,7 @@
                     android:text="@string/stopButton_text"
                     android:id="@+id/mashStopBtn"
                     android:textSize="24sp"
-                    android:background="@drawable/ic_pause_circle_outline_black_24dp"
+                    android:background="@drawable/ic_stop_circle_outline_black_24dp"
                     style="@style/btnStyleSandrift"
                     android:onClick="stopMash" />
             </LinearLayout>
@@ -266,8 +266,6 @@
                         android:id="@+id/mashProcessDataProgressBar"
                         android:layout_centerHorizontal="true"
                         android:visibility="gone"/>
-
-
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"

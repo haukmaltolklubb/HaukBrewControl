@@ -51,7 +51,7 @@
                     android:id="@+id/pumpStopBtn"
                     android:onClick="stopPumpProcess"
                     android:textSize="24sp"
-                    android:background="@drawable/ic_pause_circle_outline_black_24dp"
+                    android:background="@drawable/ic_stop_circle_outline_black_24dp"
                     style="@style/btnStyleSandrift" />
             </LinearLayout>
             <Space
