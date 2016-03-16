@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -18,19 +18,17 @@
             android:weightSum="1">
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
                 android:text="@string/pumpHeading"
                 android:id="@+id/pumpHeading"
-                android:textSize="40sp"
-                android:textColor="@android:color/black"
-                android:visibility="invisible" />
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="24sp" />
 
             <LinearLayout
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
+                android:gravity="top|center"
                 android:weightSum="1"
                 android:paddingTop="20dp"
                 android:layout_marginTop="10dp">
@@ -44,8 +42,7 @@
                     android:background="@drawable/ic_play_circle_outline_black_24dp"
                     style="@style/btnStyleSandrift"
                     android:onClick="startPumpProcess"
-                    android:layout_marginLeft="48dp"
-                    android:layout_marginStart="48dp" />
+                    android:layout_marginRight="50dp"  />
 
                 <ImageButton
                     android:layout_width="80dp"
@@ -55,112 +52,121 @@
                     android:onClick="stopPumpProcess"
                     android:textSize="24sp"
                     android:background="@drawable/ic_pause_circle_outline_black_24dp"
-                    style="@style/btnStyleSandrift"
-                    android:layout_marginLeft="50dp"
-                    android:layout_centerVertical="true" />
+                    style="@style/btnStyleSandrift" />
             </LinearLayout>
             <Space
                 android:layout_width="fill_parent"
                 android:layout_height="20dp" />
 
             <LinearLayout
-                android:orientation="vertical"
+                android:orientation="horizontal"
                 android:layout_width="match_parent"
+                android:paddingTop="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
                 android:layout_height="wrap_content"
-                android:background="@drawable/grey_gradientsquare">
-                <ProgressBar
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    style="?android:attr/progressBarStyleLarge"
-                    android:id="@+id/pumpProcessDataProgressBar"
-                    android:layout_centerHorizontal="true"
-                    android:visibility="gone"/>
-
+                android:weightSum="1">
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:text="Prosessdata:"
-                    android:id="@+id/processData"
                     android:textSize="24sp"
-                    android:paddingTop="5dp"
-                    android:layout_marginBottom="10dp" />
-
-                <LinearLayout
-                    android:orientation="horizontal"
-                    android:layout_width="fill_parent"
-                    android:layout_height="40dp">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:text="Temp røste topp"
-                        android:width="200dp"
-                        android:textSize="24sp"
-                        android:paddingTop="5dp"
-                        android:id="@+id/tempTopRosteLabel" />
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:text="@string/degrees"
-                        android:id="@+id/tempTopRoste"
-                        android:textSize="24sp"
-                        android:paddingTop="5dp"
-                        android:layout_marginLeft="30dp"/>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:orientation="horizontal"
-                    android:layout_width="fill_parent"
-                    android:layout_height="40dp">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:text="Temp røste bunn"
-                        android:id="@+id/tempBottomRosteLabel"
-                        android:textSize="24sp"
-                        android:width="200dp"
-                        android:paddingTop="5dp" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:text="@string/degrees"
-                        android:id="@+id/tempBottomRoste"
-                        android:textSize="24sp"
-                        android:paddingTop="5dp"
-                        android:layout_marginLeft="30dp"/>
-                </LinearLayout>
-                <LinearLayout
-                    android:orientation="horizontal"
-                    android:layout_width="fill_parent"
-                    android:layout_height="40dp">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:text="Temp koker"
-                        android:id="@+id/tempHeaterLabel"
-                        android:textSize="24sp"
-                        android:width="200dp"
-                        android:paddingTop="5dp" />
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:text="@string/degrees"
-                        android:id="@+id/tempHeater"
-                        android:textSize="24sp"
-                        android:paddingTop="5dp"
-                        android:layout_marginLeft="30dp"/>
-                </LinearLayout>
-
+                    android:text="Prosessdata"/>
             </LinearLayout>
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_weight="0.12"
+                android:layout_marginBottom="10dp"
+                android:transitionGroup="true"
+                android:background="@drawable/grey_box">
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="#F5ECCE">
+                    <ProgressBar
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        style="?android:attr/progressBarStyleLarge"
+                        android:id="@+id/pumpProcessDataProgressBar"
+                        android:layout_centerHorizontal="true"
+                        android:visibility="gone"/>
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="fill_parent"
+                        android:layout_height="40dp">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:text="Temp røste topp"
+                            android:width="200dp"
+                            android:textSize="24sp"
+                            android:paddingTop="5dp"
+                            android:id="@+id/tempTopRosteLabel" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:text="@string/degrees"
+                            android:id="@+id/tempTopRoste"
+                            android:textSize="24sp"
+                            android:paddingTop="5dp"
+                            android:layout_marginLeft="30dp"/>
+                    </LinearLayout>
 
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="fill_parent"
+                        android:layout_height="40dp">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:text="Temp røste bunn"
+                            android:id="@+id/tempBottomRosteLabel"
+                            android:textSize="24sp"
+                            android:width="200dp"
+                            android:paddingTop="5dp" />
 
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:text="@string/degrees"
+                            android:id="@+id/tempBottomRoste"
+                            android:textSize="24sp"
+                            android:paddingTop="5dp"
+                            android:layout_marginLeft="30dp"/>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="fill_parent"
+                        android:layout_height="40dp">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:text="Temp koker"
+                            android:id="@+id/tempHeaterLabel"
+                            android:textSize="24sp"
+                            android:width="200dp"
+                            android:paddingTop="5dp" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:text="@string/degrees"
+                            android:id="@+id/tempHeater"
+                            android:textSize="24sp"
+                            android:paddingTop="5dp"
+                            android:layout_marginLeft="30dp"/>
+                    </LinearLayout>
+
+                </LinearLayout>
+            </LinearLayout>
         </LinearLayout>
 
     </ScrollView>

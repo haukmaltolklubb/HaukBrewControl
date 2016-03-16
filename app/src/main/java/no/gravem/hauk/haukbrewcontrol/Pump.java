@@ -21,7 +21,7 @@ public class Pump extends ActionBarActivity {
     ControllerService controllerService = new ControllerService();
 
     ImageButton startButton, stopButton;
-    private TextView temperatureTop, temperatureBottom, temperatureHeater;
+    private TextView temperatureTop, temperatureBottom, temperatureHeater, pumpHeading;
     private SwipeRefreshLayout swipeLayout;
     private ProgressBar progressBar;
 
@@ -34,6 +34,7 @@ public class Pump extends ActionBarActivity {
         startButton = (ImageButton) findViewById(R.id.pumpStartBtn);
         stopButton = (ImageButton) findViewById(R.id.pumpStopBtn);
 
+        pumpHeading = (TextView)findViewById(R.id.pumpHeading);
         temperatureTop = (TextView) findViewById(R.id.tempTopRoste);
         temperatureBottom = (TextView) findViewById(R.id.tempBottomRoste);
         temperatureHeater = (TextView) findViewById(R.id.tempHeater);
@@ -116,11 +117,13 @@ public class Pump extends ActionBarActivity {
                 temperatureHeater.setText(tempHeaterValue);
 
                 if (brewProcess == BrewProcess.PUMP) {
+                    pumpHeading.setText("Pumping pågår");
                     startButton.setEnabled(false);
                     startButton.setActivated(false);
                     stopButton.setEnabled(true);
                     stopButton.setActivated(true);
                 } else {
+                    pumpHeading.setText("Pumping ikke aktiv");
                     startButton.setEnabled(true);
                     startButton.setActivated(true);
                     stopButton.setEnabled(false);

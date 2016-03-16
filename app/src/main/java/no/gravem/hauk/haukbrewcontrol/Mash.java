@@ -23,7 +23,7 @@ import com.google.common.base.Strings;
 public class Mash extends ActionBarActivity {
 
     ImageButton startButton, stopButton;
-    private TextView mashTempBottom, mashTempTop, mashTime;
+    private TextView mashTempBottom, mashTempTop, mashTime, mashHeading;
     private EditText level1Temperature, level1Time, level2Temperature, level2Time, level3Temperature, level3Time;
     private SwipeRefreshLayout swipeLayout;
     private ProgressBar progressBar;
@@ -38,6 +38,7 @@ public class Mash extends ActionBarActivity {
         startButton = (ImageButton)findViewById(R.id.mashStartBtn);
         stopButton = (ImageButton)findViewById(R.id.mashStopBtn);
 
+        mashHeading = (TextView)findViewById(R.id.mashHeading);
         mashTempTop = (TextView) findViewById(R.id.mashTempTop);
         mashTempBottom = (TextView) findViewById(R.id.mashTempBottom);
         mashTime = (TextView) findViewById(R.id.mashTime);
@@ -116,11 +117,13 @@ public class Mash extends ActionBarActivity {
                 mashTime.setText(time + " min");
 
                 if (brewProcess == BrewProcess.MASH) {
+                    mashHeading.setText("Mesking pågår");
                     startButton.setEnabled(false);
                     startButton.setActivated(false);
                     stopButton.setEnabled(true);
                     stopButton.setActivated(true);
                 } else {
+                    mashHeading.setText("Mesking ikke aktiv");
                     startButton.setEnabled(true);
                     startButton.setActivated(true);
                     stopButton.setEnabled(false);

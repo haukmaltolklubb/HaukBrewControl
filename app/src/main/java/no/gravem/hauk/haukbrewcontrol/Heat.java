@@ -28,7 +28,7 @@ public class Heat extends ActionBarActivity {
     ControllerService controllerService = new ControllerService();
 
     private ImageButton startButton, stopButton;
-    private TextView heatTempText, heatTimeText, startTimeText;
+    private TextView heatTempText, heatTimeText, startTimeText, heatHeading;
     private EditText heatTemperatureEditText;
     private SwipeRefreshLayout swipeLayout;
     private ProgressBar progressBar;
@@ -41,6 +41,7 @@ public class Heat extends ActionBarActivity {
         startButton = (ImageButton)findViewById(R.id.heatStartBtn);
         stopButton = (ImageButton)findViewById(R.id.heatStopBtn);
 
+        heatHeading = (TextView)findViewById(R.id.heatHeading);
         heatTempText = (TextView) findViewById(R.id.currentHeatTemp);
         heatTimeText = (TextView) findViewById(R.id.currentHeatTime);
         startTimeText = (TextView) findViewById(R.id.startTime);
@@ -95,7 +96,7 @@ public class Heat extends ActionBarActivity {
             public void done(String result) {
                 try {
                     StatusXml statusXml = new StatusXml(result);
-                    setValuesInView(statusXml.getTemp1Value(), statusXml.getProcessRunningTimeInMinutes(), statusXml.getUrom2Value());
+                    setValuesInView(statusXml.getTemp1Value(), statusXml.getProcessRunningTimeInMinutes(), statusXml.getUrom2Value(), BrewProcess.createFrom(statusXml.getUrom1Value()));
                 } catch (PLSConnectionException e) {
                     e.printStackTrace();
                 }
@@ -103,11 +104,23 @@ public class Heat extends ActionBarActivity {
         });
     }
 
-    private void setValuesInView(final String temp1Value, final int time, final String startTime) {
+    private void setValuesInView(final String temp1Value, final int time, final String startTime, final BrewProcess currentProcess) {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-
+                if(currentProcess==BrewProcess.HEAT){
+                    heatHeading.setText("Koker opp");
+                    startButton.setEnabled(false);
+                    startButton.setActivated(false);
+                    stopButton.setEnabled(true);
+                    stopButton.setActivated(true);
+                }else{
+                    heatHeading.setText("Koking ikke aktiv");
+                    startButton.setEnabled(true);
+                    startButton.setActivated(true);
+                    stopButton.setEnabled(false);
+                    stopButton.setActivated(false);
+                }
                 heatTempText.setText(temp1Value);
                 heatTimeText.setText(time + " min");
                 //startTimeText.setText(getTimeFromCounter(startTime));

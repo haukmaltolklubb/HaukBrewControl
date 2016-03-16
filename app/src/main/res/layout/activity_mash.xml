@@ -9,14 +9,22 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical"
             android:gravity="top|center"
             android:padding="10dp"
             android:weightSum="1">
 
+            <TextView
+                android:text="@string/mash_heading"
+                android:id="@+id/mashHeading"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="24sp"
+                android:focusable="true" />
 
             <LinearLayout
                 android:orientation="horizontal"
@@ -32,18 +40,17 @@
                     android:textSize="24sp"
                     android:text="Trinn"/>
             </LinearLayout>
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
-                android:paddingTop="5dp"
                 android:transitionGroup="true"
                 android:background="@drawable/grey_box">
                 <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:background="#F5ECCE">
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -90,13 +97,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
-                android:paddingTop="5dp"
                 android:transitionGroup="true"
                 android:background="@drawable/grey_box">
                 <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:background="#F5ECCE">
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -143,13 +150,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
-                android:paddingTop="5dp"
                 android:transitionGroup="true"
                 android:background="@drawable/grey_box">
                 <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:background="#F5ECCE">
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -194,11 +201,12 @@
 
             </LinearLayout>
 
-            <RelativeLayout
+            <LinearLayout
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:weightSum="1"
+                android:gravity="top|center"
                 android:paddingTop="20dp">
 
                 <ImageButton
@@ -206,125 +214,127 @@
                     android:layout_height="80dp"
                     android:text="@string/startButton_text"
                     android:id="@+id/mashStartBtn"
-                    android:layout_alignParentTop="true"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentStart="true"
-                    android:layout_marginLeft="47dp"
-                    android:layout_marginStart="47dp"
                     android:textSize="24sp"
                     android:background="@drawable/ic_play_circle_outline_black_24dp"
                     style="@style/btnStyleSandrift"
-                    android:onClick="startMash" />
+                    android:onClick="startMash"
+                    android:layout_marginRight="50dp" />
 
                 <ImageButton
                     android:layout_width="80dp"
                     android:layout_height="80dp"
                     android:text="@string/stopButton_text"
                     android:id="@+id/mashStopBtn"
-                    android:layout_alignParentTop="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_alignParentEnd="true"
-                    android:layout_marginRight="69dp"
-                    android:layout_marginEnd="69dp"
-                    android:layout_marginLeft="20dp"
                     android:textSize="24sp"
                     android:background="@drawable/ic_pause_circle_outline_black_24dp"
                     style="@style/btnStyleSandrift"
                     android:onClick="stopMash" />
+            </LinearLayout>
 
-            </RelativeLayout>
-
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:paddingTop="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_height="wrap_content"
+                android:weightSum="1">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="24sp"
+                    android:text="Prosessdata"/>
+            </LinearLayout>
             <LinearLayout
                 android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_weight="0.12"
-                android:layout_marginTop="20dp"
                 android:layout_marginBottom="10dp"
                 android:transitionGroup="true"
-                android:background="@drawable/grey_gradientsquare">
-                <ProgressBar
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    style="?android:attr/progressBarStyleLarge"
-                    android:id="@+id/mashProcessDataProgressBar"
-                    android:layout_centerHorizontal="true"
-                    android:visibility="gone"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:text="Prosessdata"
-                    android:id="@+id/textView"
-                    android:textSize="24sp"
-                    android:layout_centerHorizontal="true" />
+                android:background="@drawable/grey_box">
                 <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:paddingTop="5dp">
-                    <TextView
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="#F5ECCE">
+                    <ProgressBar
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/mashTempTopLabel"
-                        android:id="@+id/mashTempTopLabel"
-                        android:longClickable="false"
-                        android:textSize="24sp"
-                        android:ems="6"/>
-                    <TextView
+                        style="?android:attr/progressBarStyleLarge"
+                        android:id="@+id/mashProcessDataProgressBar"
+                        android:layout_centerHorizontal="true"
+                        android:visibility="gone"/>
+
+
+                    <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:inputType="number"
-                        android:ems="10"
-                        android:id="@+id/mashTempTop"
-                        android:textSize="18sp"
-                        android:text="@string/degrees"
-                        android:paddingLeft="20dp"/>
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:paddingTop="5dp">
-                    <TextView
+                        android:orientation="horizontal"
+                        android:paddingTop="5dp">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/mashTempTopLabel"
+                            android:id="@+id/mashTempTopLabel"
+                            android:longClickable="false"
+                            android:textSize="24sp"
+                            android:ems="6"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:inputType="number"
+                            android:ems="10"
+                            android:id="@+id/mashTempTop"
+                            android:textSize="18sp"
+                            android:text="@string/degrees"
+                            android:paddingLeft="20dp"/>
+                    </LinearLayout>
+                    <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/mashTempBottomLabel"
-                        android:id="@+id/mashTempBottomLabel"
-                        android:textSize="24sp"
-                        android:paddingTop="5dp"
-                        android:ems="6"/>
-                    <TextView
+                        android:orientation="horizontal"
+                        android:paddingTop="5dp">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/mashTempBottomLabel"
+                            android:id="@+id/mashTempBottomLabel"
+                            android:textSize="24sp"
+                            android:paddingTop="5dp"
+                            android:ems="6"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:text="@string/degrees"
+                            android:id="@+id/mashTempBottom"
+                            android:textSize="18sp"
+                            android:paddingLeft="20dp"/>
+                    </LinearLayout>
+                    <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:text="@string/degrees"
-                        android:id="@+id/mashTempBottom"
-                        android:textSize="18sp"
-                        android:paddingLeft="20dp"/>
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:paddingTop="5dp">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/mash_time_descr"
-                        android:id="@+id/mashTimeLabel"
-                        android:textSize="24sp"
-                        android:ems="6"/>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:inputType="time"
-                        android:ems="10"
-                        android:id="@+id/mashTime"
-                        android:textSize="18sp"
-                        android:text="@string/minutes"
-                        android:paddingLeft="20dp"/>
+                        android:orientation="horizontal"
+                        android:paddingTop="5dp">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/mash_time_descr"
+                            android:id="@+id/mashTimeLabel"
+                            android:textSize="24sp"
+                            android:ems="6"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:inputType="time"
+                            android:ems="10"
+                            android:id="@+id/mashTime"
+                            android:textSize="18sp"
+                            android:text="@string/minutes"
+                            android:paddingLeft="20dp"/>
+                    </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>

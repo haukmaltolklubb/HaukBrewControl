@@ -21,7 +21,7 @@ public class Ferment extends ActionBarActivity {
     ControllerService controllerService = new ControllerService();
     ImageButton startButton, stopButton;
     private EditText fermentTemperatureEditText;
-    private TextView currentFermentTemperatureTextView, currentFermentTimeTextView;
+    private TextView currentFermentTemperatureTextView, currentFermentTimeTextView, fermentHeading;
     private SwipeRefreshLayout swipeLayout;
     private ProgressBar progressBar;
 
@@ -33,6 +33,7 @@ public class Ferment extends ActionBarActivity {
         startButton = (ImageButton)findViewById(R.id.fermentStartBtn);
         stopButton = (ImageButton)findViewById(R.id.fermentStopBtn);
 
+        fermentHeading = (TextView)findViewById(R.id.fermentHeading);
         fermentTemperatureEditText = (EditText) findViewById(R.id.fermentTemp);
         currentFermentTemperatureTextView = (TextView) findViewById(R.id.currentFermentTemp);
         currentFermentTimeTextView = (TextView) findViewById(R.id.currentFermentTime);
@@ -155,14 +156,14 @@ public class Ferment extends ActionBarActivity {
                 currentFermentTimeTextView.setText(timeSpent + " min");
 
                 if(brewProcess == BrewProcess.FERMENT){
-                    Log.d(this.getClass().getName(), "FERMENT in progress. Disabling START");
+                    fermentHeading.setText("Gjæring pågår");
                     stopButton.setEnabled(true);
                     stopButton.setActivated(true);
                     startButton.setEnabled(false);
                     startButton.setActivated(false);
                 }
                 else{
-                    Log.d(this.getClass().getName(), "FERMENT not in progress. Enabling START");
+                    fermentHeading.setText("Gjæring ikke aktiv");
                     startButton.setEnabled(true);
                     startButton.setActivated(true);
                     stopButton.setEnabled(false);
