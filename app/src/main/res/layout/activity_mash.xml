@@ -218,7 +218,16 @@
                     android:background="@drawable/ic_play_circle_outline_black_24dp"
                     style="@style/btnStyleSandrift"
                     android:onClick="startMash"
-                    android:layout_marginRight="50dp" />
+                    android:layout_marginRight="20dp" />
+                <ImageButton
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:id="@+id/mashUpdateBtn"
+                    android:textSize="24sp"
+                    android:background="@drawable/ic_update_black_24dp"
+                    android:onClick="updateMashProcess"
+                    style="@style/btnStyleSandrift"
+                    android:layout_marginRight="20dp" />
 
                 <ImageButton
                     android:layout_width="80dp"

@@ -66,8 +66,7 @@
                         android:id="@+id/mashLevel1Temperature"
                         android:textSize="24sp"
                         android:numeric="decimal"
-                        android:imeOptions="actionDone"
-                        android:onClick="updateHeatTemperature" />
+                        android:imeOptions="actionDone" />
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -100,6 +99,7 @@
                     android:id="@+id/heatUpdateBtn"
                     android:textSize="24sp"
                     android:background="@drawable/ic_update_black_24dp"
+                    android:onClick="updateHeatTemperature"
                     style="@style/btnStyleSandrift"
                     android:layout_marginRight="20dp" />
 

@@ -103,6 +103,22 @@ public class Pump extends ActionBarActivity {
         });
     }
 
+    private void updateButtonStatuses(BrewProcess currentProcess){
+        if (currentProcess == BrewProcess.PUMP) {
+            pumpHeading.setText("Pumping pågår");
+            startButton.setEnabled(false);
+            startButton.setActivated(false);
+            stopButton.setEnabled(true);
+            stopButton.setActivated(true);
+        } else {
+            pumpHeading.setText("Pumping ikke aktiv");
+            startButton.setEnabled(true);
+            startButton.setActivated(true);
+            stopButton.setEnabled(false);
+            stopButton.setActivated(false);
+        }
+    }
+
     private void setValuesInView(final String tempTopValue, final String tempBottomValue, final String tempHeaterValue, final BrewProcess brewProcess) {
 
         runOnUiThread(new Runnable() {
@@ -112,19 +128,8 @@ public class Pump extends ActionBarActivity {
                 temperatureBottom.setText(tempBottomValue);
                 temperatureHeater.setText(tempHeaterValue);
 
-                if (brewProcess == BrewProcess.PUMP) {
-                    pumpHeading.setText("Pumping pågår");
-                    startButton.setEnabled(false);
-                    startButton.setActivated(false);
-                    stopButton.setEnabled(true);
-                    stopButton.setActivated(true);
-                } else {
-                    pumpHeading.setText("Pumping ikke aktiv");
-                    startButton.setEnabled(true);
-                    startButton.setActivated(true);
-                    stopButton.setEnabled(false);
-                    stopButton.setActivated(false);
-                }
+                updateButtonStatuses(brewProcess);
+
                 progressBar.setVisibility(View.GONE);
                 swipeLayout.setRefreshing(false);
             }
@@ -132,30 +137,33 @@ public class Pump extends ActionBarActivity {
     }
 
     public void startPumpProcess(View view) {
-        //Start pump task
-        stopButton.setEnabled(true);
-        stopButton.setActivated(true);
-        startButton.setEnabled(false);
-        startButton.setActivated(false);
 
-        startPumpProcessInPLS();
-
-        Toast toast = Toast.makeText(getApplicationContext(), "Pumping startet", Toast.LENGTH_SHORT);
-        toast.show();
+        try{
+            startPumpProcessInPLS();
+            updateButtonStatuses(BrewProcess.PUMP);
+            Toast toast = Toast.makeText(getApplicationContext(), "Pumping startet", Toast.LENGTH_SHORT);
+            toast.show();
+        }
+        catch(PLSConnectionException e){
+            Toast toast = Toast.makeText(getApplicationContext(), "Fikk ikke kontakt med PLS", Toast.LENGTH_SHORT);
+            toast.show();
+        }
     }
 
     public void stopPumpProcess(View view) {
-        stopPumpProcessInPLS();
+        try{
+            stopPumpProcessInPLS();
 
-        startButton.setEnabled(true);
-        startButton.setActivated(true);
-        stopButton.setEnabled(false);
-        stopButton.setActivated(false);
+            updateButtonStatuses(BrewProcess.NONE);
+            Toast toast = Toast.makeText(getApplicationContext(), "Pumping stoppet", Toast.LENGTH_SHORT);
+            toast.show();
 
-        Toast toast = Toast.makeText(getApplicationContext(), "Pumping stoppet", Toast.LENGTH_SHORT);
-        toast.show();
-
-        startActivity(new Intent(this, MainActivity.class));
+            startActivity(new Intent(this, MainActivity.class));
+        }
+        catch(PLSConnectionException e){
+            Toast toast = Toast.makeText(getApplicationContext(), "Fikk ikke kontakt med PLS", Toast.LENGTH_SHORT);
+            toast.show();
+        }
     }
 
     private void startPumpProcessInPLS() {

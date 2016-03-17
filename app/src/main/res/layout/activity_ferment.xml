@@ -72,8 +72,7 @@
                             android:ems="3"
                             android:id="@+id/fermentTemp"
                             android:textSize="24sp"
-                            android:numeric="decimal"
-                            android:onClick="setFermentTemperature" />
+                            android:numeric="decimal" />
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -100,7 +99,16 @@
                         android:background="@drawable/ic_play_circle_outline_black_24dp"
                         style="@style/btnStyleSandrift"
                         android:onClick="startFermentProcess"
-                        android:layout_marginRight="50dp" />
+                        android:layout_marginRight="20dp" />
+                    <ImageButton
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:id="@+id/fermentUpdateBtn"
+                        android:textSize="24sp"
+                        android:background="@drawable/ic_update_black_24dp"
+                        android:onClick="updateFermentTemperature"
+                        style="@style/btnStyleSandrift"
+                        android:layout_marginRight="20dp" />
 
                     <ImageButton
                         android:layout_width="80dp"

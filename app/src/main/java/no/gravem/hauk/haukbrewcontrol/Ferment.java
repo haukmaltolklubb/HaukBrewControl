@@ -80,38 +80,48 @@ public class Ferment extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void setFermentTemperature(View view){
-        //TODO: Trenger vi denne metoden?
-
-        updateValuesFromPLS();
-    }
-
     public void startFermentProcess(View view){
 
-        stopButton.setEnabled(true);
-        stopButton.setActivated(true);
-        startButton.setEnabled(false);
-        startButton.setActivated(false);
+        try{
+            startFermentProcessInPLS();
 
-        startFermentProcessInPLS();
+            updateButtonStatuses(BrewProcess.FERMENT);
+            Toast toast = Toast.makeText(getApplicationContext(), "Gjæring startet", Toast.LENGTH_SHORT);
+            toast.show();
+        }
+        catch(PLSConnectionException e){
+            Toast toast = Toast.makeText(getApplicationContext(), "Fikk ikke kontakt med PLS", Toast.LENGTH_SHORT);
+            toast.show();
+        }
+    }
 
-        Toast toast = Toast.makeText(getApplicationContext(), "Gjæring startet", Toast.LENGTH_SHORT);
-        toast.show();
+    public void updateFermentTemperature(View view){
+
+        try{
+            updateFermentProcessInPLS();
+            Toast toast = Toast.makeText(getApplicationContext(), "Gjæring oppdatert", Toast.LENGTH_SHORT);
+            toast.show();
+        }
+        catch(PLSConnectionException e){
+            Toast toast = Toast.makeText(getApplicationContext(), "Fikk ikke kontakt med PLS", Toast.LENGTH_SHORT);
+            toast.show();
+        }
     }
 
     public void stopFermentProcess(View view){
+        try{
+            stopFermentProcessInPLS();
 
-        startButton.setEnabled(true);
-        startButton.setActivated(true);
-        stopButton.setEnabled(false);
-        stopButton.setActivated(false);
+            updateButtonStatuses(BrewProcess.NONE);
+            Toast toast = Toast.makeText(getApplicationContext(), "Gjæring stoppet", Toast.LENGTH_SHORT);
+            toast.show();
 
-        stopFermentProcessInPLS();
-
-        Toast toast = Toast.makeText(getApplicationContext(), "Gjæring stoppet", Toast.LENGTH_SHORT);
-        toast.show();
-
-        startActivity(new Intent(this, MainActivity.class));
+            startActivity(new Intent(this, MainActivity.class));
+        }
+        catch(PLSConnectionException e){
+            Toast toast = Toast.makeText(getApplicationContext(), "Fikk ikke kontakt med PLS", Toast.LENGTH_SHORT);
+            toast.show();
+        }
     }
 
     private void startFermentProcessInPLS(){
@@ -120,6 +130,15 @@ public class Ferment extends ActionBarActivity {
 
         controllerService
                 .setUrom(1, 4)
+                .setVar(1, fermentTemperatureValue)
+                .execute();
+    }
+
+    private void updateFermentProcessInPLS(){
+        Log.d(this.getClass().getName(), "Oppdater gjæring!");
+        final int fermentTemperatureValue = TemperatureService.getPLSFormattedTemperatureInt(fermentTemperatureEditText.getText().toString());
+
+        controllerService
                 .setVar(1, fermentTemperatureValue)
                 .execute();
     }
@@ -143,6 +162,23 @@ public class Ferment extends ActionBarActivity {
         });
     }
 
+    private void updateButtonStatuses(BrewProcess currentProcess) {
+        if(currentProcess == BrewProcess.FERMENT){
+            fermentHeading.setText("Gjæring pågår");
+            stopButton.setEnabled(true);
+            stopButton.setActivated(true);
+            startButton.setEnabled(false);
+            startButton.setActivated(false);
+        }
+        else{
+            fermentHeading.setText("Gjæring ikke aktiv");
+            startButton.setEnabled(true);
+            startButton.setActivated(true);
+            stopButton.setEnabled(false);
+            stopButton.setActivated(false);
+        }
+    }
+
     private void setValuesInView(final String tempFerment, final int timeSpent, final BrewProcess brewProcess) {
 
         runOnUiThread(new Runnable() {
@@ -150,21 +186,8 @@ public class Ferment extends ActionBarActivity {
             public void run() {
                 currentFermentTemperatureTextView.setText(tempFerment);
                 currentFermentTimeTextView.setText(timeSpent + " min");
+                updateButtonStatuses(brewProcess);
 
-                if(brewProcess == BrewProcess.FERMENT){
-                    fermentHeading.setText("Gjæring pågår");
-                    stopButton.setEnabled(true);
-                    stopButton.setActivated(true);
-                    startButton.setEnabled(false);
-                    startButton.setActivated(false);
-                }
-                else{
-                    fermentHeading.setText("Gjæring ikke aktiv");
-                    startButton.setEnabled(true);
-                    startButton.setActivated(true);
-                    stopButton.setEnabled(false);
-                    stopButton.setActivated(false);
-                }
                 progressBar.setVisibility(View.GONE);
                 swipeLayout.setRefreshing(false);
             }

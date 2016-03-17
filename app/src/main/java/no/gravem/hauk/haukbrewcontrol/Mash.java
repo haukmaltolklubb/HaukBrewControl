@@ -22,7 +22,7 @@ import com.google.common.base.Strings;
  */
 public class Mash extends ActionBarActivity {
 
-    ImageButton startButton, stopButton;
+    ImageButton startButton, stopButton, updateButton;
     private TextView mashTempBottom, mashTempTop, mashTime, mashHeading;
     private EditText level1Temperature, level1Time, level2Temperature, level2Time, level3Temperature, level3Time;
     private SwipeRefreshLayout swipeLayout;
@@ -37,6 +37,7 @@ public class Mash extends ActionBarActivity {
 
         startButton = (ImageButton)findViewById(R.id.mashStartBtn);
         stopButton = (ImageButton)findViewById(R.id.mashStopBtn);
+        updateButton = (ImageButton)findViewById(R.id.mashUpdateBtn);
 
         mashHeading = (TextView)findViewById(R.id.mashHeading);
         mashTempTop = (TextView) findViewById(R.id.mashTempTop);
@@ -107,6 +108,26 @@ public class Mash extends ActionBarActivity {
         });
     }
 
+    private void updateButtonStatuses(BrewProcess currentProcess){
+        if (currentProcess == BrewProcess.MASH) {
+            mashHeading.setText("Mesking pågår");
+            startButton.setEnabled(false);
+            startButton.setActivated(false);
+            updateButton.setEnabled(true);
+            updateButton.setActivated(true);
+            stopButton.setEnabled(true);
+            stopButton.setActivated(true);
+        } else {
+            mashHeading.setText("Mesking ikke aktiv");
+            startButton.setEnabled(true);
+            startButton.setActivated(true);
+            updateButton.setEnabled(false);
+            updateButton.setActivated(false);
+            stopButton.setEnabled(false);
+            stopButton.setActivated(false);
+        }
+    }
+
     private void setValuesInView(final String t2, final String t3, final int time, final BrewProcess brewProcess){
         runOnUiThread(new Runnable() {
             @Override
@@ -116,19 +137,7 @@ public class Mash extends ActionBarActivity {
                 mashTempBottom.setText(t3);
                 mashTime.setText(time + " min");
 
-                if (brewProcess == BrewProcess.MASH) {
-                    mashHeading.setText("Mesking pågår");
-                    startButton.setEnabled(false);
-                    startButton.setActivated(false);
-                    stopButton.setEnabled(true);
-                    stopButton.setActivated(true);
-                } else {
-                    mashHeading.setText("Mesking ikke aktiv");
-                    startButton.setEnabled(true);
-                    startButton.setActivated(true);
-                    stopButton.setEnabled(false);
-                    stopButton.setActivated(false);
-                }
+                updateButtonStatuses(brewProcess);
                 progressBar.setVisibility(View.GONE);
                 swipeLayout.setRefreshing(false);
             }
@@ -138,16 +147,16 @@ public class Mash extends ActionBarActivity {
     public void startMash(View view){
         if(requiredVariablesAreSet()) {
             Log.d(this.getClass().getName(), "startMash");
-
-            startMashProcessInPLS();
-
-            stopButton.setEnabled(true);
-            stopButton.setActivated(true);
-            startButton.setEnabled(false);
-            startButton.setActivated(false);
-
-            Toast toast = Toast.makeText(getApplicationContext(), "Mesking startet", Toast.LENGTH_SHORT);
-            toast.show();
+            try{
+                startMashProcessInPLS();
+                updateButtonStatuses(BrewProcess.MASH);
+                Toast toast = Toast.makeText(getApplicationContext(), "Mesking startet", Toast.LENGTH_SHORT);
+                toast.show();
+            }
+            catch(PLSConnectionException e){
+                Toast toast = Toast.makeText(getApplicationContext(), "Fikk ikke kontakt med PLS", Toast.LENGTH_SHORT);
+                toast.show();
+            }
         }
         else{
             Toast toast = Toast.makeText(getApplicationContext(), "Mangler påkrevde verdier", Toast.LENGTH_SHORT);
@@ -155,19 +164,35 @@ public class Mash extends ActionBarActivity {
         }
     }
 
+    public void updateMashProcess(View view){
+        Log.d(this.getClass().getName(), "updateMash");
+        try{
+            updateMashProcessInPLS();
+            Toast toast = Toast.makeText(getApplicationContext(), "Mesking oppdatert", Toast.LENGTH_SHORT);
+            toast.show();
+        }
+        catch(PLSConnectionException e){
+            Toast toast = Toast.makeText(getApplicationContext(), "Fikk ikke kontakt med PLS", Toast.LENGTH_SHORT);
+            toast.show();
+        }
+    }
+
+
     public void stopMash(View view){
         Log.d(this.getClass().getName(), "stopMash");
-        stopMashProcessInPLS();
 
-        startButton.setEnabled(true);
-        startButton.setActivated(true);
-        stopButton.setEnabled(false);
-        stopButton.setActivated(false);
+        try{
+            stopMashProcessInPLS();
+            updateButtonStatuses(BrewProcess.NONE);
+            Toast toast = Toast.makeText(getApplicationContext(), "Mesking stoppet", Toast.LENGTH_SHORT);
+            toast.show();
 
-        Toast toast = Toast.makeText(getApplicationContext(), "Mesking stoppet", Toast.LENGTH_SHORT);
-        toast.show();
-
-        startActivity(new Intent(this, MainActivity.class));
+            startActivity(new Intent(this, MainActivity.class));
+        }
+        catch(PLSConnectionException e){
+            Toast toast = Toast.makeText(getApplicationContext(), "Fikk ikke kontakt med PLS", Toast.LENGTH_SHORT);
+            toast.show();
+        }
     }
 
     private boolean requiredVariablesAreSet(){
@@ -191,6 +216,31 @@ public class Mash extends ActionBarActivity {
              .setVar(6, TimeService.getPLSFormattedTime(level2Time.getText().toString()))
              .setVar(7, TimeService.getPLSFormattedTime(level3Time.getText().toString()))
              .execute();
+    }
+
+    private void updateMashProcessInPLS() {
+        controllerService.getStatusXml(new ControllerResult() {
+            @Override
+            public void done(String result) {
+
+                try {
+                    StatusXml statusXml = new StatusXml(result);
+                    boolean isMash = BrewProcess.createFrom(statusXml.getUrom1Value()) == BrewProcess.MASH;
+                    if (isMash) {
+                        controllerService
+                                .setVar(1, TemperatureService.getPLSFormattedTemperatureInt(level1Temperature.getText().toString()))
+                                .setVar(3, TemperatureService.getPLSFormattedTemperatureInt(level2Temperature.getText().toString()))
+                                .setVar(4, TemperatureService.getPLSFormattedTemperatureInt(level3Temperature.getText().toString()))
+                                .setVar(5, TimeService.getPLSFormattedTime(level1Time.getText().toString()))
+                                .setVar(6, TimeService.getPLSFormattedTime(level2Time.getText().toString()))
+                                .setVar(7, TimeService.getPLSFormattedTime(level3Time.getText().toString()))
+                                .execute();
+                    }
+                } catch (PLSConnectionException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
     public void stopMashProcessInPLS(){

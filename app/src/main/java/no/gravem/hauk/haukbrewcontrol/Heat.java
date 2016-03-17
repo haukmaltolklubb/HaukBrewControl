@@ -27,7 +27,7 @@ public class Heat extends ActionBarActivity {
 
     ControllerService controllerService = new ControllerService();
 
-    private ImageButton startButton, stopButton;
+    private ImageButton startButton, stopButton, updateButton;
     private TextView heatTempText, heatTimeText, startTimeText, heatHeading;
     private EditText heatTemperatureEditText;
     private SwipeRefreshLayout swipeLayout;
@@ -40,6 +40,7 @@ public class Heat extends ActionBarActivity {
 
         startButton = (ImageButton)findViewById(R.id.heatStartBtn);
         stopButton = (ImageButton)findViewById(R.id.heatStopBtn);
+        updateButton = (ImageButton)findViewById(R.id.heatUpdateBtn);
 
         heatHeading = (TextView)findViewById(R.id.heatHeading);
         heatTempText = (TextView) findViewById(R.id.currentHeatTemp);
@@ -86,7 +87,6 @@ public class Heat extends ActionBarActivity {
     }
 
     private void updateValuesFromPLS() {
-
         controllerService.getStatusXml(new ControllerResult() {
             @Override
             public void done(String result) {
@@ -104,51 +104,33 @@ public class Heat extends ActionBarActivity {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                if(currentProcess==BrewProcess.HEAT){
-                    heatHeading.setText("Koker opp");
-                    startButton.setEnabled(false);
-                    startButton.setActivated(false);
-                    stopButton.setEnabled(true);
-                    stopButton.setActivated(true);
-                }else{
-                    heatHeading.setText("Koking ikke aktiv");
-                    startButton.setEnabled(true);
-                    startButton.setActivated(true);
-                    stopButton.setEnabled(false);
-                    stopButton.setActivated(false);
-                }
+                updateButtonStatuses(currentProcess);
                 heatTempText.setText(temp1Value);
                 heatTimeText.setText(time + " min");
                 //startTimeText.setText(getTimeFromCounter(startTime));
                 progressBar.setVisibility(View.GONE);
                 swipeLayout.setRefreshing(false);
-
             }
         });
     }
 
-
-    public void startHeatingProcess(View view) {
-        if(requiredVariablesAreSet()) {
+    private void updateButtonStatuses(BrewProcess currentProcess){
+        if (currentProcess == BrewProcess.HEAT) {
+            heatHeading.setText("Koker opp");
             startButton.setEnabled(false);
             startButton.setActivated(false);
-
+            updateButton.setEnabled(true);
+            updateButton.setActivated(true);
             stopButton.setEnabled(true);
             stopButton.setActivated(true);
-
-            try {
-                startHeatProcessInPLS();
-            }catch(PLSConnectionException e){
-                Toast toast = Toast.makeText(getApplicationContext(), "Fikk ikke kontakt med PLS", Toast.LENGTH_SHORT);
-                toast.show();
-            }
-
-            Toast toast = Toast.makeText(getApplicationContext(), "Koking startet", Toast.LENGTH_SHORT);
-            toast.show();
-        }
-        else{
-            Toast toast = Toast.makeText(getApplicationContext(), "Sett temperatur først!", Toast.LENGTH_SHORT);
-            toast.show();
+        } else {
+            heatHeading.setText("Koking ikke aktiv");
+            startButton.setEnabled(true);
+            startButton.setActivated(true);
+            updateButton.setActivated(false);
+            updateButton.setEnabled(false);
+            stopButton.setEnabled(false);
+            stopButton.setActivated(false);
         }
     }
 
@@ -157,39 +139,74 @@ public class Heat extends ActionBarActivity {
         return !Strings.isNullOrEmpty(heatTemperatureEditText.getText().toString());
     }
 
+
+    public void startHeatingProcess(View view) {
+        if(requiredVariablesAreSet()) {
+            try {
+                startHeatProcessInPLS();
+                updateButtonStatuses(BrewProcess.HEAT);
+                Toast toast = Toast.makeText(getApplicationContext(), "Koking startet", Toast.LENGTH_SHORT);
+                toast.show();
+            }catch(PLSConnectionException e){
+                Toast toast = Toast.makeText(getApplicationContext(), "Fikk ikke kontakt med PLS", Toast.LENGTH_SHORT);
+                toast.show();
+            }
+        }
+        else{
+            Toast toast = Toast.makeText(getApplicationContext(), "Sett temperatur først!", Toast.LENGTH_SHORT);
+            toast.show();
+        }
+    }
+
     private void startHeatProcessInPLS(){
         final int heatTemperatureValue = TemperatureService.getPLSFormattedTemperatureInt(heatTemperatureEditText.getText().toString());
-
         Log.d(this.getClass().getName(), "Heat temp set to: " + heatTemperatureValue);
 
         controllerService
                 .setUrom(1,1)
-                .setVar(1,heatTemperatureValue)
+                .setVar(1, heatTemperatureValue)
                 .execute();
-
     }
 
     private void stopHeatProcessInPLS(){
         controllerService.setUrom(1, 0).execute();
     }
 
+    private void updateHeatProcessInPLS(){
+        final int heatTemperatureValue = TemperatureService.getPLSFormattedTemperatureInt(heatTemperatureEditText.getText().toString());
+        Log.d(this.getClass().getName(), "Heat temp set to: " + heatTemperatureValue);
+
+        controllerService.setVar(1, heatTemperatureValue).execute();
+    }
+
     public void stopHeatingProcess(View view) {
-        startButton.setEnabled(true);
-        startButton.setActivated(true);
-        stopButton.setEnabled(false);
-        stopButton.setActivated(false);
-
-        stopHeatProcessInPLS();
-
-        Toast toast = Toast.makeText(getApplicationContext(), "Koking stoppet", Toast.LENGTH_SHORT);
-        toast.show();
-
+        try{
+            stopHeatProcessInPLS();
+            updateButtonStatuses(BrewProcess.NONE);
+            Toast toast = Toast.makeText(getApplicationContext(), "Koking stoppet", Toast.LENGTH_SHORT);
+            toast.show();
+        }
+        catch(PLSConnectionException e){
+            Toast toast = Toast.makeText(getApplicationContext(), "Fikk ikke kontakt med PLS", Toast.LENGTH_SHORT);
+            toast.show();
+        }
         startActivity(new Intent(this, MainActivity.class));
+    }
+
+    public void updateValuesInView(View view){
+        updateValuesFromPLS();
     }
 
     public void updateHeatTemperature(View view) {
 
-        //TODO: Trenger vi denne metoden?
-        updateValuesFromPLS();
+        try{
+            updateHeatProcessInPLS();
+            Toast toast = Toast.makeText(getApplicationContext(), "Koking oppdatert", Toast.LENGTH_SHORT);
+            toast.show();
+        }
+        catch(PLSConnectionException e){
+            Toast toast = Toast.makeText(getApplicationContext(), "Fikk ikke kontakt med PLS", Toast.LENGTH_SHORT);
+            toast.show();
+        }
     }
 }
