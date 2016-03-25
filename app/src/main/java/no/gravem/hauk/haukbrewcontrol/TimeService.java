@@ -15,6 +15,10 @@ public abstract class TimeService {
         return Integer.valueOf(time)*60;
     }
 
+    public static String getFormattedTimeFromPLS(String time){
+        return String.valueOf(Integer.valueOf(time)/60);
+    }
+
     public static int getSecondsToStart(DateTime timeSet){
 
         Duration duration = new Duration(zeroPointTime, timeSet);

@@ -43,4 +43,20 @@ public class TemperatureServiceTest {
         Assert.assertEquals(temperature, temp);
     }
 
+    @Test
+    public void test_getFormattedTemperatureString_willWorkWithDecimals(){
+        String temperature = "20";
+
+        String temp = TemperatureService.getFormattedTemperatureString("200");
+        Assert.assertEquals(temperature, temp);
+    }
+
+    @Test
+    public void test_getFormattedTemperatureString_willWorkWith1Digit(){
+        String temperature = "2.2";
+
+        String temp = TemperatureService.getFormattedTemperatureString("22");
+        Assert.assertEquals(temperature, temp);
+    }
+
 }

@@ -92,7 +92,7 @@ public class Heat extends ActionBarActivity {
             public void done(String result) {
                 try {
                     StatusXml statusXml = new StatusXml(result);
-                    setValuesInView(statusXml.getTemp1Value(), statusXml.getProcessRunningTimeInMinutes(), statusXml.getUrom2Value(), BrewProcess.createFrom(statusXml.getUrom1Value()));
+                    setValuesInView(statusXml.getVar1Value(), statusXml.getTemp1Value(), statusXml.getProcessRunningTimeInMinutes(), statusXml.getUrom2Value(), BrewProcess.createFrom(statusXml.getUrom1Value()));
                 } catch (PLSConnectionException e) {
                     e.printStackTrace();
                 }
@@ -100,7 +100,7 @@ public class Heat extends ActionBarActivity {
         });
     }
 
-    private void setValuesInView(final String temp1Value, final int time, final String startTime, final BrewProcess currentProcess) {
+    private void setValuesInView(final String var1Value, final String temp1Value, final int time, final String startTime, final BrewProcess currentProcess) {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -108,6 +108,9 @@ public class Heat extends ActionBarActivity {
                 heatTempText.setText(temp1Value);
                 heatTimeText.setText(time + " min");
                 //startTimeText.setText(getTimeFromCounter(startTime));
+                if(currentProcess == BrewProcess.HEAT)
+                    heatTemperatureEditText.setText(TemperatureService.getFormattedTemperatureString(var1Value));
+
                 progressBar.setVisibility(View.GONE);
                 swipeLayout.setRefreshing(false);
             }

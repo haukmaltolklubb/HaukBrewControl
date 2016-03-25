@@ -17,6 +17,8 @@ import android.widget.Toast;
 
 import com.google.common.base.Strings;
 
+import java.sql.Time;
+
 /**
  * Created by GTG on 20.01.2015.
  */
@@ -99,7 +101,9 @@ public class Mash extends ActionBarActivity {
             public void done(String result) {
                 try {
                     StatusXml statusXml = new StatusXml(result);
-                    setValuesInView(statusXml.getTemp2Value(), statusXml.getTemp3Value(), statusXml.getProcessRunningTimeInMinutes(), BrewProcess.createFrom(statusXml.getUrom1Value()));
+                    setValuesInView(statusXml.getVar1Value(), statusXml.getVar3Value(), statusXml.getVar4Value(),
+                            statusXml.getVar5Value(), statusXml.getVar6Value(), statusXml.getVar7Value(),
+                            statusXml.getTemp2Value(), statusXml.getTemp3Value(), statusXml.getProcessRunningTimeInMinutes(), BrewProcess.createFrom(statusXml.getUrom1Value()));
 
                 } catch (PLSConnectionException e) {
                     e.printStackTrace();
@@ -128,7 +132,9 @@ public class Mash extends ActionBarActivity {
         }
     }
 
-    private void setValuesInView(final String t2, final String t3, final int time, final BrewProcess brewProcess){
+    private void setValuesInView(final String var1, final String var3, final String var4,
+                                 final String var5, final String var6, final String var7,
+                                 final String t2, final String t3, final int time, final BrewProcess brewProcess){
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -136,6 +142,16 @@ public class Mash extends ActionBarActivity {
                 mashTempTop.setText(t2);
                 mashTempBottom.setText(t3);
                 mashTime.setText(time + " min");
+
+                if(brewProcess == BrewProcess.MASH){
+                    level1Temperature.setText(TemperatureService.getFormattedTemperatureString(var1));
+                    level2Temperature.setText(TemperatureService.getFormattedTemperatureString(var3));
+                    level3Temperature.setText(TemperatureService.getFormattedTemperatureString(var4));
+
+                    level1Time.setText(TimeService.getFormattedTimeFromPLS(var5));
+                    level2Time.setText(TimeService.getFormattedTimeFromPLS(var6));
+                    level3Time.setText(TimeService.getFormattedTimeFromPLS(var7));
+                }
 
                 updateButtonStatuses(brewProcess);
                 progressBar.setVisibility(View.GONE);

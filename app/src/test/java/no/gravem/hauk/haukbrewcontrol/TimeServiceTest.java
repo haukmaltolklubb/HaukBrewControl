@@ -44,4 +44,12 @@ public class TimeServiceTest {
         DateTime givenTime = TimeService.getDateTimeFromSeconds(secondsSince2000);
         Assert.assertEquals(timeSet, givenTime);
     }
+
+    @Test
+    public void test_getFormattedTime(){
+        String time = "20";
+
+        String plsTime = TimeService.getFormattedTimeFromPLS(String.valueOf(20*60));
+        Assert.assertEquals(time, plsTime);
+    }
 }

@@ -49,7 +49,6 @@ public class Pump extends ActionBarActivity {
             }
         });
 
-
         updateValuesFromPLS();
     }
 

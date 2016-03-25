@@ -68,6 +68,30 @@ public class StatusXml {
         return getNodeValue("var1");
     }
 
+    public String getVar2Value(){
+        return getNodeValue("var2");
+    }
+
+    public String getVar3Value(){
+        return getNodeValue("var3");
+    }
+
+    public String getVar4Value(){
+return getNodeValue("var4");
+    }
+
+    public String getVar5Value(){
+        return getNodeValue("var5");
+    }
+
+    public String getVar6Value(){
+        return getNodeValue("var6");
+    }
+
+    public String getVar7Value(){
+        return getNodeValue("var7");
+    }
+
     public Integer getProcessRunningTimeInMinutes(){
         String nodeValue = getNodeValue("var2");
 

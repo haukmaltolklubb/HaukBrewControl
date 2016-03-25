@@ -14,6 +14,15 @@ public abstract class TemperatureService {
         double rounded = Math.round( temp * 10 );
 
         return (int)rounded;
+    }
+
+    public static String getFormattedTemperatureString(String temperature){
+        double temp = Double.valueOf(temperature);
+        double fixed = temp / 10;
+
+        if(fixed % 1 == 0)
+            return String.valueOf((int)fixed);
+        return String.valueOf(fixed);
 
     }
 }

@@ -154,7 +154,7 @@ public class Ferment extends ActionBarActivity {
             public void done(String result) {
                 try {
                     StatusXml statusXml = new StatusXml(result);
-                    setValuesInView(statusXml.getTemp4Value(), statusXml.getProcessRunningTimeInMinutes(), BrewProcess.createFrom(statusXml.getUrom1Value()));
+                    setValuesInView(statusXml.getVar1Value(), statusXml.getTemp4Value(), statusXml.getProcessRunningTimeInMinutes(), BrewProcess.createFrom(statusXml.getUrom1Value()));
                 } catch (PLSConnectionException e) {
                     e.printStackTrace();
                 }
@@ -179,7 +179,7 @@ public class Ferment extends ActionBarActivity {
         }
     }
 
-    private void setValuesInView(final String tempFerment, final int timeSpent, final BrewProcess brewProcess) {
+    private void setValuesInView(final String var1Value, final String tempFerment, final int timeSpent, final BrewProcess brewProcess) {
 
         runOnUiThread(new Runnable() {
             @Override
@@ -187,6 +187,9 @@ public class Ferment extends ActionBarActivity {
                 currentFermentTemperatureTextView.setText(tempFerment);
                 currentFermentTimeTextView.setText(timeSpent + " min");
                 updateButtonStatuses(brewProcess);
+
+                if(brewProcess == BrewProcess.FERMENT)
+                    fermentTemperatureEditText.setText(TemperatureService.getFormattedTemperatureString(var1Value));
 
                 progressBar.setVisibility(View.GONE);
                 swipeLayout.setRefreshing(false);
