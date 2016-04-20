@@ -81,6 +81,10 @@ public class Heat extends ActionBarActivity {
                 // This method calls setRefreshing(false) when it's finished.
                 updateValuesFromPLS();
                 return true;
+            case R.id.action_settings:
+                Log.i(this.getClass().getName(), "Settings menu item selected");
+                //startActivity(new Intent(this, SettingsActivity.class));
+                return true;
         }
 
         return super.onOptionsItemSelected(item);

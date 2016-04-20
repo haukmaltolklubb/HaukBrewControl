@@ -94,14 +94,15 @@ public class MainActivity extends ActionBarActivity {
             // Check if user triggered a refresh:
             case R.id.menu_refresh:
                 Log.i(this.getClass().getName(), "Refresh menu item selected");
-
                 // Signal SwipeRefreshLayout to start the progress indicator
                 swipeLayout.setRefreshing(true);
-
                 // Start the refresh background task.
                 // This method calls setRefreshing(false) when it's finished.
                 updateCurrentProcessFromPLS();
-
+                return true;
+            case R.id.action_settings:
+                Log.i(this.getClass().getName(), "Settings menu item selected");
+                //startActivity(new Intent(this, SettingsActivity.class));
                 return true;
         }
 

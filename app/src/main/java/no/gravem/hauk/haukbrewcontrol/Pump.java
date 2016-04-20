@@ -72,6 +72,10 @@ public class Pump extends ActionBarActivity {
                 updateValuesFromPLS();
 
                 return true;
+            case R.id.action_settings:
+                Log.i(this.getClass().getName(), "Settings menu item selected");
+                //startActivity(new Intent(this, SettingsActivity.class));
+                return true;
         }
 
         // User didn't trigger a refresh, let the superclass handle this action
