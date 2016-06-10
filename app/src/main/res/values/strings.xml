@@ -55,5 +55,25 @@
     <string name="mashTempTopLabel">Temp topp</string>
     <string name="pumpHeading">Pumping</string>
     <string name="currentFermentTime">Gjæringstid:</string>
+    <string name="title_activity_settings">Settings</string>
+
+    <!-- Strings related to Settings -->
+
+    <!-- Example General settings -->
+    <string name="pref_header_general">Generelt</string>
+
+    <string name="pref_title_display_name">En instilling her</string>
+    <string name="pref_default_display_name">inst</string>
+
+    <string name="pref_title_login">Innlogging</string>
+    <string name="pref_default_login">admin</string>
+
+    <string name="pref_title_password">Passord</string>
+    <string name="pref_default_password">*****</string>
+
+    <!-- Example settings for Data & Sync -->
+    <string name="pref_header_plc_sync">PLC</string>
+
+    <string name="pref_title_system_sync_settings">PLC instillinger</string>
 
 </resources>

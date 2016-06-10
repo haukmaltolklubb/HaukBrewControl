@@ -102,7 +102,7 @@ public class MainActivity extends ActionBarActivity {
                 return true;
             case R.id.action_settings:
                 Log.i(this.getClass().getName(), "Settings menu item selected");
-                //startActivity(new Intent(this, SettingsActivity.class));
+                startActivity(new Intent(this, SettingsActivity.class));
                 return true;
         }
 
