@@ -98,7 +98,7 @@ public class Pump extends ActionBarActivity {
             public void done(String result) {
                 try {
                     StatusXml statusXml = new StatusXml(result);
-                    setValuesInView(statusXml.getTemp1Value(), statusXml.getTemp2Value(), statusXml.getTemp3Value(), BrewProcess.createFrom(statusXml.getUrom1Value()));
+                    setValuesInView(statusXml.getTemp2Value(), statusXml.getTemp3Value(), statusXml.getTemp1Value(), BrewProcess.createFrom(statusXml.getUrom1Value()));
                 } catch (PLSConnectionException e) {
                     e.printStackTrace();
                 }
